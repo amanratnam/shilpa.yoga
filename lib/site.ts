@@ -12,7 +12,7 @@ export const siteConfig = {
   tagline: "Move with intention",
   description:
     "Anatomy-based Vinyasa yoga with a Yoga Alliance USA Registered Yoga Teacher. Online classes worldwide, personal sessions in Gurgaon, and a teacher training certification grounded in anatomy and theory.",
-  url: "https://shilpa.yoga",
+  url: "https://www.shilpa.yoga",
   locale: "en_IN",
   teacher: {
     name: "Shilpa",
