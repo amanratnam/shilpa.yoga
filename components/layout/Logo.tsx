@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { cdnAsset } from "@/content/images";
 
 /**
  * Set to true once the brand logo files are saved into public/images/logo/:
@@ -22,10 +23,11 @@ export function Logo({
   className?: string;
 }) {
   if (LOGO_READY) {
-    const src =
+    const src = cdnAsset(
       tone === "dark"
         ? "/images/logo/shilpa-logo-light.png"
-        : "/images/logo/shilpa-logo-dark.png";
+        : "/images/logo/shilpa-logo-dark.png",
+    );
     return (
       <Link
         href="/"

@@ -16,7 +16,18 @@ export type SiteImage = {
   ready: boolean;
 };
 
-const img = (i: SiteImage): SiteImage => i;
+// Images are hosted on Supabase Storage (public "images" bucket).
+const CDN_BASE =
+  "https://aofcqupyahbyybpdizzw.supabase.co/storage/v1/object/public/images";
+
+/** Rewrite a local "/images/..." path to its Supabase public URL. */
+export function cdnAsset(path: string): string {
+  return path.startsWith("/images/")
+    ? `${CDN_BASE}${path.slice("/images".length)}`
+    : path;
+}
+
+const img = (i: SiteImage): SiteImage => ({ ...i, src: cdnAsset(i.src) });
 
 export const images = {
   // ---- Hero (landscape) ----
