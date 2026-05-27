@@ -2,14 +2,14 @@ import { images } from "@/content/images";
 import type { ServicePageContent } from "@/components/sections/ServicePage";
 import { onlineVinyasaContent, personalGurgaonContent } from "@/content/classes";
 
-// SEO landing pages — share components with the service pages, own search-intent copy.
+// SEO landing pages, share components with the service pages, own search-intent copy.
 
 export const yogaClassesGurgaon: ServicePageContent = {
   hero: {
     eyebrow: "Yoga classes in Gurgaon",
     title: "Yoga classes in Gurgaon, taught around your body",
     subtitle:
-      "Personal and small-group yoga across Gurgaon and Delhi NCR — anatomy-led, injury-aware, and led by a Yoga Alliance USA Registered Yoga Teacher.",
+      "Personal and small-group yoga across Gurgaon and Delhi NCR, anatomy-led, injury-aware, and led by a Yoga Alliance USA Registered Yoga Teacher.",
     image: images.personalHero,
     actions: [
       { label: "Book a session", href: "#enquire" },
@@ -24,7 +24,7 @@ export const yogaClassesGurgaon: ServicePageContent = {
     caption: "A personal session in Gurgaon.",
     paragraphs: [
       "Looking for yoga classes in Gurgaon that go beyond following along? I teach one-to-one and in small groups across Gurgaon and the wider Delhi NCR, building each practice around your body, your goals and any injuries.",
-      "Sessions happen at your home, your society's space, or a quiet studio — whatever suits your week. Mornings, evenings and weekends are available.",
+      "Sessions happen at your home, your society's space, or a quiet studio, whatever suits your week. Mornings, evenings and weekends are available.",
       "Whether you're brand new or returning after a break, you'll learn to practise safely and intelligently, with real attention you won't find in a crowded class.",
     ],
   },
@@ -34,7 +34,7 @@ export const yogaClassesGurgaon: ServicePageContent = {
     items: [
       {
         title: "Busy professionals",
-        body: "Flexible timings around Gurgaon work schedules — practise before the day starts or to unwind after it.",
+        body: "Flexible timings around Gurgaon work schedules, practise before the day starts or to unwind after it.",
       },
       {
         title: "Recovering from injury",
@@ -52,7 +52,7 @@ export const yogaClassesGurgaon: ServicePageContent = {
     items: [
       {
         title: "We meet where you are",
-        body: "At home, your society, or a studio across Gurgaon and Delhi NCR — and at a time that fits.",
+        body: "At home, your society, or a studio across Gurgaon and Delhi NCR, and at a time that fits.",
       },
       {
         title: "A practice built for you",
@@ -92,7 +92,7 @@ export const onlineYogaIndia: ServicePageContent = {
     eyebrow: "Online yoga classes · India",
     title: "Online yoga classes for India and beyond",
     subtitle:
-      "Live, small-group Vinyasa you can join from anywhere in India — sequenced around the body, taught live by a Yoga Alliance USA RYT.",
+      "Live, small-group Vinyasa you can join from anywhere in India, sequenced around the body, taught live by a Yoga Alliance USA RYT.",
     image: images.onlineHero,
     actions: [
       { label: "Book a free trial", href: "#enquire" },
@@ -106,9 +106,9 @@ export const onlineYogaIndia: ServicePageContent = {
     imageSide: "left",
     caption: "A live online class in progress.",
     paragraphs: [
-      "Searching for online yoga classes in India that actually progress? These are live, small-group sessions over video — so I can see you, adjust you, and offer alternatives in the moment.",
+      "Searching for online yoga classes in India that actually progress? These are live, small-group sessions over video, so I can see you, adjust you, and offer alternatives in the moment.",
       "Join from Delhi, Mumbai, Bengaluru, a smaller town, or abroad. All you need is a mat, a little space and a screen. Class timings are set to suit Indian and nearby timezones.",
-      "Because classes are live and interactive, you get adjustments and attention in real time — never a one-way recording.",
+      "Because classes are live and interactive, you get adjustments and attention in real time, never a one-way recording.",
     ],
   },
   whoFor: {
@@ -117,7 +117,7 @@ export const onlineYogaIndia: ServicePageContent = {
     items: [
       {
         title: "Anywhere in India",
-        body: "No commute, no studio nearby required — practise from home with a teacher who actually sees you.",
+        body: "No commute, no studio nearby required, practise from home with a teacher who actually sees you.",
       },
       {
         title: "Returning practitioners",

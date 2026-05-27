@@ -8,7 +8,7 @@ export const onlineVinyasaContent: ServicePageContent = {
     eyebrow: "Online · Worldwide",
     title: "Live online Vinyasa, wherever you are",
     subtitle:
-      "Small, breath-led group classes you join over video from any timezone — sequenced around the body, taught live, never a recording.",
+      "Small, breath-led group classes you join over video from any timezone, sequenced around the body, taught live, never a recording.",
     image: images.onlineHero,
     actions: [
       { label: "Enquire to Book", href: "#enquire" },
@@ -22,7 +22,7 @@ export const onlineVinyasaContent: ServicePageContent = {
     imageSide: "right",
     caption: "A live online session in progress.",
     paragraphs: [
-      "Each class is taught live, in a small group, so I can see you and offer alternatives in the moment. You move with your breath, at your edge — never pushed past it.",
+      "Each class is taught live, in a small group, so I can see you and offer alternatives in the moment. You move with your breath, at your edge, never pushed past it.",
       "Sequences are built intelligently: a clear arc, sensible progressions, and modifications for tight shoulders, sensitive knees, or whatever your body brings that day.",
       "Because classes are live and interactive, you get the adjustments and attention a recording can never give you.",
     ],
@@ -41,7 +41,7 @@ export const onlineVinyasaContent: ServicePageContent = {
       },
       {
         title: "Anyone, anywhere",
-        body: "From Delhi to Dubai to Denver — if you have a mat and a screen, you can join. Timings work across common timezones.",
+        body: "From Delhi to Dubai to Denver, if you have a mat and a screen, you can join. Timings work across common timezones.",
       },
     ],
   },
@@ -71,7 +71,7 @@ export const onlineVinyasaContent: ServicePageContent = {
       {
         name: "Trial Class",
         price: "Free",
-        description: "One class, no commitment — see if we're a fit.",
+        description: "One class, no commitment, see if we're a fit.",
         features: [
           "A full live class",
           "A modification or two for your body",
@@ -94,7 +94,7 @@ export const onlineVinyasaContent: ServicePageContent = {
         cta: { label: "Enquire to Book", href: "#enquire" },
       },
     ],
-    note: "Classes are live and interactive — no recordings. Payments are arranged after we connect.",
+    note: "Classes are live and interactive, no recordings. Payments are arranged after we connect.",
   },
   faqs: [
     {
@@ -103,14 +103,14 @@ export const onlineVinyasaContent: ServicePageContent = {
         "A mat, a little floor space, and a device with a camera so I can see and adjust you. A quiet corner helps, but isn't essential.",
     },
     {
-      question: "I'm a complete beginner — is that okay?",
+      question: "I'm a complete beginner, is that okay?",
       answer:
         "Completely. Classes are kept small precisely so beginners get real attention. We build foundations before anything advanced.",
     },
     {
       question: "What if I miss a class?",
       answer:
-        "Classes are live only — that's where the real adjustments happen. With the monthly plan you can simply join another class that week, so a busy day never sets you back.",
+        "Classes are live only, that's where the real adjustments happen. With the monthly plan you can simply join another class that week, so a busy day never sets you back.",
     },
     {
       question: "Which timezones do classes suit?",
@@ -131,7 +131,7 @@ export const personalGurgaonContent: ServicePageContent = {
     eyebrow: "In person · Gurgaon & Delhi NCR",
     title: "Personal yoga, shaped entirely around you",
     subtitle:
-      "One-to-one sessions in your home or a quiet studio across Gurgaon and Delhi NCR — for a specific goal, an injury, or simply a steadier daily practice.",
+      "One-to-one sessions in your home or a quiet studio across Gurgaon and Delhi NCR, for a specific goal, an injury, or simply a steadier daily practice.",
     image: images.personalHero,
     actions: [
       { label: "Enquire to Book", href: "#enquire" },
@@ -145,7 +145,7 @@ export const personalGurgaonContent: ServicePageContent = {
     imageSide: "left",
     caption: "A private session in Gurgaon.",
     paragraphs: [
-      "Private sessions are the fastest, safest way to progress. Every minute is about your body — your patterns, your history, the postures that will actually help.",
+      "Private sessions are the fastest, safest way to progress. Every minute is about your body, your patterns, your history, the postures that will actually help.",
       "I come to you across Gurgaon and the wider Delhi NCR, or we meet at a calm studio space. Mornings, evenings and weekends are available.",
       "Recovering from injury, preparing for something specific, or just want a practice that finally fits your life? We build it together, session by session.",
     ],
@@ -156,7 +156,7 @@ export const personalGurgaonContent: ServicePageContent = {
     items: [
       {
         title: "Working with an injury",
-        body: "Back, knees, shoulders, post-surgery recovery — we adapt carefully and rebuild with confidence.",
+        body: "Back, knees, shoulders, post-surgery recovery, we adapt carefully and rebuild with confidence.",
       },
       {
         title: "Specific goals",
@@ -174,7 +174,7 @@ export const personalGurgaonContent: ServicePageContent = {
     items: [
       {
         title: "Assessment",
-        body: "We start with your history, movement and goals — so the plan is built on your reality, not a template.",
+        body: "We start with your history, movement and goals, so the plan is built on your reality, not a template.",
       },
       {
         title: "A practice that's yours",
@@ -207,7 +207,7 @@ export const personalGurgaonContent: ServicePageContent = {
         name: "Monthly",
         price: "₹3,000",
         cadence: "/ month",
-        description: "Twice a week — the way real change happens.",
+        description: "Twice a week, the way real change happens.",
         featured: true,
         features: [
           "8 sessions a month (2 per week)",
@@ -234,12 +234,12 @@ export const personalGurgaonContent: ServicePageContent = {
     {
       question: "Can you work around an injury?",
       answer:
-        "Yes — injury-aware sequencing is central to how I teach. We'll go carefully, and coordinate with your physio or doctor where useful.",
+        "Yes, injury-aware sequencing is central to how I teach. We'll go carefully, and coordinate with your physio or doctor where useful.",
     },
     {
       question: "Can sessions be for two people?",
       answer:
-        "Semi-private sessions for two (a partner, a friend, family) are available — just ask when you enquire.",
+        "Semi-private sessions for two (a partner, a friend, family) are available, just ask when you enquire.",
     },
   ],
   enquiry: {

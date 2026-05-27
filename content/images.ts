@@ -25,7 +25,7 @@ export const images = {
     alt: "Shilpa in a side-bend on a misty Himalayan riverbank",
     width: 1920,
     height: 1440,
-    label: "Hero — Shilpa practising by the river",
+    label: "Hero, Shilpa practising by the river",
     ready: true,
   }),
 
@@ -71,7 +71,7 @@ export const images = {
     alt: "Shilpa in a deep squat with hands at heart centre",
     width: 1050,
     height: 1400,
-    label: "Shilpa — portrait",
+    label: "Shilpa, portrait",
     ready: true,
   }),
   aboutPractice: img({
@@ -79,7 +79,7 @@ export const images = {
     alt: "Shilpa standing in a quiet riverside posture",
     width: 1050,
     height: 1400,
-    label: "Shilpa — riverside practice",
+    label: "Shilpa, riverside practice",
     ready: true,
   }),
   aboutStudio: img({
@@ -87,7 +87,7 @@ export const images = {
     alt: "Shilpa folding forward in her studio",
     width: 1050,
     height: 1400,
-    label: "Shilpa — studio practice",
+    label: "Shilpa, studio practice",
     ready: true,
   }),
   aboutCertified: img({
@@ -95,7 +95,7 @@ export const images = {
     alt: "Shilpa with her Yoga Alliance certification, mountains behind",
     width: 1050,
     height: 1400,
-    label: "Shilpa — newly certified",
+    label: "Shilpa, newly certified",
     ready: true,
   }),
   aboutCeremony: img({
@@ -111,7 +111,7 @@ export const images = {
     alt: "Shilpa seated, taking notes during a session",
     width: 1800,
     height: 1200,
-    label: "Shilpa — seated",
+    label: "Shilpa, seated",
     ready: true,
   }),
 
@@ -121,7 +121,7 @@ export const images = {
     alt: "A live Vinyasa class in motion",
     width: 1200,
     height: 1800,
-    label: "Online Vinyasa — hero",
+    label: "Online Vinyasa, hero",
     ready: true,
   }),
   personalHero: img({
@@ -129,33 +129,33 @@ export const images = {
     alt: "Shilpa giving a hands-on adjustment in a private session",
     width: 1200,
     height: 1800,
-    label: "Personal sessions — hero",
+    label: "Personal sessions, hero",
     ready: true,
   }),
 
-  // ---- Blog covers (landscape, for 16:10 cards) ----
+  // ---- Blog covers (stock yoga imagery, landscape 16:10) ----
   blogDefault: img({
-    src: "/images/shilpa/teaching-updog.jpg",
-    alt: "A teaching moment in the studio",
-    width: 1800,
-    height: 1200,
-    label: "Blog — default cover",
+    src: "/images/blog/home-practice.jpg",
+    alt: "A calm seated meditation at sunrise",
+    width: 1600,
+    height: 1000,
+    label: "Blog, default cover",
     ready: true,
   }),
   blogAnatomy: img({
-    src: "/images/practice/seated-notes.jpg",
-    alt: "A focused, attentive moment during a session",
-    width: 1800,
-    height: 1200,
-    label: "Blog — anatomy",
+    src: "/images/blog/anatomy.jpg",
+    alt: "Downward-facing dog, exploring strong alignment",
+    width: 1600,
+    height: 1000,
+    label: "Blog, anatomy",
     ready: true,
   }),
   blogPractice: img({
-    src: "/images/practice/river-wide.jpg",
-    alt: "Quiet riverside practice at dawn",
-    width: 1800,
-    height: 1350,
-    label: "Blog — home practice",
+    src: "/images/blog/home-practice.jpg",
+    alt: "A calm seated meditation at sunrise",
+    width: 1600,
+    height: 1000,
+    label: "Blog, home practice",
     ready: true,
   }),
 
@@ -165,7 +165,7 @@ export const images = {
     alt: "Shilpa Yoga Space",
     width: 1200,
     height: 630,
-    label: "OpenGraph — default share image",
+    label: "OpenGraph, default share image",
     ready: true,
   }),
 } as const;

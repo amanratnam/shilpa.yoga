@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 
   const { name, email, phone, interest, plan, message, company } = parsed.data;
 
-  // Honeypot tripped — pretend success, send nothing.
+  // Honeypot tripped, pretend success, send nothing.
   if (company) {
     return NextResponse.json({ ok: true });
   }
@@ -28,9 +28,9 @@ export async function POST(request: Request) {
   const interestLabel =
     interestOptions.find((o) => o.value === interest)?.label ?? interest;
 
-  // No key configured (local dev) — succeed without sending so the UI works.
+  // No key configured (local dev), succeed without sending so the UI works.
   if (!resend) {
-    console.warn("[contact] RESEND_API_KEY not set — enquiry not emailed:", {
+    console.warn("[contact] RESEND_API_KEY not set, enquiry not emailed:", {
       name,
       email,
       interest,
@@ -43,7 +43,7 @@ export async function POST(request: Request) {
       from: emailConfig.from,
       to: emailConfig.to,
       replyTo: email,
-      subject: `New enquiry — ${interestLabel} — ${name}`,
+      subject: `New enquiry, ${interestLabel}, ${name}`,
       html: `
         <h2>New enquiry from shilpa.yoga</h2>
         <p><strong>Name:</strong> ${escapeHtml(name)}</p>

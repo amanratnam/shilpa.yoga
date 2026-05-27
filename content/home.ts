@@ -1,4 +1,4 @@
-// Placeholder marketing copy & figures — confirm all numbers with the client.
+// Placeholder marketing copy & figures, confirm all numbers with the client.
 
 export type Stat = { value: string; label: string };
 
@@ -18,7 +18,7 @@ export type Testimonial = {
 export const testimonials: Testimonial[] = [
   {
     quote:
-      "Shilpa is the first teacher who explained why a pose was hurting my knee — and changed how I stand in it. My practice finally feels safe.",
+      "Shilpa is the first teacher who explained why a pose was hurting my knee, and changed how I stand in it. My practice finally feels safe.",
     name: "Aarti M.",
     detail: "Online Vinyasa · Berlin",
   },
@@ -39,7 +39,7 @@ export const testimonials: Testimonial[] = [
 export const differentiators: { title: string; body: string }[] = [
   {
     title: "Anatomy first",
-    body: "Every sequence is built on how the body actually moves. You learn the why behind each posture, so practice becomes safer and more intelligent — not just a set of shapes to copy.",
+    body: "Every sequence is built on how the body actually moves. You learn the why behind each posture, so practice becomes safer and more intelligent, not just a set of shapes to copy.",
   },
   {
     title: "Small by design",
@@ -47,7 +47,7 @@ export const differentiators: { title: string; body: string }[] = [
   },
   {
     title: "Genuinely Yoga Alliance trained",
-    body: "Certified with Yoga Alliance USA and grounded in theory, ethics and the body — so what you learn is rooted in real understanding, not internet trends.",
+    body: "Certified with Yoga Alliance USA and grounded in theory, ethics and the body, so what you learn is rooted in real understanding, not internet trends.",
   },
 ];
 
@@ -55,8 +55,8 @@ export const philosophy = {
   eyebrow: "The practice",
   heading: "Yoga that respects the body it lives in",
   paragraphs: [
-    "I came to teaching the long way — through my own injuries, through anatomy books, through years of asking why a movement helped one body and hurt another. What I found is that yoga works best when it is precise. When the breath leads, when the joints are respected, when intention replaces force.",
+    "I came to teaching the long way, through my own injuries, through anatomy books, through years of asking why a movement helped one body and hurt another. What I found is that yoga works best when it is precise. When the breath leads, when the joints are respected, when intention replaces force.",
     "So that is what I teach. Not a performance of flexibility, but a steady, intelligent practice you can return to for the rest of your life. Whether you join online from another timezone or sit with me one-to-one in Gurgaon, the foundation is the same: move with understanding, and the rest follows.",
   ],
-  signature: "— Shilpa",
+  signature: "Shilpa",
 };

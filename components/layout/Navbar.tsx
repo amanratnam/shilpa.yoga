@@ -104,7 +104,7 @@ export function Navbar() {
       </nav>
     </header>
 
-      {/* Mobile panel — outside the backdrop-blur header so it positions against the viewport */}
+      {/* Mobile panel, outside the backdrop-blur header so it positions against the viewport */}
       {mobileOpen ? (
         <div className="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto bg-brand-cream md:top-20 lg:hidden">
           <div className="container-content flex flex-col gap-1 py-8">

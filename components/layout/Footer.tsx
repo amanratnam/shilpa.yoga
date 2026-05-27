@@ -28,7 +28,7 @@ export function Footer() {
           <div className="flex flex-col gap-5">
             <Logo tone="dark" />
             <p className="max-w-xs text-small text-brand-cream/75">
-              Anatomy-based Vinyasa yoga — live online worldwide, and one-to-one in
+              Anatomy-based Vinyasa yoga, live online worldwide, and one-to-one in
               person across Gurgaon and Delhi NCR.
             </p>
             <Badge tone="dark">{siteConfig.teacher.credential}</Badge>

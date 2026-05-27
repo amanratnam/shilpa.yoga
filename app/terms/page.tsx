@@ -40,7 +40,7 @@ export default function TermsPage() {
       <h2>Payments</h2>
       <p>
         Prices are listed in Indian Rupees. Payments are arranged directly with
-        you after we connect — there is no online checkout on this website.
+        you after we connect, there is no online checkout on this website.
         Please see our <a href="/refund-policy">Refund Policy</a> for
         cancellations and refunds.
       </p>

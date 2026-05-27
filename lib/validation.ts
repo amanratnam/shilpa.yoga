@@ -12,11 +12,11 @@ export type Interest = (typeof interestOptions)[number]["value"];
 export const planOptions: Record<Interest, { value: string; label: string }[]> = {
   online: [
     { value: "trial", label: "Free trial class" },
-    { value: "online-monthly", label: "Monthly unlimited — ₹2,500 / month" },
+    { value: "online-monthly", label: "Monthly unlimited, ₹2,500 / month" },
   ],
   personal: [
-    { value: "single", label: "Single session — ₹1,000" },
-    { value: "personal-monthly", label: "Monthly — ₹3,000 / month (8 classes)" },
+    { value: "single", label: "Single session, ₹1,000" },
+    { value: "personal-monthly", label: "Monthly, ₹3,000 / month (8 classes)" },
   ],
   other: [],
 };
@@ -30,7 +30,7 @@ export const contactSchema = z.object({
   }),
   plan: z.string().max(80).optional().or(z.literal("")),
   message: z.string().min(10, "A sentence or two helps me reply well.").max(2000),
-  // Honeypot — must stay empty.
+  // Honeypot, must stay empty.
   company: z.string().max(0).optional().or(z.literal("")),
 });
 

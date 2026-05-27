@@ -1,5 +1,4 @@
 import { HomeHero } from "@/components/sections/HomeHero";
-import { StatStrip } from "@/components/sections/StatStrip";
 import { FeatureSplit } from "@/components/sections/FeatureSplit";
 import { ServiceCards } from "@/components/sections/ServiceCards";
 import { SocialProof } from "@/components/sections/SocialProof";
@@ -7,7 +6,7 @@ import { PhilosophyBlock } from "@/components/sections/PhilosophyBlock";
 import { CTASection } from "@/components/layout/CTASection";
 import { images } from "@/content/images";
 import { services } from "@/content/services";
-import { homepageStats, testimonials, differentiators } from "@/content/home";
+import { testimonials, differentiators } from "@/content/home";
 import { siteConfig } from "@/lib/site";
 
 export default function HomePage() {
@@ -15,21 +14,19 @@ export default function HomePage() {
     <>
       <HomeHero />
 
-      <StatStrip stats={homepageStats} />
-
       <FeatureSplit
         eyebrow="Why Shilpa Yoga Space"
         title="Not another flow to follow along to"
         image={images.differentiation}
         imageSide="right"
-        tone="dark"
+        tone="light"
         caption="Hands-on alignment during a small group class."
       >
-        <div className="flex flex-col divide-y divide-brand-cream/15">
+        <div className="flex flex-col divide-y divide-brand-ink/10">
           {differentiators.map((d) => (
             <div key={d.title} className="py-5 first:pt-0 last:pb-0">
-              <h3 className="text-h4 text-brand-gold">{d.title}</h3>
-              <p className="mt-2 text-body text-brand-cream/80">{d.body}</p>
+              <h3 className="text-h4 text-brand-green">{d.title}</h3>
+              <p className="mt-2 text-body text-brand-stone">{d.body}</p>
             </div>
           ))}
         </div>
@@ -37,9 +34,10 @@ export default function HomePage() {
 
       <ServiceCards
         services={services}
+        tone="dark"
         eyebrow="What I offer"
         title="Two ways to practice"
-        intro="However you come to the mat, the foundation is the same — intelligent, anatomy-led yoga taught with real attention."
+        intro="However you come to the mat, the foundation is the same, intelligent, anatomy-led yoga taught with real attention."
       />
 
       <SocialProof testimonials={testimonials} />
@@ -49,7 +47,7 @@ export default function HomePage() {
       <CTASection
         eyebrow="Begin where you are"
         title="Start with a single, unhurried class"
-        subtitle="Try a free trial class, or message me directly — there's no wrong place to begin."
+        subtitle="Try a free trial class, or message me directly, there's no wrong place to begin."
         actions={[
           { label: "Book a Trial Class", href: "/contact" },
           {

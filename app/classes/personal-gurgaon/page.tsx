@@ -5,7 +5,7 @@ import { personalGurgaonContent } from "@/content/classes";
 export const metadata: Metadata = {
   title: "Personal Yoga Sessions in Gurgaon",
   description:
-    "One-to-one yoga in Gurgaon and Delhi NCR — injury-aware, goal-focused private sessions at home or studio, taught by a Yoga Alliance USA RYT.",
+    "One-to-one yoga in Gurgaon and Delhi NCR, injury-aware, goal-focused private sessions at home or studio, taught by a Yoga Alliance USA RYT.",
   alternates: { canonical: "/classes/personal-gurgaon" },
 };
 

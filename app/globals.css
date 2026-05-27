@@ -79,7 +79,7 @@
     @apply text-small italic text-brand-stone;
   }
 
-  /* Body-copy links — green on light, gold on dark (.on-dark) */
+  /* Body-copy links, green on light, gold on dark (.on-dark) */
   .prose-links a,
   .body-link {
     @apply underline decoration-1 underline-offset-[0.25em] text-brand-green transition-colors hover:text-brand-gold;

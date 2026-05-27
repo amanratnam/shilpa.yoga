@@ -4,8 +4,8 @@ import { cn } from "@/lib/utils";
 
 /**
  * Set to true once the brand logo files are saved into public/images/logo/:
- *   - shilpa-logo-dark.png   (black logo — used on light backgrounds)
- *   - shilpa-logo-light.png  (white logo — used on dark backgrounds)
+ *   - shilpa-logo-dark.png   (black logo, used on light backgrounds)
+ *   - shilpa-logo-light.png  (white logo, used on dark backgrounds)
  * Until then the typographic wordmark below is shown so the site never breaks.
  */
 const LOGO_READY = true;
@@ -29,7 +29,7 @@ export function Logo({
     return (
       <Link
         href="/"
-        aria-label="Shilpa Yoga Space — home"
+        aria-label="Shilpa Yoga Space, home"
         className={cn("inline-flex items-center", className)}
       >
         <Image
@@ -49,7 +49,7 @@ export function Logo({
   return (
     <Link
       href="/"
-      aria-label="Shilpa Yoga Space — home"
+      aria-label="Shilpa Yoga Space, home"
       className={cn("group inline-flex items-baseline gap-2 leading-none", className)}
     >
       <span className={cn("text-h4 font-semibold tracking-tight", main)}>Shilpa</span>

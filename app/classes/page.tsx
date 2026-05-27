@@ -21,7 +21,7 @@ export default function ClassesPage() {
       <PageHero
         eyebrow="Classes"
         title="Two ways to practice with me"
-        subtitle="The same intelligent, anatomy-led approach — whether you join live online or work with me one-to-one in person."
+        subtitle="The same intelligent, anatomy-led approach, whether you join live online or work with me one-to-one in person."
       />
 
       <FeatureSplit
@@ -53,7 +53,7 @@ export default function ClassesPage() {
       >
         <div className="flex flex-col gap-6">
           <p className="text-body text-brand-cream/80">
-            One-to-one practice shaped entirely around you — your goals, your
+            One-to-one practice shaped entirely around you, your goals, your
             history, any injuries to work around. At home or a quiet studio
             across Gurgaon and Delhi NCR.
           </p>

@@ -42,7 +42,7 @@ export function SocialProof({ testimonials }: { testimonials: Testimonial[] }) {
         </Reveal>
 
         <Reveal delay={0.08}>
-          {/* Instagram tile — links to the live feed until reels are embedded */}
+          {/* Instagram tile, links to the live feed until reels are embedded */}
           <a
             href={siteConfig.social.instagram}
             target="_blank"

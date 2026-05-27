@@ -27,8 +27,7 @@ export function HomeHero() {
             ))}
           </h1>
           <p className="mt-8 max-w-xl text-h4 font-normal text-brand-cream/85">
-            Live online classes worldwide and personal sessions across Gurgaon —
-            anatomy-led yoga taught by a Yoga Alliance USA Registered Yoga
+            Live online classes worldwide and personal sessions across Gurgaon, anatomy-led yoga taught by a Yoga Alliance USA Registered Yoga
             Teacher.
           </p>
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">

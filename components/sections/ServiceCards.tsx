@@ -6,6 +6,7 @@ import { ArrowLink } from "@/components/ui/ArrowLink";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/utils";
+import type { Tone } from "@/components/ui/Section";
 import type { Service } from "@/content/services";
 
 export function ServiceCards({
@@ -13,14 +14,16 @@ export function ServiceCards({
   eyebrow = "What I offer",
   title = "Three ways to practice",
   intro,
+  tone = "light",
 }: {
   services: Service[];
   eyebrow?: string;
   title?: React.ReactNode;
   intro?: React.ReactNode;
+  tone?: Tone;
 }) {
   return (
-    <Section tone="light">
+    <Section tone={tone}>
       <SectionHeading eyebrow={eyebrow} title={title} intro={intro} />
       <div
         className={cn(

@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 const approach = [
   {
     title: "The body leads",
-    body: "I sequence around how joints, fascia and breath actually behave — so each class meets your body rather than forcing it into a shape.",
+    body: "I sequence around how joints, fascia and breath actually behave, so each class meets your body rather than forcing it into a shape.",
   },
   {
     title: "Breath before depth",
@@ -27,18 +27,18 @@ const approach = [
   },
   {
     title: "You, specifically",
-    body: "Whether in a small group or one-to-one, I teach the person in front of me — your history, your goals, the days you feel strong and the days you don't.",
+    body: "Whether in a small group or one-to-one, I teach the person in front of me, your history, your goals, the days you feel strong and the days you don't.",
   },
 ];
 
 const credentials = [
-  "RYT 200 — Registered with Yoga Alliance USA",
+  "RYT 200, Registered with Yoga Alliance USA",
   "Hatha & Vinyasa lineage, with ongoing study",
   "Functional anatomy & injury-aware sequencing",
   "Teaching across studios, homes and online",
 ];
 
-// All four are portrait — a clean, consistent 4-up editorial row.
+// All four are portrait, a clean, consistent 4-up editorial row.
 const gallery = [
   images.aboutPractice,
   images.differentiation,
@@ -49,7 +49,7 @@ const gallery = [
 export default function AboutPage() {
   return (
     <>
-      {/* Editorial hero — asymmetric, portrait + intro */}
+      {/* Editorial hero, asymmetric, portrait + intro */}
       <section className="bg-brand-green text-brand-cream on-dark">
         <div className="container-content grid items-center gap-12 pb-16 pt-32 md:pb-24 md:pt-40 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
           <Reveal className="flex flex-col gap-6">
@@ -60,8 +60,7 @@ export default function AboutPage() {
               shilpa
             </h1>
             <p className="max-w-xl text-h4 font-normal text-brand-cream/85">
-              A Registered Yoga Teacher who came to this work through the body —
-              its limits, its patterns, and how precisely it responds when you
+              A Registered Yoga Teacher who came to this work through the body, its limits, its patterns, and how precisely it responds when you
               finally listen.
             </p>
             <div className="mt-2 flex flex-wrap gap-3">
@@ -118,16 +117,16 @@ export default function AboutPage() {
             </p>
             <blockquote className="border-l-2 border-brand-gold pl-5 text-h4 font-normal text-brand-ink">
               Flexibility was never the goal. A body that moves well, for a long
-              time — that&apos;s the goal.
+              time, that&apos;s the goal.
             </blockquote>
             <p className="text-body text-brand-stone">
               That curiosity became a way of teaching. I trained, certified with
               Yoga Alliance USA, and built a practice rooted in understanding
-              rather than performance — first for myself, then for the students
+              rather than performance, first for myself, then for the students
               who kept asking for the <em>why</em> behind each pose.
             </p>
             <p className="text-body text-brand-stone">
-              Today I teach from {siteConfig.teacher.location} — online to
+              Today I teach from {siteConfig.teacher.location}, online to
               students around the world, and one-to-one across Delhi NCR. Same
               intention every time: move with understanding, and the body
               follows.
@@ -191,7 +190,7 @@ export default function AboutPage() {
             better than when you arrived. That understanding is the practice.
           </p>
           <p className="mt-8 text-eyebrow uppercase tracking-[0.1em] text-brand-gold">
-            — Shilpa
+            Shilpa
           </p>
         </Reveal>
       </Section>

@@ -15,7 +15,7 @@ export default function PrivacyPolicyPage() {
       <h2>What we collect</h2>
       <p>
         When you contact us or enquire about classes and sessions, we collect the
-        information you choose to share — typically your name, email address,
+        information you choose to share, typically your name, email address,
         phone number and the details of your message.
       </p>
 
@@ -30,7 +30,7 @@ export default function PrivacyPolicyPage() {
       <h2>Payments</h2>
       <p>
         We do not collect payments through this website. Class and session fees
-        are arranged directly with you — for example over WhatsApp or email — so
+        are arranged directly with you, for example over WhatsApp or email, so
         no card or banking details are entered or stored here.
       </p>
 

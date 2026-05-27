@@ -17,7 +17,7 @@ export const siteConfig = {
   teacher: {
     name: "Shilpa",
     credential: "RYT 200, Yoga Alliance USA",
-    // Placeholder registration number — replace with real Yoga Alliance ID.
+    // Placeholder registration number, replace with real Yoga Alliance ID.
     rytNumber: "RYT-200 · #00000000",
     location: "Gurgaon, Delhi NCR, India",
   },

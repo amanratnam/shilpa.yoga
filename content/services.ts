@@ -11,7 +11,7 @@ export type Service = {
   image: SiteImage;
 };
 
-// Pricing is placeholder — confirm and update with the client before launch.
+// Pricing is placeholder, confirm and update with the client before launch.
 export const services: Service[] = [
   {
     key: "online",
@@ -21,7 +21,7 @@ export const services: Service[] = [
     shortDescription:
       "Live, breath-led Vinyasa you can join from anywhere in the world.",
     cardDescription:
-      "Small live groups, sequenced intelligently around the body — not a follow-along video. Real attention, every class.",
+      "Small live groups, sequenced intelligently around the body, not a follow-along video. Real attention, every class.",
     priceLabel: "from ₹2,500 / month",
     image: images.serviceOnline,
   },

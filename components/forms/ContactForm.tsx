@@ -59,7 +59,7 @@ export function ContactForm({
     return (
       <div className="flex flex-col items-start gap-4 rounded-brand border border-brand-green/20 bg-brand-white p-8">
         <CheckCircle2 className="h-8 w-8 text-brand-green" strokeWidth={1.75} />
-        <h3 className="text-h3">Thank you — your message is on its way.</h3>
+        <h3 className="text-h3">Thank you, your message is on its way.</h3>
         <p className="text-body text-brand-stone">
           I read every enquiry personally and usually reply within 12–24 hours. If
           it&apos;s urgent, reach me on WhatsApp.
@@ -129,7 +129,7 @@ export function ContactForm({
       </div>
 
       {plans.length > 0 ? (
-        <FormField label="Which option?" htmlFor="plan" hint="Optional — pick what fits">
+        <FormField label="Which option?" htmlFor="plan" hint="Optional, pick what fits">
           <Select id="plan" {...register("plan")}>
             <option value="">No preference yet</option>
             {plans.map((p) => (
