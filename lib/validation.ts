@@ -24,12 +24,13 @@ export const planOptions: Record<Interest, { value: string; label: string }[]> =
 export const contactSchema = z.object({
   name: z.string().min(2, "Please enter your name.").max(80),
   email: z.string().email("Please enter a valid email address."),
-  phone: z.string().max(20).optional().or(z.literal("")),
+  phone: z.string().max(30).optional().or(z.literal("")),
+  country: z.string().min(1, "Please select your country.").max(60),
   interest: z.enum(["online", "personal", "other"], {
-    message: "Please choose what you're interested in.",
+    message: "Please choose a course.",
   }),
   plan: z.string().max(80).optional().or(z.literal("")),
-  message: z.string().min(10, "A sentence or two helps me reply well.").max(2000),
+  message: z.string().max(2000).optional().or(z.literal("")),
   // Honeypot, must stay empty.
   company: z.string().max(0).optional().or(z.literal("")),
 });

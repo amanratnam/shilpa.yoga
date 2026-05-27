@@ -10,6 +10,7 @@ import {
   planOptions,
   type ContactInput,
 } from "@/lib/validation";
+import { countries } from "@/lib/countries";
 import { FormField, Input, Textarea, Select } from "@/components/ui/FormField";
 import { Button } from "@/components/ui/Button";
 
@@ -29,7 +30,7 @@ export function ContactForm({
     formState: { errors, isSubmitting },
   } = useForm<ContactInput>({
     resolver: zodResolver(contactSchema),
-    defaultValues: { interest: defaultInterest, plan: "" },
+    defaultValues: { interest: defaultInterest, plan: "", country: "India" },
   });
 
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -61,8 +62,8 @@ export function ContactForm({
         <CheckCircle2 className="h-8 w-8 text-brand-green" strokeWidth={1.75} />
         <h3 className="text-h3">Thank you, your message is on its way.</h3>
         <p className="text-body text-brand-stone">
-          I read every enquiry personally and usually reply within 12–24 hours. If
-          it&apos;s urgent, reach me on WhatsApp.
+          I read every enquiry personally and usually reply within 12–24 hours.
+          If it&apos;s urgent, reach me on WhatsApp.
         </p>
       </div>
     );
@@ -106,8 +107,20 @@ export function ContactForm({
             {...register("phone")}
           />
         </FormField>
+        <FormField label="Country" htmlFor="country" required error={errors.country?.message}>
+          <Select id="country" invalid={!!errors.country} {...register("country")}>
+            {countries.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </Select>
+        </FormField>
+      </div>
+
+      <div className="grid gap-6 sm:grid-cols-2">
         <FormField
-          label="I'm interested in"
+          label="Course you're interested in"
           htmlFor="interest"
           required
           error={errors.interest?.message}
@@ -126,25 +139,27 @@ export function ContactForm({
             ))}
           </Select>
         </FormField>
+
+        {plans.length > 0 ? (
+          <FormField label="Category" htmlFor="plan" hint="Optional">
+            <Select id="plan" {...register("plan")}>
+              <option value="">No preference yet</option>
+              {plans.map((p) => (
+                <option key={p.value} value={p.label}>
+                  {p.label}
+                </option>
+              ))}
+            </Select>
+          </FormField>
+        ) : (
+          <div className="hidden sm:block" aria-hidden />
+        )}
       </div>
 
-      {plans.length > 0 ? (
-        <FormField label="Which option?" htmlFor="plan" hint="Optional, pick what fits">
-          <Select id="plan" {...register("plan")}>
-            <option value="">No preference yet</option>
-            {plans.map((p) => (
-              <option key={p.value} value={p.label}>
-                {p.label}
-              </option>
-            ))}
-          </Select>
-        </FormField>
-      ) : null}
-
       <FormField
-        label="Message"
+        label="Notes / remarks"
         htmlFor="message"
-        required
+        hint="Optional, anything that helps me prepare (goals, injuries, schedule)"
         error={errors.message?.message}
       >
         <Textarea

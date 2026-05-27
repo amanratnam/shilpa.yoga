@@ -11,14 +11,16 @@ export const siteConfig = {
   taglineWords: ["move", "with", "intention"],
   tagline: "Move with intention",
   description:
-    "Anatomy-based Vinyasa yoga with a Yoga Alliance USA Registered Yoga Teacher. Online classes worldwide, personal sessions in Gurgaon, and a teacher training certification grounded in anatomy and theory.",
+    "Online and in-person yoga with Shilpa, a 500-hour Registered Yoga Teacher with Yoga Alliance USA. Live classes worldwide and one-to-one sessions in Gurgaon, for strength, calm, and a clearer mind.",
   url: "https://www.shilpa.yoga",
   locale: "en_IN",
   teacher: {
     name: "Shilpa",
-    credential: "RYT 200, Yoga Alliance USA",
+    credential: "RYT 500 · Yoga Alliance USA",
+    certification: "500-Hour Yoga TTC · Vinyasa Yoga Ashram",
+    school: "Vinyasa Yoga Ashram",
     // Placeholder registration number, replace with real Yoga Alliance ID.
-    rytNumber: "RYT-200 · #00000000",
+    rytNumber: "RYT-500 · #00000000",
     location: "Gurgaon, Delhi NCR, India",
   },
   contact: {

@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { contactSchema, interestOptions } from "@/lib/validation";
-import { resend, emailConfig, escapeHtml } from "@/lib/email";
+import {
+  resend,
+  emailConfig,
+  enquiryEmailHtml,
+  enquiryEmailText,
+} from "@/lib/email";
 
 export async function POST(request: Request) {
   let json: unknown;
@@ -18,21 +23,33 @@ export async function POST(request: Request) {
     );
   }
 
-  const { name, email, phone, interest, plan, message, company } = parsed.data;
+  const { name, email, phone, country, interest, plan, message, company } =
+    parsed.data;
 
   // Honeypot tripped, pretend success, send nothing.
   if (company) {
     return NextResponse.json({ ok: true });
   }
 
-  const interestLabel =
+  const course =
     interestOptions.find((o) => o.value === interest)?.label ?? interest;
+
+  const data = {
+    name,
+    email,
+    phone: phone || undefined,
+    country,
+    course,
+    category: plan || undefined,
+    notes: message || undefined,
+  };
 
   // No key configured (local dev), succeed without sending so the UI works.
   if (!resend) {
     console.warn("[contact] RESEND_API_KEY not set, enquiry not emailed:", {
       name,
       email,
+      country,
       interest,
     });
     return NextResponse.json({ ok: true });
@@ -43,17 +60,9 @@ export async function POST(request: Request) {
       from: emailConfig.from,
       to: emailConfig.to,
       replyTo: email,
-      subject: `New enquiry, ${interestLabel}, ${name}`,
-      html: `
-        <h2>New enquiry from shilpa.yoga</h2>
-        <p><strong>Name:</strong> ${escapeHtml(name)}</p>
-        <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-        ${phone ? `<p><strong>Phone:</strong> ${escapeHtml(phone)}</p>` : ""}
-        <p><strong>Interested in:</strong> ${escapeHtml(interestLabel)}</p>
-        ${plan ? `<p><strong>Preferred option:</strong> ${escapeHtml(plan)}</p>` : ""}
-        <p><strong>Message:</strong></p>
-        <p>${escapeHtml(message).replace(/\n/g, "<br/>")}</p>
-      `,
+      subject: `New enquiry · ${course} · ${name} (${country})`,
+      html: enquiryEmailHtml(data),
+      text: enquiryEmailText(data),
     });
 
     if (error) {

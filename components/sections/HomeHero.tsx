@@ -5,32 +5,31 @@ import { images } from "@/content/images";
 import { siteConfig } from "@/lib/site";
 
 export function HomeHero() {
-  const words = siteConfig.taglineWords;
   return (
     <section className="relative isolate overflow-hidden bg-brand-green text-brand-cream on-dark">
-      {/* Background photography / branded placeholder */}
+      {/* Background photography */}
       <div className="absolute inset-0 -z-10">
         <SmartImage image={images.homepageHero} fill priority sizes="100vw" subtle />
-        {/* ~40% brand-green overlay + bottom gradient for text legibility */}
         <div className="absolute inset-0 bg-brand-green/45" />
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-green via-brand-green/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-brand-green via-brand-green/35 to-transparent" />
       </div>
 
-      <div className="container-content flex min-h-[88vh] flex-col justify-end pb-16 pt-28 md:pb-24">
-        <div className="max-w-4xl">
-          <p className="eyebrow mb-6">Anatomy-based Vinyasa yoga</p>
-          <h1 className="text-display font-bold lowercase text-brand-cream">
-            {words.map((word) => (
-              <span key={word} className="block">
-                {word}
-              </span>
-            ))}
-          </h1>
-          <p className="mt-8 max-w-xl text-h4 font-normal text-brand-cream/85">
-            Live online classes worldwide and personal sessions across Gurgaon, anatomy-led yoga taught by a Yoga Alliance USA Registered Yoga
-            Teacher.
+      <div className="container-content flex min-h-[66vh] flex-col justify-end pb-14 pt-28 md:min-h-[70vh] md:pb-20">
+        <div className="max-w-3xl">
+          <p className="eyebrow mb-5">
+            Online &amp; in-person yoga · 500-Hour RYT, Yoga Alliance USA
           </p>
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+          <h1 className="text-display font-bold lowercase leading-[0.95] text-brand-cream">
+            <span className="block">strong body,</span>
+            <span className="block">quiet mind</span>
+          </h1>
+          <p className="mt-7 max-w-xl text-h4 font-normal text-brand-cream/85">
+            Live online and in-person yoga with Shilpa, for office-goers in their
+            20s and 30s, expecting mothers, and anyone staying strong through
+            midlife, building real flexibility and fitness, and a calmer,
+            clearer, less anxious mind.
+          </p>
+          <div className="mt-9 flex flex-col gap-4 sm:flex-row">
             <Button href="/contact" tone="dark" variant="primary">
               Book a Trial Class
             </Button>
@@ -41,10 +40,10 @@ export function HomeHero() {
         </div>
       </div>
 
-      {/* RYT badge, lower corner */}
-      <div className="pointer-events-none absolute bottom-6 right-6 hidden md:block">
+      {/* Credential badge, lower corner */}
+      <div className="pointer-events-none absolute bottom-6 right-6 hidden lg:block">
         <Badge tone="dark" className="bg-brand-green/40 backdrop-blur">
-          {siteConfig.teacher.credential}
+          {siteConfig.teacher.certification}
         </Badge>
       </div>
     </section>

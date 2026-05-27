@@ -50,6 +50,17 @@ export default async function BlogPostPage({
   const { content } = await compileMDX({
     source: post.content,
     options: { mdxOptions: { remarkPlugins: [remarkGfm] } },
+    components: {
+      a: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
+        const href = props.href ?? "";
+        const external = /^https?:\/\//.test(href);
+        return external ? (
+          <a {...props} target="_blank" rel="noopener noreferrer" />
+        ) : (
+          <a {...props} />
+        );
+      },
+    },
   });
 
   const jsonLd = {

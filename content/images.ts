@@ -169,6 +169,22 @@ export const images = {
     label: "Blog, home practice",
     ready: true,
   }),
+  blogDesk: img({
+    src: "/images/blog/desk.jpg",
+    alt: "A deep seated stretch opening the hips and side body",
+    width: 1600,
+    height: 1000,
+    label: "Blog, desk-bound bodies",
+    ready: true,
+  }),
+  blogBreath: img({
+    src: "/images/blog/breath.jpg",
+    alt: "Tree pose on a misty mountaintop, hands at heart",
+    width: 1600,
+    height: 1000,
+    label: "Blog, breath and calm",
+    ready: true,
+  }),
 
   // ---- Open Graph ----
   ogDefault: img({

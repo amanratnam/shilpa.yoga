@@ -32,9 +32,10 @@ const approach = [
 ];
 
 const credentials = [
-  "RYT 200, Registered with Yoga Alliance USA",
-  "Hatha & Vinyasa lineage, with ongoing study",
-  "Functional anatomy & injury-aware sequencing",
+  "Advanced 500-Hour Yoga TTC, Vinyasa Yoga Ashram",
+  "RYT 500, registered with Yoga Alliance USA",
+  "Pre- and post-natal yoga trained",
+  "Anatomy-led, injury-aware sequencing",
   "Teaching across studios, homes and online",
 ];
 
@@ -120,10 +121,12 @@ export default function AboutPage() {
               time, that&apos;s the goal.
             </blockquote>
             <p className="text-body text-brand-stone">
-              That curiosity became a way of teaching. I trained, certified with
-              Yoga Alliance USA, and built a practice rooted in understanding
-              rather than performance, first for myself, then for the students
-              who kept asking for the <em>why</em> behind each pose.
+              That curiosity became a way of teaching. I trained intensively,
+              earning an advanced 500-hour certification at Vinyasa Yoga Ashram
+              and registering with Yoga Alliance USA, and built a practice rooted
+              in understanding rather than performance, first for myself, then
+              for the students who kept asking for the <em>why</em> behind each
+              pose.
             </p>
             <p className="text-body text-brand-stone">
               Today I teach from {siteConfig.teacher.location}, online to
