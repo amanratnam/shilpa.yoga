@@ -40,3 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Raw original photos (optimized versions are committed under public/images/<section>/)
+/public/images/site_images_shilpa/

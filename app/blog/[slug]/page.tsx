@@ -7,7 +7,9 @@ import remarkGfm from "remark-gfm";
 import { Section } from "@/components/ui/Section";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { CTASection } from "@/components/layout/CTASection";
+import { SmartImage } from "@/components/ui/SmartImage";
 import { getAllPosts, getPostBySlug, formatDate } from "@/lib/blog";
+import { blogCover } from "@/content/images";
 import { siteConfig } from "@/lib/site";
 
 export function generateStaticParams() {
@@ -68,7 +70,12 @@ export default async function BlogPostPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <section className="bg-brand-green text-brand-cream on-dark">
+      <section className="relative isolate overflow-hidden bg-brand-green text-brand-cream on-dark">
+        <div className="absolute inset-0 -z-10">
+          <SmartImage image={blogCover(post.meta.cover)} fill priority sizes="100vw" />
+          <div className="absolute inset-0 bg-brand-green/70" />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-green via-brand-green/55 to-brand-green/30" />
+        </div>
         <div className="container-content max-w-3xl pb-12 pt-32 md:pb-16 md:pt-40">
           <Link
             href="/blog"

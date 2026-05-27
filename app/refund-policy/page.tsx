@@ -4,7 +4,7 @@ import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Refund Policy",
-  description: "Cancellation and refund terms for classes, sessions and teacher training.",
+  description: "Cancellation and refund terms for online classes and personal sessions.",
   alternates: { canonical: "/refund-policy" },
   robots: { index: false, follow: true },
 };
@@ -15,35 +15,22 @@ export default function RefundPolicyPage() {
       <h2>Trial classes</h2>
       <p>Trial classes are free, so no refund applies.</p>
 
-      <h2>Class packs & memberships</h2>
-      <ul>
-        <li>
-          Unused class packs may be refunded on a pro-rata basis within 7 days
-          of purchase, less any classes already attended.
-        </li>
-        <li>
-          Monthly memberships can be cancelled at any time; cancellation stops
-          the next renewal and is not pro-rated within a paid month.
-        </li>
-      </ul>
-
-      <h2>Personal sessions</h2>
+      <h2>Online monthly plan</h2>
       <p>
-        Prepaid session blocks are refundable for unused sessions within 14 days
-        of purchase. Individual sessions cancelled with reasonable notice can be
-        rescheduled.
+        The monthly online plan can be cancelled at any time; cancellation stops
+        the next month and is not pro-rated within a month already begun. Unused,
+        unstarted months are fully refundable.
       </p>
 
-      <h2>Teacher training</h2>
+      <h2>Personal sessions</h2>
       <ul>
-        <li>The application deposit is refundable if you are not offered a place.</li>
         <li>
-          Once you accept a seat, the deposit is adjusted against tuition and is
-          non-refundable, as places are limited.
+          Single sessions cancelled with reasonable notice can be rescheduled at
+          no cost.
         </li>
         <li>
-          Tuition refund terms after the cohort begins are shared in the
-          enrolment agreement.
+          For the monthly plan, any sessions not yet taken in a freshly-started
+          month can be refunded on a pro-rata basis within 7 days.
         </li>
       </ul>
 
@@ -51,8 +38,9 @@ export default function RefundPolicyPage() {
       <p>
         Email{" "}
         <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>{" "}
-        with your booking details. Approved refunds are returned to your original
-        payment method via Razorpay, typically within 5–10 business days.
+        with your booking details. As payments are arranged directly, approved
+        refunds are returned by the same method, typically within a few business
+        days.
       </p>
     </LegalLayout>
   );

@@ -8,7 +8,7 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 import { ArrowLink } from "@/components/ui/ArrowLink";
 import { Reveal } from "@/components/ui/Reveal";
 import { getAllPosts, formatDate } from "@/lib/blog";
-import { images } from "@/content/images";
+import { blogCover } from "@/content/images";
 
 export const metadata: Metadata = {
   title: "Journal",
@@ -36,12 +36,13 @@ export default function BlogIndexPage() {
             {posts.map((post, i) => (
               <Reveal key={post.slug} delay={i * 0.06} className="h-full">
                 <Card className="h-full">
-                  <Link href={`/blog/${post.slug}`} className="flex h-full flex-col">
-                    <div className="relative aspect-[16/10]">
+                  <Link href={`/blog/${post.slug}`} className="group flex h-full flex-col">
+                    <div className="relative aspect-[16/10] overflow-hidden">
                       <SmartImage
-                        image={images.blogDefault}
+                        image={blogCover(post.cover)}
                         fill
                         sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                        className="transition-transform duration-500 ease-brand group-hover:scale-105"
                       />
                     </div>
                     <CardBody>

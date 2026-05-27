@@ -1,7 +1,7 @@
 import { images, type SiteImage } from "@/content/images";
 
 export type Service = {
-  key: "online" | "personal" | "training";
+  key: "online" | "personal";
   category: string;
   title: string;
   href: string;
@@ -21,7 +21,7 @@ export const services: Service[] = [
     shortDescription:
       "Live, breath-led Vinyasa you can join from anywhere in the world.",
     cardDescription:
-      "Small live groups, sequenced intelligently around the body — not a follow-along video. Replays if you miss the room.",
+      "Small live groups, sequenced intelligently around the body — not a follow-along video. Real attention, every class.",
     priceLabel: "from ₹2,500 / month",
     image: images.serviceOnline,
   },
@@ -34,20 +34,8 @@ export const services: Service[] = [
       "One-to-one practice shaped entirely around you, in your home or studio.",
     cardDescription:
       "Private, attentive teaching for a specific goal, an injury, or a steadier daily practice. Built around your body and your week.",
-    priceLabel: "from ₹1,500 / session",
+    priceLabel: "from ₹1,000 / session",
     image: images.servicePersonal,
-  },
-  {
-    key: "training",
-    category: "Certification · Yoga Alliance aligned",
-    title: "Teacher Training",
-    href: "/teacher-training",
-    shortDescription:
-      "Learn to teach with real understanding of anatomy, theory and the body.",
-    cardDescription:
-      "A small-cohort certification grounded in functional anatomy, philosophy and practicum — not a weekend crash course.",
-    priceLabel: "from ₹45,000",
-    image: images.serviceTraining,
   },
 ];
 

@@ -1,17 +1,17 @@
 import { images } from "@/content/images";
 import type { ServicePageContent } from "@/components/sections/ServicePage";
 
-// All copy and pricing here is placeholder — confirm with the client before launch.
+// Copy and pricing confirmed with the client (May 2026).
 
 export const onlineVinyasaContent: ServicePageContent = {
   hero: {
     eyebrow: "Online · Worldwide",
     title: "Live online Vinyasa, wherever you are",
     subtitle:
-      "Small, breath-led group classes you join over video from any timezone — sequenced around the body, not a follow-along recording.",
+      "Small, breath-led group classes you join over video from any timezone — sequenced around the body, taught live, never a recording.",
     image: images.onlineHero,
     actions: [
-      { label: "Book a Trial Class", href: "#enquire" },
+      { label: "Enquire to Book", href: "#enquire" },
       { label: "See pricing", href: "#pricing", variant: "secondary" },
     ],
   },
@@ -24,7 +24,7 @@ export const onlineVinyasaContent: ServicePageContent = {
     paragraphs: [
       "Each class is taught live, in a small group, so I can see you and offer alternatives in the moment. You move with your breath, at your edge — never pushed past it.",
       "Sequences are built intelligently: a clear arc, sensible progressions, and modifications for tight shoulders, sensitive knees, or whatever your body brings that day.",
-      "Miss the room? You'll get a replay link, so a hard week never means falling behind.",
+      "Because classes are live and interactive, you get the adjustments and attention a recording can never give you.",
     ],
   },
   whoFor: {
@@ -59,22 +59,25 @@ export const onlineVinyasaContent: ServicePageContent = {
       },
       {
         title: "Rest & integrate",
-        body: "We close with stillness. You leave steadier than you arrived — and you keep the replay.",
+        body: "We close with stillness, so you leave steadier and clearer than you arrived.",
       },
     ],
   },
   pricing: {
     eyebrow: "Pricing",
     title: "Ways to join",
-    intro:
-      "Start with a free trial, then choose what fits. No lock-in, cancel anytime.",
+    intro: "Start with a free trial, then choose what fits. No lock-in, cancel anytime.",
     plans: [
       {
         name: "Trial Class",
         price: "Free",
         description: "One class, no commitment — see if we're a fit.",
-        features: ["A full live class", "A modification or two for your body", "Replay link included"],
-        cta: { type: "link", label: "Book a trial", href: "#enquire" },
+        features: [
+          "A full live class",
+          "A modification or two for your body",
+          "Honest guidance on where to begin",
+        ],
+        cta: { label: "Enquire to Book", href: "#enquire" },
       },
       {
         name: "Monthly Unlimited",
@@ -84,32 +87,14 @@ export const onlineVinyasaContent: ServicePageContent = {
         featured: true,
         features: [
           "All live classes in the month",
-          "Replays for every session",
+          "Small group, real attention",
           "Priority on timing requests",
           "Cancel anytime",
         ],
-        cta: {
-          type: "pay",
-          label: "Start monthly",
-          amountInPaise: 250000,
-          payLabel: "Online Vinyasa — Monthly Unlimited",
-        },
-      },
-      {
-        name: "10-Class Pack",
-        price: "₹3,500",
-        cadence: "/ 10 classes",
-        description: "Flexible credits, valid three months.",
-        features: ["Use any 10 live classes", "Replays included", "Share within your household"],
-        cta: {
-          type: "pay",
-          label: "Buy pack",
-          amountInPaise: 350000,
-          payLabel: "Online Vinyasa — 10-Class Pack",
-        },
+        cta: { label: "Enquire to Book", href: "#enquire" },
       },
     ],
-    note: "Prices are placeholders pending confirmation. Payments are processed securely by Razorpay.",
+    note: "Classes are live and interactive — no recordings. Payments are arranged after we connect.",
   },
   faqs: [
     {
@@ -123,9 +108,9 @@ export const onlineVinyasaContent: ServicePageContent = {
         "Completely. Classes are kept small precisely so beginners get real attention. We build foundations before anything advanced.",
     },
     {
-      question: "What if I can't make a class live?",
+      question: "What if I miss a class?",
       answer:
-        "Every class comes with a replay link, so you can practice on your own schedule and never fall behind.",
+        "Classes are live only — that's where the real adjustments happen. With the monthly plan you can simply join another class that week, so a busy day never sets you back.",
     },
     {
       question: "Which timezones do classes suit?",
@@ -149,7 +134,7 @@ export const personalGurgaonContent: ServicePageContent = {
       "One-to-one sessions in your home or a quiet studio across Gurgaon and Delhi NCR — for a specific goal, an injury, or simply a steadier daily practice.",
     image: images.personalHero,
     actions: [
-      { label: "Enquire about sessions", href: "#enquire" },
+      { label: "Enquire to Book", href: "#enquire" },
       { label: "See pricing", href: "#pricing", variant: "secondary" },
     ],
   },
@@ -158,7 +143,7 @@ export const personalGurgaonContent: ServicePageContent = {
     title: "Undivided attention, in your space",
     image: images.servicePersonal,
     imageSide: "left",
-    caption: "A private session at home in Gurgaon.",
+    caption: "A private session in Gurgaon.",
     paragraphs: [
       "Private sessions are the fastest, safest way to progress. Every minute is about your body — your patterns, your history, the postures that will actually help.",
       "I come to you across Gurgaon and the wider Delhi NCR, or we meet at a calm studio space. Mornings, evenings and weekends are available.",
@@ -207,42 +192,33 @@ export const personalGurgaonContent: ServicePageContent = {
     intro: "Travel within Gurgaon is included; wider Delhi NCR by arrangement.",
     plans: [
       {
-        name: "First Session",
-        price: "₹1,500",
+        name: "Single Session",
+        price: "₹1,000",
         cadence: "/ session",
-        description: "Assessment plus a full first practice.",
-        features: ["60–75 minutes", "Movement assessment", "A starter home practice"],
-        cta: { type: "link", label: "Enquire to book", href: "#enquire" },
+        description: "A one-hour private session, whenever you need it.",
+        features: [
+          "One hour, one-to-one",
+          "Built entirely around your body",
+          "Book ad-hoc, no commitment",
+        ],
+        cta: { label: "Enquire to Book", href: "#enquire" },
       },
       {
-        name: "4-Session Block",
-        price: "₹5,600",
-        cadence: "/ 4 sessions",
+        name: "Monthly",
+        price: "₹3,000",
+        cadence: "/ month",
+        description: "Twice a week — the way real change happens.",
         featured: true,
-        description: "The best way to build real momentum.",
         features: [
-          "Four one-to-one sessions",
+          "8 sessions a month (2 per week)",
           "A progressing, personalised plan",
           "WhatsApp check-ins between sessions",
-          "Save vs. single sessions",
+          "Priority scheduling",
         ],
-        cta: {
-          type: "pay",
-          label: "Book the block",
-          amountInPaise: 560000,
-          payLabel: "Personal Sessions — 4-Session Block",
-        },
-      },
-      {
-        name: "Ongoing (8 / month)",
-        price: "₹10,800",
-        cadence: "/ month",
-        description: "Twice-weekly, for steady transformation.",
-        features: ["Eight sessions a month", "Fully tailored programming", "Priority scheduling"],
-        cta: { type: "link", label: "Enquire", href: "#enquire" },
+        cta: { label: "Enquire to Book", href: "#enquire" },
       },
     ],
-    note: "Prices are placeholders pending confirmation. Card payments are processed securely by Razorpay.",
+    note: "Travel within Gurgaon is included. Payments are arranged after we connect.",
   },
   faqs: [
     {

@@ -38,7 +38,7 @@ export default function HomePage() {
       <ServiceCards
         services={services}
         eyebrow="What I offer"
-        title="Three ways to practice"
+        title="Two ways to practice"
         intro="However you come to the mat, the foundation is the same — intelligent, anatomy-led yoga taught with real attention."
       />
 
@@ -49,19 +49,14 @@ export default function HomePage() {
       <CTASection
         eyebrow="Begin where you are"
         title="Start with a single, unhurried class"
-        subtitle="Try a trial class, join the community, or explore training to teach. There's no wrong place to begin."
+        subtitle="Try a free trial class, or message me directly — there's no wrong place to begin."
         actions={[
           { label: "Book a Trial Class", href: "/contact" },
           {
-            label: "Join the WhatsApp Community",
-            href: siteConfig.contact.whatsappCommunity,
+            label: "Message on WhatsApp",
+            href: siteConfig.contact.whatsapp,
             variant: "secondary",
             external: true,
-          },
-          {
-            label: "Explore Teacher Training",
-            href: "/teacher-training",
-            variant: "secondary",
           },
         ]}
       />

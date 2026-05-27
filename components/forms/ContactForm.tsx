@@ -4,7 +4,12 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle2 } from "lucide-react";
-import { contactSchema, interestOptions, type ContactInput } from "@/lib/validation";
+import {
+  contactSchema,
+  interestOptions,
+  planOptions,
+  type ContactInput,
+} from "@/lib/validation";
 import { FormField, Input, Textarea, Select } from "@/components/ui/FormField";
 import { Button } from "@/components/ui/Button";
 
@@ -19,11 +24,17 @@ export function ContactForm({
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<ContactInput>({
     resolver: zodResolver(contactSchema),
-    defaultValues: { interest: defaultInterest },
+    defaultValues: { interest: defaultInterest, plan: "" },
   });
+
+  // eslint-disable-next-line react-hooks/incompatible-library
+  const interest = watch("interest");
+  const plans = planOptions[interest] ?? [];
 
   const onSubmit = async (data: ContactInput) => {
     setServerError(null);
@@ -50,7 +61,7 @@ export function ContactForm({
         <CheckCircle2 className="h-8 w-8 text-brand-green" strokeWidth={1.75} />
         <h3 className="text-h3">Thank you — your message is on its way.</h3>
         <p className="text-body text-brand-stone">
-          I read every enquiry personally and will reply within a day or two. If
+          I read every enquiry personally and usually reply within 12–24 hours. If
           it&apos;s urgent, reach me on WhatsApp.
         </p>
       </div>
@@ -101,7 +112,13 @@ export function ContactForm({
           required
           error={errors.interest?.message}
         >
-          <Select id="interest" invalid={!!errors.interest} {...register("interest")}>
+          <Select
+            id="interest"
+            invalid={!!errors.interest}
+            {...register("interest", {
+              onChange: () => setValue("plan", ""),
+            })}
+          >
             {interestOptions.map((o) => (
               <option key={o.value} value={o.value}>
                 {o.label}
@@ -110,6 +127,19 @@ export function ContactForm({
           </Select>
         </FormField>
       </div>
+
+      {plans.length > 0 ? (
+        <FormField label="Which option?" htmlFor="plan" hint="Optional — pick what fits">
+          <Select id="plan" {...register("plan")}>
+            <option value="">No preference yet</option>
+            {plans.map((p) => (
+              <option key={p.value} value={p.label}>
+                {p.label}
+              </option>
+            ))}
+          </Select>
+        </FormField>
+      ) : null}
 
       <FormField
         label="Message"

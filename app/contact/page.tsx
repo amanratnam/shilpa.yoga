@@ -10,7 +10,7 @@ import { siteConfig } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Book a trial class, ask about personal sessions in Gurgaon, or enquire about teacher training. Get in touch with Shilpa Yoga Space.",
+    "Book a free trial class or ask about personal sessions in Gurgaon and Delhi NCR. Get in touch with Shilpa Yoga Space.",
   alternates: { canonical: "/contact" },
 };
 
@@ -24,7 +24,7 @@ const details = [
   {
     icon: WhatsAppIcon,
     label: "WhatsApp",
-    value: "Message directly",
+    value: siteConfig.contact.phone,
     href: siteConfig.contact.whatsapp,
   },
   {
@@ -85,8 +85,8 @@ export default function ContactPage() {
             <div className="flex items-start gap-4 rounded-brand border border-brand-green/15 bg-brand-white p-6">
               <Clock className="mt-0.5 h-5 w-5 shrink-0 text-brand-gold" />
               <p className="text-small text-brand-stone">
-                I usually reply within a day or two. For a faster response about
-                class timings, WhatsApp is best.
+                I read every message myself and usually respond within 12–24
+                hours. For a faster reply about class timings, WhatsApp is best.
               </p>
             </div>
           </div>

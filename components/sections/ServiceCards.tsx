@@ -5,6 +5,7 @@ import { SmartImage } from "@/components/ui/SmartImage";
 import { ArrowLink } from "@/components/ui/ArrowLink";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
+import { cn } from "@/lib/utils";
 import type { Service } from "@/content/services";
 
 export function ServiceCards({
@@ -21,7 +22,14 @@ export function ServiceCards({
   return (
     <Section tone="light">
       <SectionHeading eyebrow={eyebrow} title={title} intro={intro} />
-      <div className="mt-12 grid gap-6 md:grid-cols-3">
+      <div
+        className={cn(
+          "mt-12 grid gap-6",
+          services.length === 2
+            ? "mx-auto max-w-4xl md:grid-cols-2"
+            : "md:grid-cols-3",
+        )}
+      >
         {services.map((service, i) => (
           <Reveal key={service.key} delay={i * 0.08} className="h-full">
             <Card className="h-full">

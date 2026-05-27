@@ -27,16 +27,16 @@ export function HomeHero() {
             ))}
           </h1>
           <p className="mt-8 max-w-xl text-h4 font-normal text-brand-cream/85">
-            Online classes worldwide, personal sessions in Gurgaon, and a teacher
-            training grounded in the body — taught by a Yoga Alliance USA
-            Registered Yoga Teacher.
+            Live online classes worldwide and personal sessions across Gurgaon —
+            anatomy-led yoga taught by a Yoga Alliance USA Registered Yoga
+            Teacher.
           </p>
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
             <Button href="/contact" tone="dark" variant="primary">
               Book a Trial Class
             </Button>
-            <Button href="/teacher-training" tone="dark" variant="secondary">
-              Explore Teacher Training
+            <Button href="/classes" tone="dark" variant="secondary">
+              Explore Classes
             </Button>
           </div>
         </div>

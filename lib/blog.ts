@@ -13,6 +13,7 @@ export type PostMeta = {
   author: string;
   tags: string[];
   readingTime: string;
+  cover?: string;
 };
 
 export type Post = {
@@ -33,6 +34,7 @@ function readPostFile(fileName: string): Post {
       author: String(data.author ?? "Shilpa"),
       tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
       readingTime: readingTime(content).text,
+      cover: data.cover ? String(data.cover) : undefined,
     },
     content,
   };

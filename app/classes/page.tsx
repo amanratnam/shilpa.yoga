@@ -34,8 +34,8 @@ export default function ClassesPage() {
         <div className="flex flex-col gap-6">
           <p className="text-body text-brand-stone">
             Live, small-group Vinyasa you can join from any timezone. Sequenced
-            around the body, with options for every level and replays if you miss
-            the room. Beginners are genuinely welcome.
+            around the body, with options for every level and real-time
+            adjustments. Beginners are genuinely welcome.
           </p>
           <p className="text-small font-medium text-brand-ink">{online.priceLabel}</p>
           <div>
@@ -71,15 +71,11 @@ export default function ClassesPage() {
       <CTASection
         tone="light"
         eyebrow="Not sure which fits?"
-        title="Start with a trial, or train to teach"
-        subtitle="Try a class with no commitment — or, if you want to teach this work, explore the teacher training."
+        title="Start with a single, unhurried class"
+        subtitle="Try a class with no commitment. Tell me a little about your body and goals, and I'll point you to the right place to begin."
         actions={[
           { label: "Book a Trial Class", href: "/contact" },
-          {
-            label: "Explore Teacher Training",
-            href: "/teacher-training",
-            variant: "secondary",
-          },
+          { label: "Ask a Question", href: "/contact", variant: "secondary" },
         ]}
       />
     </>

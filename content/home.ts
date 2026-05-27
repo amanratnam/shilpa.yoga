@@ -26,7 +26,7 @@ export const testimonials: Testimonial[] = [
     quote:
       "The anatomy focus is unlike any class I've taken. I understand my own body now, not just the shapes.",
     name: "Devon R.",
-    detail: "Teacher Training graduate",
+    detail: "Online Vinyasa · Singapore",
   },
   {
     quote:
@@ -46,8 +46,8 @@ export const differentiators: { title: string; body: string }[] = [
     body: "Classes and cohorts are kept deliberately small so attention stays personal. You are seen, adjusted and met where you are, whether on screen or on the mat beside me.",
   },
   {
-    title: "Genuinely Yoga Alliance aligned",
-    body: "Training and teaching follow the standards of Yoga Alliance USA in substance, not just on paper — rooted in theory, ethics and a real practicum rather than a quick certificate.",
+    title: "Genuinely Yoga Alliance trained",
+    body: "Certified with Yoga Alliance USA and grounded in theory, ethics and the body — so what you learn is rooted in real understanding, not internet trends.",
   },
 ];
 
@@ -56,7 +56,7 @@ export const philosophy = {
   heading: "Yoga that respects the body it lives in",
   paragraphs: [
     "I came to teaching the long way — through my own injuries, through anatomy books, through years of asking why a movement helped one body and hurt another. What I found is that yoga works best when it is precise. When the breath leads, when the joints are respected, when intention replaces force.",
-    "So that is what I teach. Not a performance of flexibility, but a steady, intelligent practice you can return to for the rest of your life. Whether you join online from another timezone, sit with me one-to-one in Gurgaon, or train to teach, the foundation is the same: move with understanding, and the rest follows.",
+    "So that is what I teach. Not a performance of flexibility, but a steady, intelligent practice you can return to for the rest of your life. Whether you join online from another timezone or sit with me one-to-one in Gurgaon, the foundation is the same: move with understanding, and the rest follows.",
   ],
   signature: "— Shilpa",
 };

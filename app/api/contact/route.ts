@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const { name, email, phone, interest, message, company } = parsed.data;
+  const { name, email, phone, interest, plan, message, company } = parsed.data;
 
   // Honeypot tripped — pretend success, send nothing.
   if (company) {
@@ -50,6 +50,7 @@ export async function POST(request: Request) {
         <p><strong>Email:</strong> ${escapeHtml(email)}</p>
         ${phone ? `<p><strong>Phone:</strong> ${escapeHtml(phone)}</p>` : ""}
         <p><strong>Interested in:</strong> ${escapeHtml(interestLabel)}</p>
+        ${plan ? `<p><strong>Preferred option:</strong> ${escapeHtml(plan)}</p>` : ""}
         <p><strong>Message:</strong></p>
         <p>${escapeHtml(message).replace(/\n/g, "<br/>")}</p>
       `,

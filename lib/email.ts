@@ -6,10 +6,13 @@ const apiKey = process.env.RESEND_API_KEY;
 export const resend = apiKey ? new Resend(apiKey) : null;
 
 export const emailConfig = {
-  // Verified sender domain on Resend, e.g. "Shilpa Yoga <hello@shilpa.yoga>".
-  from: process.env.RESEND_FROM ?? "Shilpa Yoga Space <onboarding@resend.dev>",
-  // Where enquiries are delivered.
-  to: process.env.CONTACT_TO ?? "hello@shilpa.yoga",
+  // Verified sender domain on Resend, e.g. "Shilpa Yoga <namaste@shilpa.yoga>".
+  from: process.env.RESEND_FROM ?? "Shilpa Yoga Space <namaste@shilpa.yoga>",
+  // Where enquiries are delivered (comma-separated env override supported).
+  to: (process.env.CONTACT_TO ?? "namaste@shilpa.yoga,aman.ratnam.singh@gmail.com")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean),
 };
 
 export function escapeHtml(value: string) {

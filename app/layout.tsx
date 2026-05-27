@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     "yoga",
     "Vinyasa yoga",
     "online yoga classes",
-    "yoga teacher training",
+    "personal yoga sessions",
     "yoga Gurgaon",
     "Yoga Alliance RYT",
     "anatomy-based yoga",

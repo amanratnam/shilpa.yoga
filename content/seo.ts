@@ -1,7 +1,6 @@
 import { images } from "@/content/images";
 import type { ServicePageContent } from "@/components/sections/ServicePage";
 import { onlineVinyasaContent, personalGurgaonContent } from "@/content/classes";
-import { trainingPlans, trainingFaqs, curriculum } from "@/content/training";
 
 // SEO landing pages — share components with the service pages, own search-intent copy.
 
@@ -93,7 +92,7 @@ export const onlineYogaIndia: ServicePageContent = {
     eyebrow: "Online yoga classes · India",
     title: "Online yoga classes for India and beyond",
     subtitle:
-      "Live, small-group Vinyasa you can join from anywhere in India — sequenced around the body, with replays included, taught by a Yoga Alliance USA RYT.",
+      "Live, small-group Vinyasa you can join from anywhere in India — sequenced around the body, taught live by a Yoga Alliance USA RYT.",
     image: images.onlineHero,
     actions: [
       { label: "Book a free trial", href: "#enquire" },
@@ -109,7 +108,7 @@ export const onlineYogaIndia: ServicePageContent = {
     paragraphs: [
       "Searching for online yoga classes in India that actually progress? These are live, small-group sessions over video — so I can see you, adjust you, and offer alternatives in the moment.",
       "Join from Delhi, Mumbai, Bengaluru, a smaller town, or abroad. All you need is a mat, a little space and a screen. Class timings are set to suit Indian and nearby timezones.",
-      "Miss a class? Every session comes with a replay link, so a busy week never means falling behind.",
+      "Because classes are live and interactive, you get adjustments and attention in real time — never a one-way recording.",
     ],
   },
   whoFor: {
@@ -148,68 +147,5 @@ export const onlineYogaIndia: ServicePageContent = {
     subtitle:
       "Tell me where you are and your experience level. I'll reply with class times that suit your timezone.",
     interest: "online",
-  },
-};
-
-export const teacherTrainingOnline: ServicePageContent = {
-  hero: {
-    eyebrow: "Online yoga teacher training",
-    title: "Online yoga teacher training, grounded in the body",
-    subtitle:
-      "A small-cohort 200-hour certification you can begin online — anatomy-led, philosophically serious, and aligned with Yoga Alliance USA standards.",
-    image: images.trainingHero,
-    actions: [
-      { label: "Apply now", href: "#enquire" },
-      { label: "See tuition", href: "#pricing", variant: "secondary" },
-    ],
-  },
-  intro: {
-    eyebrow: "Train from anywhere",
-    title: "Learn to teach yoga online — properly",
-    image: images.trainingAnatomy,
-    imageSide: "right",
-    caption: "Anatomy study during training.",
-    paragraphs: [
-      "Want an online yoga teacher training that takes the body seriously? This 200-hour certification combines live online study with focused in-person intensives, so you learn deeply without putting your life on hold.",
-      "Functional anatomy sits at the centre. You'll study philosophy and methodology, then actually teach — with supervision and honest feedback — before you're certified.",
-      "It's kept small on purpose, so even online you're mentored closely and genuinely known.",
-    ],
-  },
-  whoFor: {
-    eyebrow: "Who it's for",
-    title: "For people who want to teach well",
-    items: [
-      {
-        title: "Aspiring teachers",
-        body: "Ready to turn a steady practice into the ability to teach others safely and intelligently.",
-      },
-      {
-        title: "Practitioners going deeper",
-        body: "Not sure you'll teach yet? Many train simply to understand their own practice far more deeply.",
-      },
-      {
-        title: "Anywhere in the world",
-        body: "Live online study means you can begin from wherever you are, around your existing commitments.",
-      },
-    ],
-  },
-  expect: {
-    eyebrow: "The curriculum",
-    title: "What you'll study",
-    items: curriculum,
-  },
-  pricing: {
-    eyebrow: "Tuition",
-    title: "Invest in teaching well",
-    intro: "Secure your seat with a deposit, then pay in full or in installments on enrolment.",
-    plans: trainingPlans,
-    note: "Prices are placeholders pending confirmation. Deposits are processed securely by Razorpay.",
-  },
-  faqs: trainingFaqs,
-  enquiry: {
-    title: "Apply for the online teacher training",
-    subtitle:
-      "Tell me about your practice and why you want to teach. I review every application personally.",
-    interest: "training",
   },
 };

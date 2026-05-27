@@ -4,7 +4,7 @@ import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
-  description: "The terms that apply to classes, sessions and teacher training with Shilpa Yoga Space.",
+  description: "The terms that apply to classes and personal sessions with Shilpa Yoga Space.",
   alternates: { canonical: "/terms" },
   robots: { index: false, follow: true },
 };
@@ -14,9 +14,9 @@ export default function TermsPage() {
     <LegalLayout title="Terms of Service" updated="May 2026">
       <h2>Bookings</h2>
       <p>
-        A class, session or training place is confirmed once payment (or an
-        agreed deposit) is received and we have acknowledged your booking by
-        email.
+        A class or session is confirmed once we have agreed a time and
+        acknowledged your booking by email or WhatsApp. Fees are arranged
+        directly between us.
       </p>
 
       <h2>Health & safety</h2>
@@ -29,24 +29,18 @@ export default function TermsPage() {
 
       <h2>Classes & rescheduling</h2>
       <ul>
-        <li>Online class replays are provided where available.</li>
+        <li>Online classes are taught live; recordings are not provided.</li>
         <li>
           Personal sessions may be rescheduled with reasonable notice; late
           cancellations may be charged.
         </li>
-        <li>Class packs and memberships are valid for the stated period.</li>
+        <li>Monthly plans are valid for the stated period.</li>
       </ul>
-
-      <h2>Teacher training</h2>
-      <p>
-        Teacher training places are limited and subject to a short application.
-        Specific terms — including the schedule, attendance requirements and
-        assessment — are shared with each cohort on enrolment.
-      </p>
 
       <h2>Payments</h2>
       <p>
-        Prices are listed in Indian Rupees and processed securely via Razorpay.
+        Prices are listed in Indian Rupees. Payments are arranged directly with
+        you after we connect — there is no online checkout on this website.
         Please see our <a href="/refund-policy">Refund Policy</a> for
         cancellations and refunds.
       </p>

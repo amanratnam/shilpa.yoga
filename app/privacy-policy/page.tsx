@@ -14,25 +14,24 @@ export default function PrivacyPolicyPage() {
     <LegalLayout title="Privacy Policy" updated="May 2026">
       <h2>What we collect</h2>
       <p>
-        When you contact us, enquire about classes, or apply for teacher
-        training, we collect the information you choose to share — typically your
-        name, email address, phone number and the details of your message.
+        When you contact us or enquire about classes and sessions, we collect the
+        information you choose to share — typically your name, email address,
+        phone number and the details of your message.
       </p>
 
       <h2>How we use it</h2>
       <p>We use your information only to:</p>
       <ul>
-        <li>respond to your enquiry and arrange classes or training;</li>
-        <li>send you information you have asked for;</li>
-        <li>process payments you choose to make.</li>
+        <li>respond to your enquiry and arrange classes or sessions;</li>
+        <li>send you information you have asked for.</li>
       </ul>
       <p>We do not sell your personal information to anyone.</p>
 
       <h2>Payments</h2>
       <p>
-        Payments are processed by Razorpay. We do not store your full card
-        details on our servers; they are handled directly by the payment
-        provider under their own security standards.
+        We do not collect payments through this website. Class and session fees
+        are arranged directly with you — for example over WhatsApp or email — so
+        no card or banking details are entered or stored here.
       </p>
 
       <h2>Email</h2>

@@ -22,15 +22,13 @@ export const siteConfig = {
     location: "Gurgaon, Delhi NCR, India",
   },
   contact: {
-    email: "hello@shilpa.yoga",
-    // Placeholder numbers — replace at launch.
-    phone: "+91 00000 00000",
-    whatsapp: "https://wa.me/910000000000",
-    whatsappCommunity: "https://chat.whatsapp.com/placeholder",
+    email: "namaste@shilpa.yoga",
+    phone: "+91 82997 07581",
+    whatsapp: "https://wa.me/918299707581",
   },
   social: {
-    instagram: "https://instagram.com/shilpa.yoga",
-    instagramHandle: "@shilpa.yoga",
+    instagram: "https://instagram.com/shilpayogaspace",
+    instagramHandle: "@shilpayogaspace",
   },
 } as const;
 
@@ -52,7 +50,6 @@ export const mainNav: NavItem[] = [
       },
     ],
   },
-  { label: "Teacher Training", href: "/teacher-training" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
@@ -67,9 +64,8 @@ export const footerNav: { title: string; links: { label: string; href: string }[
     ],
   },
   {
-    title: "Train",
+    title: "Explore",
     links: [
-      { label: "Teacher Training", href: "/teacher-training" },
       { label: "Blog", href: "/blog" },
       { label: "About Shilpa", href: "/about" },
     ],
@@ -78,8 +74,8 @@ export const footerNav: { title: string; links: { label: string; href: string }[
     title: "Connect",
     links: [
       { label: "Contact", href: "/contact" },
-      { label: "Instagram", href: "https://instagram.com/shilpa.yoga" },
-      { label: "WhatsApp Community", href: "https://chat.whatsapp.com/placeholder" },
+      { label: "Instagram", href: "https://instagram.com/shilpayogaspace" },
+      { label: "WhatsApp", href: "https://wa.me/918299707581" },
     ],
   },
 ];

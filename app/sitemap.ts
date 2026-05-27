@@ -12,12 +12,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/classes", priority: 0.9, changeFrequency: "monthly" },
     { path: "/classes/online-vinyasa", priority: 0.9, changeFrequency: "monthly" },
     { path: "/classes/personal-gurgaon", priority: 0.9, changeFrequency: "monthly" },
-    { path: "/teacher-training", priority: 0.9, changeFrequency: "monthly" },
     { path: "/blog", priority: 0.6, changeFrequency: "weekly" },
     { path: "/contact", priority: 0.6, changeFrequency: "monthly" },
     { path: "/yoga-classes-gurgaon", priority: 0.8, changeFrequency: "monthly" },
     { path: "/online-yoga-classes-india", priority: 0.8, changeFrequency: "monthly" },
-    { path: "/yoga-teacher-training-online", priority: 0.8, changeFrequency: "monthly" },
   ];
 
   const routes: MetadataRoute.Sitemap = staticRoutes.map((r) => ({
