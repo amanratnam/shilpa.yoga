@@ -6,6 +6,7 @@ import { SmartImage } from "@/components/ui/SmartImage";
 import { Reveal } from "@/components/ui/Reveal";
 import { Badge } from "@/components/ui/Badge";
 import { CTASection } from "@/components/layout/CTASection";
+import { JourneyCarousel } from "@/components/sections/JourneyCarousel";
 import { images } from "@/content/images";
 import { siteConfig } from "@/lib/site";
 
@@ -197,6 +198,9 @@ export default function AboutPage() {
           </p>
         </Reveal>
       </Section>
+
+      {/* Journey through teacher training */}
+      <JourneyCarousel />
 
       {/* Credentials */}
       <Section tone="light">

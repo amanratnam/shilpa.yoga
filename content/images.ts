@@ -186,6 +186,32 @@ export const images = {
     ready: true,
   }),
 
+  // ---- Journey (TTC milestones) ----
+  journey1: img({
+    src: "/images/journey/1.jpg",
+    alt: "Receiving the 200-Hour Yoga Teacher Training certificate, September 2025",
+    width: 600,
+    height: 800,
+    label: "Journey, 200-Hour TTC",
+    ready: true,
+  }),
+  journey2: img({
+    src: "/images/journey/2.jpg",
+    alt: "300-Hour Advanced Yoga Training cohort, March 2026",
+    width: 800,
+    height: 533,
+    label: "Journey, 300-Hour Advanced Training",
+    ready: true,
+  }),
+  journey3: img({
+    src: "/images/journey/3.jpg",
+    alt: "Pre & Post-Natal Yoga certification at Vinyasa Yoga Ashram, April 2026",
+    width: 800,
+    height: 533,
+    label: "Journey, Pre & Post-Natal certification",
+    ready: true,
+  }),
+
   // ---- Open Graph ----
   ogDefault: img({
     src: "/images/og/default.jpg",
