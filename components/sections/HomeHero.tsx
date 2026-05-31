@@ -1,16 +1,26 @@
-import { SmartImage } from "@/components/ui/SmartImage";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { images } from "@/content/images";
+import { heroVideo } from "@/content/images";
 import { siteConfig } from "@/lib/site";
 
 export function HomeHero() {
   return (
     <section className="relative isolate overflow-hidden bg-brand-green text-brand-cream on-dark">
-      {/* Background photography */}
+      {/* Background video (autoplay, muted, looped) with poster fallback */}
       <div className="absolute inset-0 -z-10">
-        <SmartImage image={images.homepageHero} fill priority sizes="100vw" subtle />
-        <div className="absolute inset-0 bg-brand-green/45" />
+        <video
+          className="h-full w-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster={heroVideo.poster}
+          aria-hidden
+        >
+          <source src={heroVideo.src} type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-brand-green/50" />
         <div className="absolute inset-0 bg-gradient-to-t from-brand-green via-brand-green/35 to-transparent" />
       </div>
 

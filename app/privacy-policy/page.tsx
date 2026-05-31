@@ -4,7 +4,8 @@ import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "How Shilpa Yoga Space collects, uses and protects your information.",
+  description:
+    "How Shilpa Yoga Space collects, uses and protects the information of students taking online and in-person yoga classes.",
   alternates: { canonical: "/privacy-policy" },
   robots: { index: false, follow: true },
 };
@@ -12,39 +13,68 @@ export const metadata: Metadata = {
 export default function PrivacyPolicyPage() {
   return (
     <LegalLayout title="Privacy Policy" updated="May 2026">
+      <p>
+        Your privacy matters. This policy explains what information Shilpa Yoga
+        Space collects when you enquire about or attend classes, and how it is
+        used. We keep this simple and collect only what we need to teach you well.
+      </p>
+
       <h2>What we collect</h2>
       <p>
-        When you contact us or enquire about classes and sessions, we collect the
-        information you choose to share, typically your name, email address,
-        phone number and the details of your message.
+        When you use the contact form or message us, you choose what to share.
+        Typically this includes:
       </p>
+      <ul>
+        <li>your name, email, and optionally a phone or WhatsApp number;</li>
+        <li>your country, and the class or session you are interested in;</li>
+        <li>
+          any notes you add, such as your experience, goals, or injuries and
+          health conditions relevant to practising safely.
+        </li>
+      </ul>
 
       <h2>How we use it</h2>
       <p>We use your information only to:</p>
       <ul>
-        <li>respond to your enquiry and arrange classes or sessions;</li>
-        <li>send you information you have asked for.</li>
+        <li>reply to your enquiry and arrange classes or sessions;</li>
+        <li>teach you safely, including adapting practice around any injuries or pregnancy you tell us about;</li>
+        <li>send information you have asked for, such as class timings.</li>
       </ul>
-      <p>We do not sell your personal information to anyone.</p>
+      <p>We do not sell or rent your personal information to anyone.</p>
 
-      <h2>Payments</h2>
+      <h2>Health information</h2>
       <p>
-        We do not collect payments through this website. Class and session fees
-        are arranged directly with you, for example over WhatsApp or email, so
-        no card or banking details are entered or stored here.
+        If you share details about injuries, medical conditions, or pregnancy, we
+        use them solely to keep your practice safe and appropriate. They are kept
+        confidential.
       </p>
 
-      <h2>Email</h2>
+      <h2>How your enquiry reaches us</h2>
       <p>
-        Enquiry emails are delivered using Resend. Your message contents are
-        transmitted to us to allow us to reply.
+        The contact form sends your message to us by email using Resend, our
+        email delivery provider. We do not collect payments on this website, so
+        no card or banking details are entered or stored here. Any class fees are
+        arranged directly with you.
+      </p>
+
+      <h2>How long we keep it</h2>
+      <p>
+        We keep enquiry and student information only as long as needed to teach
+        you and to respond to follow-up questions. You can ask us to delete it at
+        any time.
       </p>
 
       <h2>Your choices</h2>
       <p>
-        You can ask us to access, correct or delete the personal information we
-        hold about you at any time by writing to{" "}
+        You can ask us to access, correct, or delete the information we hold about
+        you at any time by writing to{" "}
         <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>.
+      </p>
+
+      <h2>Cookies</h2>
+      <p>
+        This website does not use advertising or tracking cookies. Any cookies
+        present are limited to what is needed for the site to function.
       </p>
 
       <h2>Contact</h2>

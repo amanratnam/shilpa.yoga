@@ -25,8 +25,8 @@ export const siteConfig = {
   },
   contact: {
     email: "namaste@shilpa.yoga",
-    phone: "+91 82997 07581",
-    whatsapp: "https://wa.me/918299707581",
+    phone: "+91 80760 47918",
+    whatsapp: "https://wa.me/918076047918",
   },
   social: {
     instagram: "https://instagram.com/shilpayogaspace",

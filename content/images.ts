@@ -29,6 +29,12 @@ export function cdnAsset(path: string): string {
 
 const img = (i: SiteImage): SiteImage => ({ ...i, src: cdnAsset(i.src) });
 
+/** Homepage hero background video (Supabase-hosted) + poster fallback. */
+export const heroVideo = {
+  src: cdnAsset("/images/hero/hero.mp4"),
+  poster: cdnAsset("/images/hero/hero-poster.jpg"),
+};
+
 export const images = {
   // ---- Hero (landscape) ----
   homepageHero: img({

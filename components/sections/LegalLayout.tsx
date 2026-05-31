@@ -14,13 +14,7 @@ export function LegalLayout({
     <>
       <PageHero eyebrow="Legal" title={title} subtitle={`Last updated ${updated}`} />
       <Section tone="light">
-        <article className="prose prose-brand mx-auto">
-          <p className="lead">
-            This page is a starting template and not legal advice. Please have it
-            reviewed by a qualified professional before launch.
-          </p>
-          {children}
-        </article>
+        <article className="prose prose-brand mx-auto">{children}</article>
       </Section>
     </>
   );

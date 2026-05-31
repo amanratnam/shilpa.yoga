@@ -10,7 +10,7 @@ import { siteConfig } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Book a free trial class or ask about personal sessions in Gurgaon and Delhi NCR. Get in touch with Shilpa Yoga Space.",
+    "Book a free trial of online Vinyasa, or enquire about one-to-one and pre/post-natal yoga in Gurgaon and Delhi NCR. Get in touch with Shilpa Yoga Space.",
   alternates: { canonical: "/contact" },
 };
 
@@ -40,19 +40,30 @@ const details = [
   },
 ];
 
+const offerings = [
+  "Online Vinyasa, free trial then ₹2,500/mo",
+  "Personal sessions in Gurgaon, ₹1,000",
+  "Pre & post-natal yoga",
+];
+
 export default function ContactPage() {
   return (
     <>
       <PageHero
-        eyebrow="Contact"
-        title="Let's find the right way for you to practice"
-        subtitle="Tell me a little about where you are and what you're hoping for. I read and reply to every message myself."
+        eyebrow="Contact · Replies within 12–24 hours"
+        title="Book a class or ask a question"
+        subtitle="Tell me your experience, goals and any injuries to work around, and I'll point you to the right class. Live online Vinyasa worldwide, one-to-one and pre/post-natal sessions across Gurgaon and Delhi NCR."
       />
 
       <Section tone="light">
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
-          <div className="flex flex-col gap-8">
-            <div className="flex flex-col gap-6">
+        <div className="grid gap-10 lg:grid-cols-[1.5fr_1fr] lg:gap-16">
+          {/* Form first, so it's in the first fold on mobile and desktop */}
+          <div className="order-1">
+            <ContactForm />
+          </div>
+
+          <aside className="order-2 flex flex-col gap-6">
+            <div className="flex flex-col gap-5 rounded-brand border border-brand-green/15 bg-brand-white p-6">
               {details.map((d) => {
                 const Icon = d.icon;
                 const content = (
@@ -82,18 +93,26 @@ export default function ContactPage() {
               })}
             </div>
 
-            <div className="flex items-start gap-4 rounded-brand border border-brand-green/15 bg-brand-white p-6">
+            <div className="rounded-brand bg-brand-green p-6 text-brand-cream">
+              <Eyebrow className="text-brand-gold">What I teach</Eyebrow>
+              <ul className="mt-4 flex flex-col gap-3">
+                {offerings.map((o) => (
+                  <li key={o} className="flex gap-3 text-body text-brand-cream/90">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-gold" />
+                    {o}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="flex items-start gap-4 text-small text-brand-stone">
               <Clock className="mt-0.5 h-5 w-5 shrink-0 text-brand-gold" />
-              <p className="text-small text-brand-stone">
+              <p>
                 I read every message myself and usually respond within 12–24
                 hours. For a faster reply about class timings, WhatsApp is best.
               </p>
             </div>
-          </div>
-
-          <div>
-            <ContactForm />
-          </div>
+          </aside>
         </div>
       </Section>
     </>

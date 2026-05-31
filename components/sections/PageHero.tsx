@@ -17,6 +17,7 @@ export function PageHero({
   image,
   actions,
   align = "left",
+  size = "compact",
 }: {
   eyebrow?: string;
   title: React.ReactNode;
@@ -24,7 +25,13 @@ export function PageHero({
   image?: SiteImage;
   actions?: PageHeroAction[];
   align?: "left" | "center";
+  /** "compact" keeps the band short so content surfaces faster. */
+  size?: "compact" | "large";
 }) {
+  const spacing =
+    size === "large"
+      ? "gap-6 pb-16 pt-32 md:pb-24 md:pt-40"
+      : "gap-5 pb-10 pt-24 md:pb-12 md:pt-28";
   return (
     <section className="relative isolate overflow-hidden bg-brand-green text-brand-cream on-dark">
       {image ? (
@@ -37,7 +44,8 @@ export function PageHero({
 
       <div
         className={cn(
-          "container-content flex flex-col gap-6 pb-16 pt-32 md:pb-24 md:pt-40",
+          "container-content flex flex-col",
+          spacing,
           align === "center" && "items-center text-center",
         )}
       >
@@ -48,7 +56,8 @@ export function PageHero({
         {subtitle ? (
           <p
             className={cn(
-              "max-w-2xl text-h4 font-normal text-brand-cream/85",
+              "max-w-2xl font-normal text-brand-cream/85",
+              size === "large" ? "text-h4" : "text-body",
               align === "center" && "mx-auto",
             )}
           >
