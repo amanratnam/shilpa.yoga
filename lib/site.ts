@@ -77,7 +77,7 @@ export const footerNav: { title: string; links: { label: string; href: string }[
     links: [
       { label: "Contact", href: "/contact" },
       { label: "Instagram", href: "https://instagram.com/shilpayogaspace" },
-      { label: "WhatsApp", href: "https://wa.me/918299707581" },
+      { label: "WhatsApp", href: siteConfig.contact.whatsapp },
     ],
   },
 ];
