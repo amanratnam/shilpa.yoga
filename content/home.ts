@@ -20,13 +20,13 @@ export const testimonials: Testimonial[] = [
     quote:
       "Shilpa is the first teacher who explained why a pose was hurting my knee, and changed how I stand in it. My practice finally feels safe.",
     name: "Aarti M.",
-    detail: "Online Vinyasa · Berlin",
+    detail: "Online Yoga · Berlin",
   },
   {
     quote:
       "The anatomy focus is unlike any class I've taken. I understand my own body now, not just the shapes.",
     name: "Devon R.",
-    detail: "Online Vinyasa · Singapore",
+    detail: "Online Yoga · Singapore",
   },
   {
     quote:

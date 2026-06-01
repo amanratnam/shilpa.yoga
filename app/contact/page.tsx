@@ -10,7 +10,7 @@ import { siteConfig } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Book a free trial of online Vinyasa, or enquire about one-to-one and pre/post-natal yoga in Gurgaon and Delhi NCR. Get in touch with Shilpa Yoga Space.",
+    "Book a free trial of online yoga, or enquire about one-to-one and pre/post-natal yoga in Gurgaon. Get in touch with Shilpa Yoga Space.",
   alternates: { canonical: "/contact" },
 };
 
@@ -41,8 +41,8 @@ const details = [
 ];
 
 const offerings = [
-  "Online Vinyasa, free trial then ₹2,500/mo",
-  "Personal sessions in Gurgaon, ₹1,000",
+  "Online yoga, free trial then ₹2,000/mo",
+  "Personal sessions in Gurgaon, ₹499 trial",
   "Pre & post-natal yoga",
 ];
 
@@ -52,7 +52,7 @@ export default function ContactPage() {
       <PageHero
         eyebrow="Contact · Replies within 12–24 hours"
         title="Book a class or ask a question"
-        subtitle="Tell me your experience, goals and any injuries to work around, and I'll point you to the right class. Live online Vinyasa worldwide, one-to-one and pre/post-natal sessions across Gurgaon and Delhi NCR."
+        subtitle="Tell me your experience, goals and any injuries to work around, and I'll point you to the right class. Live online yoga worldwide, one-to-one and pre/post-natal sessions in Gurgaon."
       />
 
       <Section tone="light">

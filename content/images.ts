@@ -66,11 +66,11 @@ export const images = {
 
   // ---- Service cards ----
   serviceOnline: img({
-    src: "/images/practice/studio-class.jpg",
-    alt: "A live Vinyasa class moving through a standing posture",
-    width: 1200,
-    height: 1800,
-    label: "Online Vinyasa class",
+    src: "/images/practice/online-class.jpg",
+    alt: "A student practising a seated side stretch at home in front of a laptop",
+    width: 1067,
+    height: 1600,
+    label: "Online yoga class at home",
     ready: true,
   }),
   servicePersonal: img({
@@ -134,11 +134,11 @@ export const images = {
 
   // ---- Service page heroes (full-bleed; orientation handled by cover) ----
   onlineHero: img({
-    src: "/images/practice/studio-class.jpg",
-    alt: "A live Vinyasa class in motion",
-    width: 1200,
-    height: 1800,
-    label: "Online Vinyasa, hero",
+    src: "/images/practice/online-class.jpg",
+    alt: "A student practising yoga at home in front of a laptop",
+    width: 1067,
+    height: 1600,
+    label: "Online yoga, hero",
     ready: true,
   }),
   personalHero: img({

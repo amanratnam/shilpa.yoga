@@ -6,7 +6,7 @@ import type { ServicePageContent } from "@/components/sections/ServicePage";
 export const onlineVinyasaContent: ServicePageContent = {
   hero: {
     eyebrow: "Online · Worldwide",
-    title: "Live online Vinyasa, wherever you are",
+    title: "Live online yoga, wherever you are",
     subtitle:
       "Small, breath-led group classes you join over video from any timezone, sequenced around the body, taught live, never a recording.",
     image: images.onlineHero,
@@ -50,51 +50,51 @@ export const onlineVinyasaContent: ServicePageContent = {
     title: "How a class runs",
     items: [
       {
-        title: "Arrive & settle",
-        body: "We open with breath and a short check-in so I know what your body needs today.",
+        title: "Check-in & context",
+        body: "We start with a quick check-in on how your body is feeling today, then I'll set the context for the class, whether it's a Vinyasa flow, an Ashtanga sequence, specific asanas, or a mix of all three.",
       },
       {
-        title: "Move with intention",
-        body: "A warm, progressive Vinyasa flow with clear cues, options offered throughout, and no rush.",
+        title: "Practice together",
+        body: "The heart of the class: around 40 to 45 minutes of guided practice, with clear cues, options offered throughout, and no rush.",
       },
       {
-        title: "Rest & integrate",
-        body: "We close with stillness, so you leave steadier and clearer than you arrived.",
+        title: "Check-in & questions",
+        body: "We close the last five minutes with a short check-in and time for any questions, so you leave clear about what you practised and why.",
       },
     ],
   },
   pricing: {
     eyebrow: "Pricing",
-    title: "Ways to join",
-    intro: "Start with a free trial, then choose what fits. No lock-in, cancel anytime.",
+    title: "Begin your practice",
+    intro: "Start with an introductory class to feel how I teach, then settle into a steady monthly rhythm.",
     plans: [
       {
         name: "Trial Class",
         price: "Free",
-        description: "One class, no commitment, see if we're a fit.",
+        description: "Your first class, no commitment.",
         features: [
-          "A full live class",
-          "A modification or two for your body",
+          "A full live introductory class",
+          "Understanding of yoga and how I teach",
           "Honest guidance on where to begin",
         ],
         cta: { label: "Enquire to Book", href: "#enquire" },
       },
       {
-        name: "Monthly Unlimited",
-        price: "₹2,500",
+        name: "Monthly Fees",
+        price: "₹2,000",
         cadence: "/ month",
-        description: "The steady-practice option.",
+        description: "A consistent practice, woven into your week.",
         featured: true,
         features: [
-          "All live classes in the month",
-          "Small group, real attention",
-          "Priority on timing requests",
-          "Cancel anytime",
+          "All live classes through the month",
+          "Small group, with real, personal attention",
+          "A practice that progresses week to week",
+          "Timings to suit your schedule",
         ],
         cta: { label: "Enquire to Book", href: "#enquire" },
       },
     ],
-    note: "Classes are live and interactive, no recordings. Payments are arranged after we connect.",
+    note: "All online classes are conducted live on Zoom or Google Meet and are not recorded. Payments are handled directly after a quick connect, so I can understand your needs and tailor the best offering for you.",
   },
   faqs: [
     {
@@ -128,10 +128,10 @@ export const onlineVinyasaContent: ServicePageContent = {
 
 export const personalGurgaonContent: ServicePageContent = {
   hero: {
-    eyebrow: "In person · Gurgaon & Delhi NCR",
+    eyebrow: "In person · Gurgaon",
     title: "Personal yoga, shaped entirely around you",
     subtitle:
-      "One-to-one sessions in your home or a quiet studio across Gurgaon and Delhi NCR, for a specific goal, an injury, or simply a steadier daily practice.",
+      "One-to-one sessions in your own home across Gurgaon, for a specific goal, an injury, or simply a steadier daily practice.",
     image: images.personalHero,
     actions: [
       { label: "Enquire to Book", href: "#enquire" },
@@ -146,7 +146,7 @@ export const personalGurgaonContent: ServicePageContent = {
     caption: "A private session in Gurgaon.",
     paragraphs: [
       "Private sessions are the fastest, safest way to progress. Every minute is about your body, your patterns, your history, the postures that will actually help.",
-      "I come to you across Gurgaon and the wider Delhi NCR, or we meet at a calm studio space. Mornings, evenings and weekends are available.",
+      "I come to you across Gurgaon, or we meet at a calm studio space. Mornings, evenings and weekends are available.",
       "Recovering from injury, preparing for something specific, or just want a practice that finally fits your life? We build it together, session by session.",
     ],
   },
@@ -189,42 +189,42 @@ export const personalGurgaonContent: ServicePageContent = {
   pricing: {
     eyebrow: "Pricing",
     title: "Session options",
-    intro: "Travel within Gurgaon is included; wider Delhi NCR by arrangement.",
+    intro: "Begin with a trial session at home, then settle into a steady monthly rhythm.",
     plans: [
       {
-        name: "Single Session",
-        price: "₹1,000",
+        name: "Trial Session",
+        price: "₹499",
         cadence: "/ session",
-        description: "A one-hour private session, whenever you need it.",
+        description: "A one-to-one trial, in the comfort of your home.",
         features: [
-          "One hour, one-to-one",
+          "A full private session",
+          "I travel to your home",
           "Built entirely around your body",
-          "Book ad-hoc, no commitment",
         ],
         cta: { label: "Enquire to Book", href: "#enquire" },
       },
       {
         name: "Monthly",
-        price: "₹3,000",
+        price: "₹2,000",
         cadence: "/ month",
-        description: "Twice a week, the way real change happens.",
+        description: "A consistent, personalised practice.",
         featured: true,
         features: [
-          "8 sessions a month (2 per week)",
+          "Around 12 to 16 sessions a month",
+          "Flexible scheduling around your availability",
           "A progressing, personalised plan",
           "WhatsApp check-ins between sessions",
-          "Priority scheduling",
         ],
         cta: { label: "Enquire to Book", href: "#enquire" },
       },
     ],
-    note: "Travel within Gurgaon is included. Payments are arranged after we connect.",
+    note: "For personal classes, travel is limited to Gurgaon. The final payment schedule is finalised after our first connect, where we decide on the best fitness plan for you.",
   },
   faqs: [
     {
       question: "Which areas do you cover?",
       answer:
-        "All of Gurgaon, and the wider Delhi NCR by arrangement. Tell me your location and I'll confirm travel.",
+        "I travel across Gurgaon for personal sessions. Tell me your location and I'll confirm.",
     },
     {
       question: "Do I need any equipment?",

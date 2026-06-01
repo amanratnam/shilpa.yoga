@@ -41,7 +41,7 @@ export const mainNav: NavItem[] = [
     href: "/classes",
     children: [
       {
-        label: "Online Vinyasa",
+        label: "Online Yoga Classes",
         href: "/classes/online-vinyasa",
         description: "Live, global group classes",
       },
@@ -60,7 +60,7 @@ export const footerNav: { title: string; links: { label: string; href: string }[
   {
     title: "Practice",
     links: [
-      { label: "Online Vinyasa", href: "/classes/online-vinyasa" },
+      { label: "Online Yoga Classes", href: "/classes/online-vinyasa" },
       { label: "Personal Sessions", href: "/classes/personal-gurgaon" },
       { label: "All Classes", href: "/classes" },
     ],

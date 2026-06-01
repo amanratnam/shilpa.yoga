@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const interestOptions = [
-  { value: "online", label: "Online Vinyasa classes" },
+  { value: "online", label: "Online Yoga classes" },
   { value: "personal", label: "Personal sessions (Gurgaon)" },
   { value: "other", label: "Something else" },
 ] as const;
@@ -12,11 +12,11 @@ export type Interest = (typeof interestOptions)[number]["value"];
 export const planOptions: Record<Interest, { value: string; label: string }[]> = {
   online: [
     { value: "trial", label: "Free trial class" },
-    { value: "online-monthly", label: "Monthly unlimited, ₹2,500 / month" },
+    { value: "online-monthly", label: "Monthly fees, ₹2,000 / month" },
   ],
   personal: [
-    { value: "single", label: "Single session, ₹1,000" },
-    { value: "personal-monthly", label: "Monthly, ₹3,000 / month (8 classes)" },
+    { value: "single", label: "Trial session, ₹499" },
+    { value: "personal-monthly", label: "Monthly, ₹2,000 / month (12 to 16 sessions)" },
   ],
   other: [],
 };

@@ -16,25 +16,25 @@ export const services: Service[] = [
   {
     key: "online",
     category: "Online · Worldwide",
-    title: "Online Vinyasa",
+    title: "Online Yoga Classes",
     href: "/classes/online-vinyasa",
     shortDescription:
-      "Live, breath-led Vinyasa you can join from anywhere in the world.",
+      "Live, breath-led yoga you can join from anywhere in the world.",
     cardDescription:
       "Small live groups, sequenced intelligently around the body, not a follow-along video. Real attention, every class.",
-    priceLabel: "from ₹2,500 / month",
+    priceLabel: "Free trial · ₹2,000 / month",
     image: images.serviceOnline,
   },
   {
     key: "personal",
-    category: "In person · Gurgaon & Delhi NCR",
+    category: "In person · Gurgaon",
     title: "Personal Sessions",
     href: "/classes/personal-gurgaon",
     shortDescription:
-      "One-to-one practice shaped entirely around you, in your home or studio.",
+      "One-to-one practice shaped entirely around you, in your own home.",
     cardDescription:
       "Private, attentive teaching for a specific goal, an injury, or a steadier daily practice. Built around your body and your week.",
-    priceLabel: "from ₹1,000 / session",
+    priceLabel: "Trial ₹499 · ₹2,000 / month",
     image: images.servicePersonal,
   },
 ];
