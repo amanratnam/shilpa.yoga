@@ -70,14 +70,18 @@ export const onlineVinyasaContent: ServicePageContent = {
     plans: [
       {
         name: "Trial Class",
-        price: "Free",
-        description: "Your first class, no commitment.",
+        price: "₹199",
+        cadence: "/ session",
+        description: "Your first class, book a time directly.",
         features: [
           "A full live introductory class",
           "Understanding of yoga and how I teach",
           "Honest guidance on where to begin",
         ],
-        cta: { label: "Enquire to Book", href: "#enquire" },
+        cta: {
+          label: "Book a Trial Session",
+          href: "https://calendly.com/namaste-shilpa/yoga-course-trial",
+        },
       },
       {
         name: "Monthly Fees",
@@ -119,9 +123,9 @@ export const onlineVinyasaContent: ServicePageContent = {
     },
   ],
   enquiry: {
-    title: "Book your free trial class",
+    title: "Have a question before you book?",
     subtitle:
-      "Tell me your experience level and any injuries to work around. I'll reply with the next suitable class times.",
+      "Trial sessions can be booked directly above. For anything else, tell me your experience level and any injuries to work around, and I'll get back to you.",
     interest: "online",
   },
 };

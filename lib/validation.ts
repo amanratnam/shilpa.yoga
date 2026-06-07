@@ -11,7 +11,7 @@ export type Interest = (typeof interestOptions)[number]["value"];
 /** Pricing tiers shown as a dependent dropdown, keyed by chosen interest. */
 export const planOptions: Record<Interest, { value: string; label: string }[]> = {
   online: [
-    { value: "trial", label: "Free trial class" },
+    { value: "trial", label: "Trial class, ₹199" },
     { value: "online-monthly", label: "Monthly fees, ₹2,000 / month" },
   ],
   personal: [

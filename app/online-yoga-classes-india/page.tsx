@@ -5,7 +5,7 @@ import { onlineYogaIndia } from "@/content/seo";
 export const metadata: Metadata = {
   title: "Online Yoga Classes in India",
   description:
-    "Live online Vinyasa yoga classes for India and beyond. Small groups, anatomy-led sequencing, taught live. Free trial, beginners welcome.",
+    "Live online yoga classes for India and beyond. Small groups, anatomy-led sequencing, taught live. Trial class available, beginners welcome.",
   alternates: { canonical: "/online-yoga-classes-india" },
 };
 

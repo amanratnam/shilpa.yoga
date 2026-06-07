@@ -22,7 +22,7 @@ export const services: Service[] = [
       "Live, breath-led yoga you can join from anywhere in the world.",
     cardDescription:
       "Small live groups, sequenced intelligently around the body, not a follow-along video. Real attention, every class.",
-    priceLabel: "Free trial · ₹2,000 / month",
+    priceLabel: "Trial ₹199 · ₹2,000 / month",
     image: images.serviceOnline,
   },
   {

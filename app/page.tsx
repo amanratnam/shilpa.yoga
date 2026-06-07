@@ -47,7 +47,7 @@ export default function HomePage() {
       <CTASection
         eyebrow="Begin where you are"
         title="Start with a single, unhurried class"
-        subtitle="Try a free trial class, or message me directly, there's no wrong place to begin."
+        subtitle="Try a trial class, or message me directly, there's no wrong place to begin."
         actions={[
           { label: "Book a Trial Class", href: "/contact" },
           {

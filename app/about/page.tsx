@@ -237,7 +237,7 @@ export default function AboutPage() {
       <CTASection
         eyebrow="Practice with me"
         title="Come find out what intelligent yoga feels like"
-        subtitle="Book a free trial class, or tell me what you're working towards."
+        subtitle="Book a trial class, or tell me what you're working towards."
         actions={[
           { label: "Book a Trial Class", href: "/contact" },
           { label: "See Classes", href: "/classes", variant: "secondary" },

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { siteConfig, footerNav, legalNav } from "@/lib/site";
 import { Logo } from "@/components/layout/Logo";
 import { Badge } from "@/components/ui/Badge";
-import { InstagramIcon } from "@/components/ui/icons";
+import { InstagramIcon, YouTubeIcon } from "@/components/ui/icons";
 
 function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
   const external = /^https?:/.test(href);
@@ -68,6 +68,15 @@ export function Footer() {
               className="text-brand-cream/75 transition-colors hover:text-brand-gold"
             >
               <InstagramIcon className="h-5 w-5" />
+            </a>
+            <a
+              href={siteConfig.social.youtube}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube"
+              className="text-brand-cream/75 transition-colors hover:text-brand-gold"
+            >
+              <YouTubeIcon className="h-5 w-5" />
             </a>
           </div>
         </div>

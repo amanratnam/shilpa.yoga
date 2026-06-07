@@ -31,6 +31,8 @@ export const siteConfig = {
   social: {
     instagram: "https://instagram.com/shilpayogaspace",
     instagramHandle: "@shilpayogaspace",
+    youtube: "https://www.youtube.com/@shilpayogaspace",
+    youtubeHandle: "@shilpayogaspace",
   },
 } as const;
 
@@ -77,6 +79,7 @@ export const footerNav: { title: string; links: { label: string; href: string }[
     links: [
       { label: "Contact", href: "/contact" },
       { label: "Instagram", href: "https://instagram.com/shilpayogaspace" },
+      { label: "YouTube", href: "https://www.youtube.com/@shilpayogaspace" },
       { label: "WhatsApp", href: siteConfig.contact.whatsapp },
     ],
   },

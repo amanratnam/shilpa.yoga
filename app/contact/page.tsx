@@ -4,13 +4,13 @@ import { PageHero } from "@/components/sections/PageHero";
 import { Section } from "@/components/ui/Section";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { ContactForm } from "@/components/forms/ContactForm";
-import { WhatsAppIcon, InstagramIcon } from "@/components/ui/icons";
+import { WhatsAppIcon, InstagramIcon, YouTubeIcon } from "@/components/ui/icons";
 import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Book a free trial of online yoga, or enquire about one-to-one and pre/post-natal yoga in Gurgaon. Get in touch with Shilpa Yoga Space.",
+    "Book a trial of online yoga, or enquire about one-to-one and pre/post-natal yoga in Gurgaon. Get in touch with Shilpa Yoga Space.",
   alternates: { canonical: "/contact" },
 };
 
@@ -38,10 +38,16 @@ const details = [
     value: siteConfig.social.instagramHandle,
     href: siteConfig.social.instagram,
   },
+  {
+    icon: YouTubeIcon,
+    label: "YouTube",
+    value: siteConfig.social.youtubeHandle,
+    href: siteConfig.social.youtube,
+  },
 ];
 
 const offerings = [
-  "Online yoga, free trial then ₹2,000/mo",
+  "Online yoga, ₹199 trial then ₹2,000/mo",
   "Personal sessions in Gurgaon, ₹499 trial",
   "Pre & post-natal yoga",
 ];

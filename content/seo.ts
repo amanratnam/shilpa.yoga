@@ -95,7 +95,11 @@ export const onlineYogaIndia: ServicePageContent = {
       "Live, small-group Vinyasa you can join from anywhere in India, sequenced around the body, taught live by a Yoga Alliance USA RYT.",
     image: images.onlineHero,
     actions: [
-      { label: "Book a free trial", href: "#enquire" },
+      {
+        label: "Book a Trial Session",
+        href: "https://calendly.com/namaste-shilpa/yoga-course-trial",
+        external: true,
+      },
       { label: "See pricing", href: "#pricing", variant: "secondary" },
     ],
   },
@@ -137,7 +141,7 @@ export const onlineYogaIndia: ServicePageContent = {
   pricing: {
     eyebrow: "Pricing",
     title: "Ways to join online",
-    intro: "Start with a free trial, then choose what fits. No lock-in.",
+    intro: "Start with a trial class, then settle into a steady monthly rhythm.",
     plans: onlineVinyasaContent.pricing.plans,
     note: onlineVinyasaContent.pricing.note,
   },
