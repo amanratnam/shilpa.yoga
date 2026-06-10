@@ -214,7 +214,7 @@ export const personalGurgaonContent: ServicePageContent = {
         description: "A consistent, personalised practice.",
         featured: true,
         features: [
-          "Around 12 to 16 sessions a month",
+          "8 sessions a month (more can be accommodated at additional cost)",
           "Flexible scheduling around your availability",
           "A progressing, personalised plan",
           "WhatsApp check-ins between sessions",
