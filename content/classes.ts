@@ -85,7 +85,7 @@ export const onlineVinyasaContent: ServicePageContent = {
       },
       {
         name: "Monthly Fees",
-        price: "₹2,000",
+        price: "₹4,000",
         cadence: "/ month",
         description: "A consistent practice, woven into your week.",
         featured: true,
@@ -209,7 +209,7 @@ export const personalGurgaonContent: ServicePageContent = {
       },
       {
         name: "Monthly",
-        price: "₹2,000",
+        price: "₹6,000",
         cadence: "/ month",
         description: "A consistent, personalised practice.",
         featured: true,
