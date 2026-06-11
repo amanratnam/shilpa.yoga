@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
 /**
- * Minimal line-art yoga figures (Section 5: Animation — calm, never busy).
+ * Shared line-art yoga figure library (Section 5: Animation — calm, never busy).
  * Pure SVG + CSS animations: server-rendered, no JS, and the global
  * prefers-reduced-motion rule in globals.css stills them automatically.
  * All figures inherit `currentColor` so they recolour per surface.
@@ -26,7 +26,7 @@ function figureSvgProps(viewBox: string, className?: string) {
   } as const;
 }
 
-/** Seated meditation (sukhasana) — the hero figure, breathing slowly. */
+/** Seated meditation (sukhasana) — breathing slowly. */
 export function MeditatingFigure({ className, delay }: FigureProps) {
   return (
     <div
@@ -132,10 +132,97 @@ export function CobraFigure({ className, delay }: FigureProps) {
   );
 }
 
+/** Warrior II (virabhadrasana B) — strong T-shape with a deep front lunge. */
+export function WarriorTwoFigure({ className, delay }: FigureProps) {
+  return (
+    <div
+      className={cn("animate-breathe origin-bottom", className)}
+      style={delay ? { animationDelay: delay } : undefined}
+    >
+      <svg {...figureSvgProps("0 0 240 200")}>
+        <circle cx="120" cy="42" r="12" fill="currentColor" stroke="none" />
+        <path d="M120 56 L120 114" />
+        <path d="M120 70 L48 70" />
+        <path d="M120 70 L192 70" />
+        <path d="M120 114 L62 184" />
+        <path d="M120 114 L166 132 L166 184" />
+      </svg>
+    </div>
+  );
+}
+
 /**
- * Expanding breath rings — a quiet meditation cue rendered behind figures.
- * Three rings on staggered 7s loops.
+ * Downward dog with pulsing joint markers — the "anatomy first" character.
+ * Gold dots breathe at shoulder, hip and knee lines.
  */
+export function DownDogAnatomyFigure({ className, delay }: FigureProps) {
+  return (
+    <div
+      className={cn("animate-breathe origin-bottom", className)}
+      style={delay ? { animationDelay: delay } : undefined}
+    >
+      <svg {...figureSvgProps("0 0 240 160")}>
+        <path d="M44 138 L124 48" />
+        <path d="M128 44 C152 64 180 102 204 138" />
+        <circle cx="58" cy="124" r="10" fill="currentColor" stroke="none" />
+        {/* Joint markers: wrist–shoulder–hip–knee chain */}
+        {[
+          [84, 93],
+          [126, 46],
+          [166, 86],
+        ].map(([cx, cy], i) => (
+          <circle
+            key={i}
+            cx={cx}
+            cy={cy}
+            r="7"
+            fill="currentColor"
+            stroke="none"
+            className="animate-joint-pulse"
+            style={{ animationDelay: `${i * 0.45}s` }}
+          />
+        ))}
+      </svg>
+    </div>
+  );
+}
+
+/**
+ * Teacher adjusting a student mid-pose — the "you, specifically" duo.
+ * Student holds warrior II in full tone; the teacher stands behind in a
+ * softer tone, one hand guiding the student's extended arm.
+ */
+export function AdjustDuoFigure({ className, delay }: FigureProps) {
+  return (
+    <div
+      className={cn("animate-breathe origin-bottom", className)}
+      style={delay ? { animationDelay: delay } : undefined}
+    >
+      <svg {...figureSvgProps("0 0 300 200")} strokeWidth={7}>
+        {/* Student in warrior II */}
+        <g>
+          <circle cx="120" cy="46" r="11" fill="currentColor" stroke="none" />
+          <path d="M120 59 L120 114" />
+          <path d="M120 72 L56 72" />
+          <path d="M120 72 L184 72" />
+          <path d="M120 114 L66 184" />
+          <path d="M120 114 L162 132 L162 184" />
+        </g>
+        {/* Teacher behind, guiding the extended arm */}
+        <g opacity="0.55">
+          <circle cx="232" cy="38" r="10" fill="currentColor" stroke="none" />
+          <path d="M232 50 L232 122" />
+          <path d="M232 64 L194 74" />
+          <path d="M232 78 L206 102" />
+          <path d="M232 122 L218 184" />
+          <path d="M232 122 L248 184" />
+        </g>
+      </svg>
+    </div>
+  );
+}
+
+/** Expanding breath rings — a quiet meditation cue rendered behind figures. */
 export function BreathRings({ className }: { className?: string }) {
   return (
     <div className={cn("pointer-events-none", className)} aria-hidden>

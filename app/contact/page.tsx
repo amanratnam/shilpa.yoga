@@ -8,7 +8,7 @@ import {
   TreePoseFigure,
   BreathRings,
   SunSalutationStrip,
-} from "@/components/contact/YogaFigures";
+} from "@/components/art/YogaFigures";
 import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
