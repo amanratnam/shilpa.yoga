@@ -62,9 +62,34 @@ const config: Config = {
           "0%": { opacity: "0", transform: "translateY(1.5rem)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
+        // Slow inhale/exhale for the yoga figures
+        breathe: {
+          "0%, 100%": { transform: "translateY(0) scale(1)" },
+          "50%": { transform: "translateY(-5px) scale(1.025)" },
+        },
+        // Gentle balance sway (tree pose)
+        sway: {
+          "0%, 100%": { transform: "rotate(-1.75deg)" },
+          "50%": { transform: "rotate(1.75deg)" },
+        },
+        // Expanding breath ring, like a meditation cue
+        "ring-breathe": {
+          "0%": { transform: "scale(0.7)", opacity: "0" },
+          "35%": { opacity: "0.5" },
+          "100%": { transform: "scale(1.3)", opacity: "0" },
+        },
+        // Ambient glow blobs drifting in the backdrop
+        "glow-drift": {
+          "0%, 100%": { transform: "translate3d(0, 0, 0) scale(1)", opacity: "0.6" },
+          "50%": { transform: "translate3d(2rem, -1.5rem, 0) scale(1.1)", opacity: "1" },
+        },
       },
       animation: {
         "fade-rise": "fade-rise 0.6s ease-out both",
+        breathe: "breathe 5.5s ease-in-out infinite",
+        sway: "sway 7s ease-in-out infinite",
+        "ring-breathe": "ring-breathe 7s ease-out infinite",
+        "glow-drift": "glow-drift 16s ease-in-out infinite",
       },
       transitionTimingFunction: {
         brand: "cubic-bezier(0.22, 1, 0.36, 1)",
