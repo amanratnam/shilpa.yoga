@@ -83,6 +83,18 @@ const config: Config = {
           "0%, 100%": { transform: "translate3d(0, 0, 0) scale(1)", opacity: "0.6" },
           "50%": { transform: "translate3d(2rem, -1.5rem, 0) scale(1.1)", opacity: "1" },
         },
+        // Anatomical joint markers glowing along a limb chain
+        "joint-pulse": {
+          "0%, 100%": { opacity: "0.25" },
+          "50%": { opacity: "1" },
+        },
+        // Weightless gold dust rising through the hero
+        "dust-float": {
+          "0%": { transform: "translateY(0)", opacity: "0" },
+          "12%": { opacity: "var(--dust-opacity, 0.5)" },
+          "88%": { opacity: "var(--dust-opacity, 0.5)" },
+          "100%": { transform: "translateY(-45vh)", opacity: "0" },
+        },
       },
       animation: {
         "fade-rise": "fade-rise 0.6s ease-out both",
@@ -90,6 +102,8 @@ const config: Config = {
         sway: "sway 7s ease-in-out infinite",
         "ring-breathe": "ring-breathe 7s ease-out infinite",
         "glow-drift": "glow-drift 16s ease-in-out infinite",
+        "joint-pulse": "joint-pulse 2.4s ease-in-out infinite",
+        "dust-float": "dust-float 9s linear infinite",
       },
       transitionTimingFunction: {
         brand: "cubic-bezier(0.22, 1, 0.36, 1)",
