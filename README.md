@@ -54,9 +54,17 @@ Both lists support adding and editing in place.
 
 ### One-time setup
 
-1. Run `supabase/001_schema.sql` in the Supabase SQL editor. **It drops and
-   recreates the `clients` and `subscriptions` tables**, so export anything you
-   want to keep first.
+1. Set up the database:
+   - **New project:** run `supabase/001_schema.sql`. It creates both tables
+     from scratch, dropping any that exist first.
+   - **Existing database:** run `supabase/002_align_schema.sql` instead. It
+     adds whatever is missing — including the `phone` column and the
+     `subscriptions` table — **without deleting any data**, migrates rows off
+     the original single-table layout, and is safe to run more than once.
+
+   If a save still fails with "column not found in the schema cache" straight
+   after migrating, PostgREST is holding a stale column list; run
+   `notify pgrst, 'reload schema';` (already the last line of `002`).
 2. Copy the admin variables from `.env.example` into your environment:
 
    | Variable | Notes |
