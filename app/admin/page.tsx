@@ -6,14 +6,16 @@ import { listSubscriptions } from "@/lib/admin/subscriptions";
 import { CLIENT_STATUSES, clientStatusLabels } from "@/lib/admin/enums";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { DataProblem } from "@/components/admin/DataProblem";
+import { META_LABEL } from "@/components/admin/tokens";
+import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
 function Stat({ label, value }: { label: string; value: number | string }) {
   return (
     <div>
-      <div className="text-h2 font-bold text-brand-green">{value}</div>
-      <div className="mt-1 text-eyebrow uppercase tracking-[0.1em] text-brand-stone">
+      <div className="text-h3 font-semibold text-brand-ink">{value}</div>
+      <div className={cn("mt-1", META_LABEL)}>
         {label}
       </div>
     </div>
@@ -36,19 +38,19 @@ function SectionCard({
   return (
     <Link
       href={href}
-      className="group flex flex-col rounded-brand border border-brand-ink/10 bg-brand-white p-8 transition-transform duration-300 ease-brand hover:-translate-y-1 hover:border-brand-green/30"
+      className="group flex flex-col rounded-brand border border-brand-ink/10 bg-brand-white p-6 transition-colors duration-300 ease-brand hover:border-brand-green/30"
     >
       <div className="flex items-start justify-between gap-4">
-        <Icon className="h-7 w-7 text-brand-green" strokeWidth={1.5} aria-hidden />
+        <Icon className="h-5 w-5 text-brand-green" strokeWidth={1.5} aria-hidden />
         <ArrowRight
           className="h-5 w-5 text-brand-stone transition-transform duration-300 ease-brand group-hover:translate-x-1 group-hover:text-brand-green"
           strokeWidth={2}
           aria-hidden
         />
       </div>
-      <h2 className="mt-5 text-h3 text-brand-ink">{title}</h2>
+      <h2 className="mt-4 text-h4 text-brand-ink">{title}</h2>
       <p className="mt-1.5 text-small text-brand-stone">{blurb}</p>
-      <div className="mt-8 flex flex-wrap gap-10">
+      <div className="mt-6 flex flex-wrap gap-8">
         {stats.map((s) => (
           <Stat key={s.label} label={s.label} value={s.value} />
         ))}

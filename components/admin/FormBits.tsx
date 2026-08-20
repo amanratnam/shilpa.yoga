@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 export function SubmitButton({ label }: { label: string }) {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" disabled={pending}>
+    <Button type="submit" size="sm" disabled={pending}>
       {pending ? "Saving…" : label}
     </Button>
   );

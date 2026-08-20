@@ -42,12 +42,12 @@ export function ClientFormModal({
   return (
     <>
       {editing ? (
-        <Button variant="secondary" onClick={() => setOpen(true)}>
+        <Button size="sm" variant="quiet" onClick={() => setOpen(true)}>
           <Pencil className="h-4 w-4" strokeWidth={2} aria-hidden />
           Edit client
         </Button>
       ) : (
-        <Button onClick={() => setOpen(true)} className="shrink-0">
+        <Button size="sm" onClick={() => setOpen(true)} className="shrink-0">
           <Plus className="h-4 w-4" strokeWidth={2.5} aria-hidden />
           Add a new client
         </Button>
@@ -209,7 +209,7 @@ export function ClientFormModal({
             <FormError message={state.error} />
 
             <div className="mt-2 flex justify-end gap-3 sm:col-span-2">
-              <Button type="button" variant="secondary" onClick={() => setOpen(false)}>
+              <Button type="button" size="sm" variant="quiet" onClick={() => setOpen(false)}>
                 Cancel
               </Button>
               <SubmitButton label={editing ? "Save changes" : "Save client"} />

@@ -24,16 +24,17 @@ import { ClientFormModal } from "@/components/admin/ClientFormModal";
 import { SubscriptionFormModal } from "@/components/admin/SubscriptionFormModal";
 import {
   ClientStatusBadge,
-  PaymentBadge,
+  PaymentStatus,
   SubscriptionStateBadge,
 } from "@/components/admin/badges";
+import { META_LABEL } from "@/components/admin/tokens";
 
 export const dynamic = "force-dynamic";
 
 function Detail({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <dt className="text-eyebrow uppercase tracking-[0.1em] text-brand-stone">{label}</dt>
+      <dt className={META_LABEL}>{label}</dt>
       <dd className="mt-1.5 text-body text-brand-ink">{children}</dd>
     </div>
   );
@@ -180,16 +181,15 @@ export default async function ClientDetailPage({
                     <div className="flex flex-wrap items-center gap-3">
                       <h3 className="text-h4 text-brand-ink">{sub.packageLabel}</h3>
                       <SubscriptionStateBadge state={sub.state} />
-                      <PaymentBadge paid={sub.paymentDone} />
                     </div>
                     <p className="mt-2 text-small text-brand-stone">
                       {modeLabels[sub.yogaMode]} · {formatDateRange(sub.startDate, sub.endDate)}
                     </p>
-                    <p className="mt-1 text-small text-brand-stone">
-                      {sub.packageAmount !== null ? `${formatINR(sub.packageAmount)} · ` : ""}
-                      {paymentMethodLabels[sub.paymentMethod]}
-                      {" · added "}
-                      {formatDate(sub.createdAt.slice(0, 10))}
+                    <p className="mt-1 flex flex-wrap items-center gap-x-1.5 text-small text-brand-stone">
+                      <PaymentStatus paid={sub.paymentDone} />
+                      {sub.packageAmount !== null ? `· ${formatINR(sub.packageAmount)}` : ""}
+                      {`· ${paymentMethodLabels[sub.paymentMethod]}`}
+                      {`· added ${formatDate(sub.createdAt.slice(0, 10))}`}
                     </p>
                     {sub.notes ? (
                       <p className="mt-3 whitespace-pre-wrap text-small text-brand-ink">
