@@ -2,6 +2,7 @@ import "server-only";
 import { z } from "zod";
 import { verifySession } from "@/lib/admin/auth";
 import { supabaseAdmin } from "@/lib/admin/supabase";
+import { dataError } from "@/lib/admin/errors";
 import {
   CLIENT_STATUSES,
   GENDERS,
@@ -115,7 +116,7 @@ export async function listClients(): Promise<ClientRecord[]> {
     .select("*, subscriptions(count)")
     .order("created_at", { ascending: false });
 
-  if (error) throw new Error(`Could not load clients: ${error.message}`);
+  if (error) throw dataError(error, "Could not load clients");
   return (data as ClientRow[]).map(toRecord);
 }
 
@@ -128,7 +129,7 @@ export async function listClientOptions(): Promise<{ id: string; label: string }
     .select("id, full_name, email")
     .order("full_name", { ascending: true });
 
-  if (error) throw new Error(`Could not load clients: ${error.message}`);
+  if (error) throw dataError(error, "Could not load clients");
   return (data as { id: string; full_name: string; email: string | null }[]).map((row) => ({
     id: row.id,
     label: row.email ? `${row.full_name} (${row.email})` : row.full_name,
@@ -144,7 +145,7 @@ export async function getClient(id: string): Promise<ClientRecord | null> {
     .eq("id", id)
     .maybeSingle();
 
-  if (error) throw new Error(`Could not load client: ${error.message}`);
+  if (error) throw dataError(error, "Could not load client");
   return data ? toRecord(data as ClientRow) : null;
 }
 
@@ -161,7 +162,7 @@ export async function insertClient(input: ClientInput): Promise<ClientRecord> {
     if (error.code === UNIQUE_VIOLATION) {
       throw new Error("A client with that email address already exists.");
     }
-    throw new Error(`Could not save client: ${error.message}`);
+    throw dataError(error, "Could not save client");
   }
   return toRecord(data as ClientRow);
 }
@@ -180,7 +181,7 @@ export async function updateClient(id: string, input: ClientInput): Promise<Clie
     if (error.code === UNIQUE_VIOLATION) {
       throw new Error("A client with that email address already exists.");
     }
-    throw new Error(`Could not update client: ${error.message}`);
+    throw dataError(error, "Could not update client");
   }
   return toRecord(data as ClientRow);
 }

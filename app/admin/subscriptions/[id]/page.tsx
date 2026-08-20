@@ -50,7 +50,7 @@ export default async function SubscriptionDetailPage({
 
   return (
     <>
-      <AdminHeader username={session.username} active="subscriptions" />
+      <AdminHeader username={session.username} active="subscriptions" expiresAt={session.exp} />
 
       <div className="container-content flex-1 py-12">
         <Link

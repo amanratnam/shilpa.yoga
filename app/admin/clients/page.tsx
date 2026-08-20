@@ -12,6 +12,7 @@ import {
   referralSourceLabels,
 } from "@/lib/admin/enums";
 import { AdminHeader } from "@/components/admin/AdminHeader";
+import { DataProblem } from "@/components/admin/DataProblem";
 import { ClientFormModal } from "@/components/admin/ClientFormModal";
 import { ClientStatusBadge } from "@/components/admin/badges";
 
@@ -20,7 +21,21 @@ export const dynamic = "force-dynamic";
 
 export default async function ClientsPage() {
   const session = await verifySession();
-  const clients = await listClients();
+
+  let clients;
+  try {
+    clients = await listClients();
+  } catch (error) {
+    return (
+      <>
+        <AdminHeader username={session.username} active="clients" expiresAt={session.exp} />
+        <div className="container-content flex-1 py-12">
+          <h1 className="text-h2 text-brand-ink">Clients</h1>
+          <DataProblem error={error} />
+        </div>
+      </>
+    );
+  }
 
   const counts = CLIENT_STATUSES.map(
     (status) =>
@@ -29,7 +44,7 @@ export default async function ClientsPage() {
 
   return (
     <>
-      <AdminHeader username={session.username} active="clients" />
+      <AdminHeader username={session.username} active="clients" expiresAt={session.exp} />
 
       <div className="container-content flex-1 py-12">
         <div className="flex flex-wrap items-end justify-between gap-6">

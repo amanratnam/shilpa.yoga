@@ -72,6 +72,21 @@ Both lists support adding and editing in place.
 - `proxy.ts` does an optimistic signed-cookie check on `/admin/*`;
   `verifySession()` in `lib/admin/auth.ts` is the authoritative guard and runs
   inside every admin page and Server Action.
+- **Sessions last one hour**, as an absolute lifetime from sign-in rather than
+  an idle timeout. The signed cookie carries its own expiry and the server
+  rejects it once past, so security never depends on the browser. In the tab,
+  `SessionWatcher` warns for the last five minutes and then sends you to
+  `/admin/login?expired=1`, so an open tab never sits on a dead session. To
+  change the length, edit `SESSION_MAX_AGE` in `lib/admin/session.ts`.
+- The cookie is scoped to the whole site, so **one sign-in covers every tab**.
+  Signing out in one tab clears the rest: the login page broadcasts on a
+  `BroadcastChannel` once the session is genuinely gone. It deliberately does
+  not announce at sign-out time, which would race the request that clears the
+  cookie.
+- When the database cannot be read, admin pages catch the error and render an
+  actionable diagnosis (`lib/admin/errors.ts`) rather than a bare 500 — Next.js
+  strips Server Component error messages in production, so the pages must
+  explain the problem themselves.
 - Email is optional, but unique when given — a partial unique index means any
   number of clients may have no email, while no two can share one.
 - Receipts are drawn with `pdf-lib` in `lib/admin/receipt.ts` and served by
