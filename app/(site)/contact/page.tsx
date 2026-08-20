@@ -51,7 +51,7 @@ const details = [
 ];
 
 const offerings = [
-  "Online yoga, ₹199 trial then ₹4,000/mo",
+  "Online yoga, ₹199 trial then from ₹3,000/mo",
   "Personal sessions in Gurgaon, ₹499 trial",
   "Pre & post-natal yoga",
 ];

@@ -2,10 +2,6 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/lib/site";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
-import { JsonLd } from "@/components/JsonLd";
-import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { images } from "@/content/images";
 
 const outfit = Outfit({
@@ -66,13 +62,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={outfit.variable}>
-      <body className="flex min-h-dvh flex-col">
-        <JsonLd data={organizationJsonLd} />
-        <JsonLd data={websiteJsonLd} />
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
-      </body>
+      <body className="flex min-h-dvh flex-col">{children}</body>
     </html>
   );
 }

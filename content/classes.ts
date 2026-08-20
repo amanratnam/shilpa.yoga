@@ -1,5 +1,17 @@
 import { images } from "@/content/images";
 import type { ServicePageContent } from "@/components/sections/ServicePage";
+import type { PlanOption } from "@/components/sections/PricingTable";
+import { pricing, formatINR, multiMonthNote, type YogaMode } from "@/content/pricing";
+
+/** Selector rungs for the monthly card, built from the shared pricing table. */
+function monthlyOptions(mode: YogaMode): PlanOption[] {
+  return pricing[mode].monthly.map((tier) => ({
+    id: `${mode}-monthly-${tier.sessions}`,
+    pill: String(tier.sessions),
+    price: formatINR(tier.amount),
+    sessions: tier.sessions,
+  }));
+}
 
 // Copy and pricing confirmed with the client (May 2026).
 
@@ -70,7 +82,7 @@ export const onlineVinyasaContent: ServicePageContent = {
     plans: [
       {
         name: "Trial Class",
-        price: "₹199",
+        price: formatINR(pricing.online.trial.amount),
         cadence: "/ session",
         description: "Your first class, book a time directly.",
         features: [
@@ -84,17 +96,33 @@ export const onlineVinyasaContent: ServicePageContent = {
         },
       },
       {
+        name: "Prenatal / Postnatal",
+        price: formatINR(pricing.online.natal.amount),
+        cadence: "/ class",
+        description: "Specialised support through pregnancy and recovery.",
+        features: [
+          "Sequencing adapted to your trimester or stage of recovery",
+          "Safe work for the pelvic floor, hips and lower back",
+          "Breathwork for labour preparation and postnatal calm",
+          "Gentle rebuilding of core strength and posture after birth",
+          "Cleared with your doctor before we begin",
+        ],
+        cta: { label: "Enquire to Book", href: "#enquire" },
+      },
+      {
         name: "Monthly Fees",
-        price: "₹4,000",
         cadence: "/ month",
         description: "A consistent practice, woven into your week.",
         featured: true,
+        options: monthlyOptions("online"),
+        optionsLabel: "Classes per month",
         features: [
-          "All live classes through the month",
+          "{sessions} live classes through the month",
           "Small group, with real, personal attention",
           "A practice that progresses week to week",
           "Timings to suit your schedule",
         ],
+        footnote: multiMonthNote,
         cta: { label: "Enquire to Book", href: "#enquire" },
       },
     ],
@@ -197,7 +225,7 @@ export const personalGurgaonContent: ServicePageContent = {
     plans: [
       {
         name: "Trial Session",
-        price: "₹499",
+        price: formatINR(pricing.personal.trial.amount),
         cadence: "/ session",
         description: "A one-to-one trial, in the comfort of your home.",
         features: [
@@ -208,17 +236,33 @@ export const personalGurgaonContent: ServicePageContent = {
         cta: { label: "Enquire to Book", href: "#enquire" },
       },
       {
+        name: "Prenatal / Postnatal",
+        price: formatINR(pricing.personal.natal.amount),
+        cadence: "/ session",
+        description: "One-to-one support through pregnancy and recovery.",
+        features: [
+          "Sequencing adapted to your trimester or stage of recovery",
+          "Hands-on guidance for the pelvic floor, hips and lower back",
+          "Breathwork for labour preparation and postnatal calm",
+          "Gentle rebuilding of core strength and posture after birth",
+          "Practised at home, coordinated with your doctor",
+        ],
+        cta: { label: "Enquire to Book", href: "#enquire" },
+      },
+      {
         name: "Monthly",
-        price: "₹6,000",
         cadence: "/ month",
         description: "A consistent, personalised practice.",
         featured: true,
+        options: monthlyOptions("personal"),
+        optionsLabel: "Sessions per month",
         features: [
-          "8 sessions a month (more can be accommodated at additional cost)",
+          "{sessions} private sessions a month, at your home",
           "Flexible scheduling around your availability",
           "A progressing, personalised plan",
           "WhatsApp check-ins between sessions",
         ],
+        footnote: multiMonthNote,
         cta: { label: "Enquire to Book", href: "#enquire" },
       },
     ],

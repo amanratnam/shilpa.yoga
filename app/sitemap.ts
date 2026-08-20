@@ -2,11 +2,13 @@ import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/site";
 import { getAllPosts } from "@/lib/blog";
 
+type ChangeFrequency = NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteConfig.url;
   const now = new Date();
 
-  const staticRoutes: { path: string; priority: number; changeFrequency: "weekly" | "monthly" }[] = [
+  const staticRoutes: { path: string; priority: number; changeFrequency: ChangeFrequency }[] = [
     { path: "/", priority: 1, changeFrequency: "weekly" },
     { path: "/about", priority: 0.7, changeFrequency: "monthly" },
     { path: "/classes", priority: 0.9, changeFrequency: "monthly" },
@@ -16,6 +18,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/contact", priority: 0.6, changeFrequency: "monthly" },
     { path: "/yoga-classes-gurgaon", priority: 0.8, changeFrequency: "monthly" },
     { path: "/online-yoga-classes-india", priority: 0.8, changeFrequency: "monthly" },
+    // Legal pages: low priority, but they should still be discoverable.
+    { path: "/privacy-policy", priority: 0.2, changeFrequency: "yearly" },
+    { path: "/terms", priority: 0.2, changeFrequency: "yearly" },
+    { path: "/refund-policy", priority: 0.2, changeFrequency: "yearly" },
   ];
 
   const routes: MetadataRoute.Sitemap = staticRoutes.map((r) => ({
