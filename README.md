@@ -37,21 +37,30 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Admin panel
 
-A password-gated client management tool lives at `/admin`.
+A password-gated client management tool lives at `/admin`, with two sections:
+
+- **`/admin/clients`** — the client repository, doubling as the newsletter
+  list. Name, age, gender, optional email, how they found us, status
+  (active / potential / churned) and notes. Each client has a detail page
+  showing their full **subscription history** as an audit trail.
+- **`/admin/subscriptions`** — every package sold. A subscription is always
+  attached to an existing client, so add the person first.
+
+Both lists support adding and editing in place.
 
 ### One-time setup
 
-1. Run `supabase/001_clients.sql` in the Supabase SQL editor to create the
-   `clients` table.
-2. Copy the admin variables from `.env.example` into your environment and fill
-   them in:
+1. Run `supabase/001_schema.sql` in the Supabase SQL editor. **It drops and
+   recreates the `clients` and `subscriptions` tables**, so export anything you
+   want to keep first.
+2. Copy the admin variables from `.env.example` into your environment:
 
    | Variable | Notes |
    | --- | --- |
    | `ADMIN_USERNAME` | Defaults to `shilpa` |
    | `ADMIN_PASSWORD` | Defaults to `admin` — change this before going live |
    | `ADMIN_SESSION_SECRET` | Required. `openssl rand -base64 32` |
-   | `SUPABASE_URL` | Supabase project URL |
+   | `SUPABASE_URL` | Supabase project URL (server-only, no `NEXT_PUBLIC_`) |
    | `SUPABASE_SERVICE_ROLE_KEY` | Service-role key, server-only |
 
 ### How it works
@@ -59,7 +68,9 @@ A password-gated client management tool lives at `/admin`.
 - `proxy.ts` does an optimistic signed-cookie check on `/admin/*`;
   `verifySession()` in `lib/admin/auth.ts` is the authoritative guard and runs
   inside every admin page and Server Action.
-- Yoga packages in the client form are generated from `content/pricing.ts`, the
-  single source of truth that also drives the pricing cards on the classes
-  pages and the enquiry form dropdown. Change a price there and it updates
-  everywhere.
+- Email is optional, but unique when given — a partial unique index means any
+  number of clients may have no email, while no two can share one.
+- Yoga packages in the subscription form are generated from
+  `content/pricing.ts`, the single source of truth that also drives the pricing
+  cards on the classes pages and the enquiry form dropdown. Change a price
+  there and it updates everywhere.

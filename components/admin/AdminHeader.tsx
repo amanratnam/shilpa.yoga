@@ -1,16 +1,46 @@
+import Link from "next/link";
 import { LogOut } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
 import { logoutAction } from "@/app/admin/actions";
+import { cn } from "@/lib/utils";
 
-export function AdminHeader({ username }: { username: string }) {
+const tabs = [
+  { href: "/admin/clients", label: "Clients" },
+  { href: "/admin/subscriptions", label: "Subscriptions" },
+];
+
+export function AdminHeader({
+  username,
+  active,
+}: {
+  username: string;
+  active: "clients" | "subscriptions";
+}) {
   return (
     <header className="border-b border-brand-ink/10 bg-brand-white">
-      <div className="container-content flex items-center justify-between gap-6 py-5">
-        <div className="flex items-center gap-4">
+      <div className="container-content flex flex-wrap items-center justify-between gap-x-8 gap-y-4 py-5">
+        <div className="flex items-center gap-8">
           <Logo />
-          <span className="hidden text-eyebrow uppercase tracking-[0.1em] text-brand-stone sm:inline">
-            Client Admin
-          </span>
+          <nav aria-label="Admin sections" className="flex items-center gap-1">
+            {tabs.map((tab) => {
+              const isActive = tab.href.endsWith(active);
+              return (
+                <Link
+                  key={tab.href}
+                  href={tab.href}
+                  aria-current={isActive ? "page" : undefined}
+                  className={cn(
+                    "rounded-brand px-4 py-2 text-small font-medium transition-colors duration-300 ease-brand",
+                    isActive
+                      ? "bg-brand-green text-brand-cream"
+                      : "text-brand-stone hover:bg-brand-cream hover:text-brand-ink",
+                  )}
+                >
+                  {tab.label}
+                </Link>
+              );
+            })}
+          </nav>
         </div>
 
         <div className="flex items-center gap-4">

@@ -12,12 +12,29 @@ import {
   safeEqual,
 } from "@/lib/admin/session";
 import { verifySession } from "@/lib/admin/auth";
-import { clientSchema, insertClient } from "@/lib/admin/clients";
+import { clientSchema, insertClient, updateClient } from "@/lib/admin/clients";
+import {
+  insertSubscription,
+  subscriptionSchema,
+  updateSubscription,
+} from "@/lib/admin/subscriptions";
 
 export type ActionState = {
   error?: string;
   fieldErrors?: Record<string, string>;
 };
+
+/**
+ * Read a form field as a string.
+ *
+ * A `<select>` whose only selected option is the disabled "Select…" placeholder
+ * submits nothing at all, so `formData.get()` returns null rather than "".
+ * Normalising to "" here keeps the schemas' own messages ("Select a yoga
+ * package") instead of leaking raw type errors.
+ */
+function str(formData: FormData, key: string): string {
+  return String(formData.get(key) ?? "");
+}
 
 /** Flatten a ZodError into one message per field, for inline form errors. */
 function fieldErrorsOf(error: z.ZodError): Record<string, string> {
@@ -29,13 +46,17 @@ function fieldErrorsOf(error: z.ZodError): Record<string, string> {
   return out;
 }
 
+// ---------------------------------------------------------------------------
+// Auth
+// ---------------------------------------------------------------------------
+
 export async function loginAction(
   _prev: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
-  const username = String(formData.get("username") ?? "");
-  const password = String(formData.get("password") ?? "");
-  const next = String(formData.get("next") ?? "");
+  const username = str(formData, "username");
+  const password = str(formData, "password");
+  const next = str(formData, "next");
 
   const ok =
     safeEqual(username, adminCredentials.username) &&
@@ -56,7 +77,7 @@ export async function loginAction(
   });
 
   // Only allow same-site relative paths back into the admin panel.
-  const destination = next.startsWith("/admin") ? next : "/admin";
+  const destination = next.startsWith("/admin") ? next : "/admin/clients";
   redirect(destination);
 }
 
@@ -65,37 +86,89 @@ export async function logoutAction() {
   redirect("/admin/login");
 }
 
-export async function createClientAction(
+// ---------------------------------------------------------------------------
+// Clients
+// ---------------------------------------------------------------------------
+
+function clientFromForm(formData: FormData) {
+  return clientSchema.safeParse({
+    fullName: str(formData, "fullName"),
+    age: str(formData, "age"),
+    gender: str(formData, "gender"),
+    email: str(formData, "email"),
+    referralSource: str(formData, "referralSource"),
+    status: str(formData, "status"),
+    notes: str(formData, "notes"),
+  });
+}
+
+export async function saveClientAction(
   _prev: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
   // Server Actions are reachable by direct POST, so re-check auth here.
   await verifySession();
 
-  const parsed = clientSchema.safeParse({
-    fullName: formData.get("fullName"),
-    age: formData.get("age"),
-    gender: formData.get("gender"),
-    yogaMode: formData.get("yogaMode"),
-    yogaPackage: formData.get("yogaPackage"),
-    startDate: formData.get("startDate"),
-    endDate: formData.get("endDate"),
-    paymentDone: formData.get("paymentDone") === "on",
-    notes: formData.get("notes") ?? "",
-  });
+  const parsed = clientFromForm(formData);
+  if (!parsed.success) return { fieldErrors: fieldErrorsOf(parsed.error) };
 
-  if (!parsed.success) {
-    return { fieldErrors: fieldErrorsOf(parsed.error) };
-  }
+  // A blank id means "create"; anything else is an edit of that client.
+  const id = str(formData, "id");
 
   try {
-    await insertClient(parsed.data);
+    if (id) {
+      await updateClient(id, parsed.data);
+    } else {
+      await insertClient(parsed.data);
+    }
+  } catch (error) {
+    return { error: error instanceof Error ? error.message : "Could not save this client." };
+  }
+
+  revalidatePath("/admin/clients");
+  if (id) revalidatePath(`/admin/clients/${id}`);
+  redirect(id ? `/admin/clients/${id}` : "/admin/clients");
+}
+
+// ---------------------------------------------------------------------------
+// Subscriptions
+// ---------------------------------------------------------------------------
+
+export async function saveSubscriptionAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  await verifySession();
+
+  const parsed = subscriptionSchema.safeParse({
+    clientId: str(formData, "clientId"),
+    yogaMode: str(formData, "yogaMode"),
+    yogaPackage: str(formData, "yogaPackage"),
+    startDate: str(formData, "startDate"),
+    endDate: str(formData, "endDate"),
+    paymentDone: formData.get("paymentDone") === "on",
+    paymentMethod: str(formData, "paymentMethod"),
+    notes: str(formData, "notes"),
+  });
+  if (!parsed.success) return { fieldErrors: fieldErrorsOf(parsed.error) };
+
+  const id = str(formData, "id");
+  // Where to land afterwards: the client's page when added from there.
+  const returnTo = str(formData, "returnTo");
+
+  try {
+    if (id) {
+      await updateSubscription(id, parsed.data);
+    } else {
+      await insertSubscription(parsed.data);
+    }
   } catch (error) {
     return {
-      error: error instanceof Error ? error.message : "Could not save this client.",
+      error: error instanceof Error ? error.message : "Could not save this subscription.",
     };
   }
 
-  revalidatePath("/admin");
-  redirect("/admin");
+  revalidatePath("/admin/subscriptions");
+  revalidatePath(`/admin/clients/${parsed.data.clientId}`);
+  redirect(returnTo.startsWith("/admin") ? returnTo : "/admin/subscriptions");
 }
