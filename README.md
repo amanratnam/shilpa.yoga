@@ -37,14 +37,18 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Admin panel
 
-A password-gated client management tool lives at `/admin`, with two sections:
+A password-gated client management tool lives at `/admin`.
 
+- **`/admin`** — overview home, with counts and links into each section.
+  `/admin/login` is a separate route and stays reachable even when signed in,
+  so there is always a way to log in or switch user.
 - **`/admin/clients`** — the client repository, doubling as the newsletter
   list. Name, age, gender, optional email, how they found us, status
   (active / potential / churned) and notes. Each client has a detail page
   showing their full **subscription history** as an audit trail.
 - **`/admin/subscriptions`** — every package sold. A subscription is always
-  attached to an existing client, so add the person first.
+  attached to an existing client, so add the person first. Each has a detail
+  page with a **Generate receipt** button that downloads a branded PDF.
 
 Both lists support adding and editing in place.
 
@@ -70,6 +74,11 @@ Both lists support adding and editing in place.
   inside every admin page and Server Action.
 - Email is optional, but unique when given — a partial unique index means any
   number of clients may have no email, while no two can share one.
+- Receipts are drawn with `pdf-lib` in `lib/admin/receipt.ts` and served by
+  `app/admin/subscriptions/[id]/receipt/route.ts`. The brand logo is fetched
+  from the image CDN; if that fetch fails the receipt still renders, with a
+  typographic wordmark instead. Amounts print as "Rs." because the PDF
+  standard fonts have no rupee glyph.
 - Yoga packages in the subscription form are generated from
   `content/pricing.ts`, the single source of truth that also drives the pricing
   cards on the classes pages and the enquiry form dropdown. Change a price

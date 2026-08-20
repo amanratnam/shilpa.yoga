@@ -29,6 +29,14 @@ export const clientSchema = z.object({
     .max(200)
     .optional()
     .or(z.literal("")),
+  // Optional, but printed on receipts when present.
+  phone: z
+    .string()
+    .trim()
+    .max(20)
+    .regex(/^[+]?[\d\s()-]{7,20}$/, "Enter a valid phone number")
+    .optional()
+    .or(z.literal("")),
   referralSource: z.enum(REFERRAL_SOURCES, { error: "Select how they found us" }),
   status: z.enum(CLIENT_STATUSES, { error: "Select a client status" }),
   notes: z.string().trim().max(2000).optional().or(z.literal("")),
@@ -43,6 +51,7 @@ export type ClientRecord = {
   age: number;
   gender: Gender;
   email: string;
+  phone: string;
   referralSource: ReferralSource;
   status: ClientStatus;
   notes: string;
@@ -57,6 +66,7 @@ type ClientRow = {
   age: number;
   gender: string;
   email: string | null;
+  phone: string | null;
   referral_source: string;
   status: string;
   notes: string | null;
@@ -71,6 +81,7 @@ function toRecord(row: ClientRow): ClientRecord {
     age: row.age,
     gender: row.gender as Gender,
     email: row.email ?? "",
+    phone: row.phone ?? "",
     referralSource: row.referral_source as ReferralSource,
     status: row.status as ClientStatus,
     notes: row.notes ?? "",
@@ -86,6 +97,7 @@ function toColumns(input: ClientInput) {
     gender: input.gender,
     // Store NULL rather than "" so the partial unique index ignores blanks.
     email: input.email ? input.email : null,
+    phone: input.phone || null,
     referral_source: input.referralSource,
     status: input.status,
     notes: input.notes || null,

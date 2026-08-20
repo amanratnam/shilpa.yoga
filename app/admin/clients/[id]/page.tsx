@@ -87,6 +87,7 @@ export default async function ClientDetailPage({
               age: client.age,
               gender: client.gender,
               email: client.email,
+              phone: client.phone,
               referralSource: client.referralSource,
               status: client.status,
               notes: client.notes,
@@ -106,6 +107,18 @@ export default async function ClientDetailPage({
                   className="text-brand-green underline-offset-4 hover:underline"
                 >
                   {client.email}
+                </a>
+              ) : (
+                <span className="text-brand-stone">Not provided</span>
+              )}
+            </Detail>
+            <Detail label="Phone">
+              {client.phone ? (
+                <a
+                  href={`tel:${client.phone}`}
+                  className="text-brand-green underline-offset-4 hover:underline"
+                >
+                  {client.phone}
                 </a>
               ) : (
                 <span className="text-brand-stone">Not provided</span>

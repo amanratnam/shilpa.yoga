@@ -12,15 +12,13 @@ export async function proxy(request: NextRequest) {
   const isLoginRoute = pathname === "/admin/login";
   const session = await decodeSession(request.cookies.get(SESSION_COOKIE)?.value);
 
+  // Note: signed-in visitors are deliberately NOT bounced off /admin/login.
+  // Doing so made the login page unreachable and left no way to switch user.
   if (!session && !isLoginRoute) {
     const url = new URL("/admin/login", request.url);
     // Remember where they were headed, so login can send them back.
     if (pathname !== "/admin") url.searchParams.set("next", pathname);
     return NextResponse.redirect(url);
-  }
-
-  if (session && isLoginRoute) {
-    return NextResponse.redirect(new URL("/admin", request.url));
   }
 
   return NextResponse.next();

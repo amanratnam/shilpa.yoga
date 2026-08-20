@@ -17,6 +17,7 @@ export type ClientDefaults = {
   age: number;
   gender: string;
   email: string;
+  phone: string;
   referralSource: string;
   status: string;
   notes: string;
@@ -124,6 +125,22 @@ export function ClientFormModal({
                 autoComplete="off"
                 defaultValue={defaults?.email}
                 invalid={Boolean(errors.email)}
+              />
+            </FormField>
+
+            <FormField
+              label="Phone"
+              htmlFor="phone"
+              hint="Optional. Printed on receipts."
+              error={errors.phone}
+            >
+              <Input
+                id="phone"
+                name="phone"
+                type="tel"
+                autoComplete="off"
+                defaultValue={defaults?.phone}
+                invalid={Boolean(errors.phone)}
               />
             </FormField>
 

@@ -77,7 +77,7 @@ export async function loginAction(
   });
 
   // Only allow same-site relative paths back into the admin panel.
-  const destination = next.startsWith("/admin") ? next : "/admin/clients";
+  const destination = next.startsWith("/admin") ? next : "/admin";
   redirect(destination);
 }
 
@@ -96,6 +96,7 @@ function clientFromForm(formData: FormData) {
     age: str(formData, "age"),
     gender: str(formData, "gender"),
     email: str(formData, "email"),
+    phone: str(formData, "phone"),
     referralSource: str(formData, "referralSource"),
     status: str(formData, "status"),
     notes: str(formData, "notes"),
