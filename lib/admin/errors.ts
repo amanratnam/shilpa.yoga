@@ -5,7 +5,17 @@
  * rather than letting a bare 500 through.
  */
 
+export type DiagnosisId =
+  | "tables"
+  | "columns"
+  | "not-configured"
+  | "unreachable"
+  | "unauthorised"
+  | "unknown";
+
 export type Diagnosis = {
+  /** Lets callers tell a recognised fault from a fallback. */
+  id: DiagnosisId;
   title: string;
   detail: string;
   steps: string[];
@@ -22,27 +32,35 @@ export class AdminDataError extends Error {
   }
 }
 
-const RUN_MIGRATION = "Run supabase/001_schema.sql in the Supabase SQL editor.";
+const ALIGN_MIGRATION =
+  "Run supabase/002_align_schema.sql in the Supabase SQL editor. It adds whatever is missing without deleting any data, and is safe to run twice.";
 
 const SETUP_TABLES: Diagnosis = {
+  id: "tables",
   title: "The database tables are missing",
   detail:
     "Supabase answered, but it has no clients/subscriptions tables — the schema has not been created yet, or an older version of it is still in place.",
   steps: [
-    RUN_MIGRATION,
-    "It drops and recreates both tables, so export anything you want to keep first.",
+    ALIGN_MIGRATION,
+    "For a brand-new project you can instead run supabase/001_schema.sql, which creates everything from scratch.",
     "Then reload this page.",
   ],
 };
 
 const SETUP_COLUMNS: Diagnosis = {
+  id: "columns",
   title: "The database schema is out of date",
   detail:
-    "The tables exist but are missing a column this build expects, so the schema predates the current code.",
-  steps: [RUN_MIGRATION, "Then reload this page."],
+    "The tables exist but are missing a column this build expects, so the schema predates the current code. Saving and updating will keep failing until it is brought up to date.",
+  steps: [
+    ALIGN_MIGRATION,
+    "If it still fails straight afterwards, run: notify pgrst, 'reload schema'; — PostgREST caches the column list.",
+    "Then reload this page.",
+  ],
 };
 
 const NOT_CONFIGURED: Diagnosis = {
+  id: "not-configured",
   title: "Supabase is not configured",
   detail: "The environment variables the admin panel needs are missing.",
   steps: [
@@ -52,6 +70,7 @@ const NOT_CONFIGURED: Diagnosis = {
 };
 
 const UNREACHABLE: Diagnosis = {
+  id: "unreachable",
   title: "Could not reach Supabase",
   detail: "The request to the database failed before it got an answer.",
   steps: [
@@ -61,6 +80,7 @@ const UNREACHABLE: Diagnosis = {
 };
 
 const UNAUTHORISED: Diagnosis = {
+  id: "unauthorised",
   title: "Supabase rejected the credentials",
   detail: "The database is reachable, but the key was not accepted.",
   steps: [
@@ -70,6 +90,7 @@ const UNAUTHORISED: Diagnosis = {
 };
 
 const UNKNOWN: Diagnosis = {
+  id: "unknown",
   title: "Something went wrong loading this page",
   detail: "The database returned an error that the panel did not recognise.",
   steps: ["Try reloading.", "If it keeps happening, check the Supabase logs."],
@@ -99,7 +120,10 @@ export function diagnose(error: unknown): Diagnosis {
 
   if (message.includes("Supabase is not configured")) return NOT_CONFIGURED;
   if (MISSING_TABLE_CODES.has(code)) return SETUP_TABLES;
-  if (code === "42703") return SETUP_COLUMNS;
+  // 42703 is Postgres on read; PGRST204 is PostgREST rejecting a write against
+  // a column it cannot see ("Could not find the 'phone' column ...").
+  if (code === "42703" || code === "PGRST204") return SETUP_COLUMNS;
+  if (/could not find the '.*' column/i.test(message)) return SETUP_COLUMNS;
   if (code === "PGRST301" || code === "401" || /jwt|api key/i.test(message)) return UNAUTHORISED;
   if (/fetch failed|ECONNREFUSED|ENOTFOUND|network/i.test(message)) return UNREACHABLE;
 

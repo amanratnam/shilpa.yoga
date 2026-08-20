@@ -13,6 +13,7 @@ import {
 } from "@/lib/admin/session";
 import { verifySession } from "@/lib/admin/auth";
 import { clientSchema, insertClient, updateClient } from "@/lib/admin/clients";
+import { diagnose } from "@/lib/admin/errors";
 import {
   insertSubscription,
   subscriptionSchema,
@@ -49,6 +50,19 @@ function fieldErrorsOf(error: z.ZodError): Record<string, string> {
 // ---------------------------------------------------------------------------
 // Auth
 // ---------------------------------------------------------------------------
+
+/**
+ * Turn a save failure into one line the admin can act on. A bare
+ * "column not found in the schema cache" says nothing about the fix.
+ */
+function saveErrorMessage(error: unknown, fallback: string): string {
+  if (!(error instanceof Error)) return fallback;
+
+  const { id, title, steps } = diagnose(error);
+  // Only recognised schema/config faults get rewritten. Messages already
+  // written for a human — "that email address already exists" — are kept.
+  return id === "unknown" ? error.message : `${title}. ${steps[0]}`;
+}
 
 export async function loginAction(
   _prev: ActionState,
@@ -123,7 +137,7 @@ export async function saveClientAction(
       await insertClient(parsed.data);
     }
   } catch (error) {
-    return { error: error instanceof Error ? error.message : "Could not save this client." };
+    return { error: saveErrorMessage(error, "Could not save this client.") };
   }
 
   revalidatePath("/admin/clients");
@@ -164,9 +178,7 @@ export async function saveSubscriptionAction(
       await insertSubscription(parsed.data);
     }
   } catch (error) {
-    return {
-      error: error instanceof Error ? error.message : "Could not save this subscription.",
-    };
+    return { error: saveErrorMessage(error, "Could not save this subscription.") };
   }
 
   revalidatePath("/admin/subscriptions");
