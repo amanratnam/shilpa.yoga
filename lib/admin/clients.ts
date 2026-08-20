@@ -2,120 +2,125 @@ import "server-only";
 import { z } from "zod";
 import { verifySession } from "@/lib/admin/auth";
 import { supabaseAdmin } from "@/lib/admin/supabase";
-import { yogaPackageById, yogaPackages } from "@/content/pricing";
+import {
+  CLIENT_STATUSES,
+  GENDERS,
+  REFERRAL_SOURCES,
+  type ClientStatus,
+  type Gender,
+  type ReferralSource,
+} from "@/lib/admin/enums";
 
-export const GENDERS = ["female", "male", "other", "prefer_not_to_say"] as const;
-export const YOGA_MODES = ["online", "offline"] as const;
-
-export const genderLabels: Record<(typeof GENDERS)[number], string> = {
-  female: "Female",
-  male: "Male",
-  other: "Other",
-  prefer_not_to_say: "Prefer not to say",
-};
-
-export const modeLabels: Record<(typeof YOGA_MODES)[number], string> = {
-  online: "Online",
-  offline: "Offline (in person)",
-};
-
-/**
- * The pricing table calls in-person sessions "personal"; the admin form calls
- * the same thing "offline".
- */
-function modeToPricingMode(mode: (typeof YOGA_MODES)[number]) {
-  return mode === "offline" ? "personal" : "online";
-}
-
-export const clientSchema = z
-  .object({
-    fullName: z.string().trim().min(2, "Enter the client's full name").max(120),
-    age: z.coerce
-      .number({ error: "Enter a valid age" })
-      .int("Age must be a whole number")
-      .min(1, "Enter a valid age")
-      .max(120, "Enter a valid age"),
-    gender: z.enum(GENDERS, { error: "Select a gender" }),
-    yogaMode: z.enum(YOGA_MODES, { error: "Select a yoga mode" }),
-    // Validated against the live pricing table, so packages can never drift.
-    yogaPackage: z
-      .string()
-      .refine((id) => yogaPackageById.has(id), "Select a yoga package"),
-    startDate: z.iso.date("Select a subscription start date"),
-    endDate: z.iso.date("Select a subscription end date"),
-    paymentDone: z.boolean(),
-    notes: z.string().trim().max(2000).optional().or(z.literal("")),
-  })
-  .refine((data) => data.endDate >= data.startDate, {
-    message: "End date must be on or after the start date",
-    path: ["endDate"],
-  })
-  // The form filters packages by mode, but Server Actions accept direct POSTs,
-  // so the pairing is enforced here too.
-  .refine(
-    (data) => yogaPackageById.get(data.yogaPackage)?.mode === modeToPricingMode(data.yogaMode),
-    {
-      message: "That package is not available for the selected yoga mode",
-      path: ["yogaPackage"],
-    },
-  );
+export const clientSchema = z.object({
+  fullName: z.string().trim().min(2, "Enter the client's full name").max(120),
+  age: z.coerce
+    .number({ error: "Enter a valid age" })
+    .int("Age must be a whole number")
+    .min(1, "Enter a valid age")
+    .max(120, "Enter a valid age"),
+  gender: z.enum(GENDERS, { error: "Select a gender" }),
+  // Optional, but must be a real address when given. Lowercased so the
+  // partial unique index in Postgres is effectively case-insensitive.
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .email("Enter a valid email address")
+    .max(200)
+    .optional()
+    .or(z.literal("")),
+  referralSource: z.enum(REFERRAL_SOURCES, { error: "Select how they found us" }),
+  status: z.enum(CLIENT_STATUSES, { error: "Select a client status" }),
+  notes: z.string().trim().max(2000).optional().or(z.literal("")),
+});
 
 export type ClientInput = z.infer<typeof clientSchema>;
 
-export type ClientRecord = ClientInput & {
+export type ClientRecord = {
   id: string;
   createdAt: string;
-  /** Package name without the mode or price, e.g. "Monthly, 8 sessions". */
-  packageLabel: string;
-  /** Package amount in rupees at the time of display. */
-  packageAmount: number | null;
+  fullName: string;
+  age: number;
+  gender: Gender;
+  email: string;
+  referralSource: ReferralSource;
+  status: ClientStatus;
+  notes: string;
+  /** Present on list views, so the table can show how many packages they hold. */
+  subscriptionCount?: number;
 };
 
-/** Shape of a row in the `clients` table. */
 type ClientRow = {
   id: string;
   created_at: string;
   full_name: string;
   age: number;
   gender: string;
-  yoga_mode: string;
-  yoga_package: string;
-  start_date: string;
-  end_date: string;
-  payment_done: boolean;
+  email: string | null;
+  referral_source: string;
+  status: string;
   notes: string | null;
+  subscriptions?: { count: number }[];
 };
 
 function toRecord(row: ClientRow): ClientRecord {
-  const pkg = yogaPackageById.get(row.yoga_package);
   return {
     id: row.id,
     createdAt: row.created_at,
     fullName: row.full_name,
     age: row.age,
-    gender: row.gender as ClientInput["gender"],
-    yogaMode: row.yoga_mode as ClientInput["yogaMode"],
-    yogaPackage: row.yoga_package,
-    // Fall back to the stored id so a renamed package still renders something.
-    packageLabel: pkg?.shortLabel ?? row.yoga_package,
-    packageAmount: pkg?.amount ?? null,
-    startDate: row.start_date,
-    endDate: row.end_date,
-    paymentDone: row.payment_done,
+    gender: row.gender as Gender,
+    email: row.email ?? "",
+    referralSource: row.referral_source as ReferralSource,
+    status: row.status as ClientStatus,
     notes: row.notes ?? "",
+    subscriptionCount: row.subscriptions?.[0]?.count,
   };
 }
+
+/** Map an input to its database column names. */
+function toColumns(input: ClientInput) {
+  return {
+    full_name: input.fullName,
+    age: input.age,
+    gender: input.gender,
+    // Store NULL rather than "" so the partial unique index ignores blanks.
+    email: input.email ? input.email : null,
+    referral_source: input.referralSource,
+    status: input.status,
+    notes: input.notes || null,
+  };
+}
+
+/** Postgres unique-violation, i.e. that email already belongs to a client. */
+const UNIQUE_VIOLATION = "23505";
 
 export async function listClients(): Promise<ClientRecord[]> {
   await verifySession();
 
   const { data, error } = await supabaseAdmin()
     .from("clients")
-    .select("*")
+    .select("*, subscriptions(count)")
     .order("created_at", { ascending: false });
 
   if (error) throw new Error(`Could not load clients: ${error.message}`);
   return (data as ClientRow[]).map(toRecord);
+}
+
+/** Minimal list for the "select an existing client" dropdown. */
+export async function listClientOptions(): Promise<{ id: string; label: string }[]> {
+  await verifySession();
+
+  const { data, error } = await supabaseAdmin()
+    .from("clients")
+    .select("id, full_name, email")
+    .order("full_name", { ascending: true });
+
+  if (error) throw new Error(`Could not load clients: ${error.message}`);
+  return (data as { id: string; full_name: string; email: string | null }[]).map((row) => ({
+    id: row.id,
+    label: row.email ? `${row.full_name} (${row.email})` : row.full_name,
+  }));
 }
 
 export async function getClient(id: string): Promise<ClientRecord | null> {
@@ -136,25 +141,34 @@ export async function insertClient(input: ClientInput): Promise<ClientRecord> {
 
   const { data, error } = await supabaseAdmin()
     .from("clients")
-    .insert({
-      full_name: input.fullName,
-      age: input.age,
-      gender: input.gender,
-      yoga_mode: input.yogaMode,
-      yoga_package: input.yogaPackage,
-      start_date: input.startDate,
-      end_date: input.endDate,
-      payment_done: input.paymentDone,
-      notes: input.notes || null,
-    })
+    .insert(toColumns(input))
     .select("*")
     .single();
 
-  if (error) throw new Error(`Could not save client: ${error.message}`);
+  if (error) {
+    if (error.code === UNIQUE_VIOLATION) {
+      throw new Error("A client with that email address already exists.");
+    }
+    throw new Error(`Could not save client: ${error.message}`);
+  }
   return toRecord(data as ClientRow);
 }
 
-/** Packages offered for a given mode, for the dependent dropdown in the form. */
-export function packagesForMode(mode: (typeof YOGA_MODES)[number]) {
-  return yogaPackages.filter((p) => p.mode === modeToPricingMode(mode));
+export async function updateClient(id: string, input: ClientInput): Promise<ClientRecord> {
+  await verifySession();
+
+  const { data, error } = await supabaseAdmin()
+    .from("clients")
+    .update(toColumns(input))
+    .eq("id", id)
+    .select("*")
+    .single();
+
+  if (error) {
+    if (error.code === UNIQUE_VIOLATION) {
+      throw new Error("A client with that email address already exists.");
+    }
+    throw new Error(`Could not update client: ${error.message}`);
+  }
+  return toRecord(data as ClientRow);
 }
