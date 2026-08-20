@@ -2,6 +2,7 @@ import "server-only";
 import { z } from "zod";
 import { verifySession } from "@/lib/admin/auth";
 import { supabaseAdmin } from "@/lib/admin/supabase";
+import { dataError } from "@/lib/admin/errors";
 import { yogaPackageById, yogaPackages } from "@/content/pricing";
 import {
   PAYMENT_METHODS,
@@ -123,7 +124,7 @@ export async function listSubscriptions(): Promise<SubscriptionRecord[]> {
     .select("*, clients(full_name)")
     .order("start_date", { ascending: false });
 
-  if (error) throw new Error(`Could not load subscriptions: ${error.message}`);
+  if (error) throw dataError(error, "Could not load subscriptions");
   return (data as SubscriptionRow[]).map(toRecord);
 }
 
@@ -139,7 +140,7 @@ export async function listSubscriptionsForClient(
     .eq("client_id", clientId)
     .order("start_date", { ascending: false });
 
-  if (error) throw new Error(`Could not load subscriptions: ${error.message}`);
+  if (error) throw dataError(error, "Could not load subscriptions");
   return (data as SubscriptionRow[]).map(toRecord);
 }
 
@@ -152,7 +153,7 @@ export async function getSubscription(id: string): Promise<SubscriptionRecord | 
     .eq("id", id)
     .maybeSingle();
 
-  if (error) throw new Error(`Could not load subscription: ${error.message}`);
+  if (error) throw dataError(error, "Could not load subscription");
   return data ? toRecord(data as SubscriptionRow) : null;
 }
 
@@ -167,7 +168,7 @@ export async function insertSubscription(
     .select("*")
     .single();
 
-  if (error) throw new Error(`Could not save subscription: ${error.message}`);
+  if (error) throw dataError(error, "Could not save subscription");
   return toRecord(data as SubscriptionRow);
 }
 
@@ -184,7 +185,7 @@ export async function updateSubscription(
     .select("*")
     .single();
 
-  if (error) throw new Error(`Could not update subscription: ${error.message}`);
+  if (error) throw dataError(error, "Could not update subscription");
   return toRecord(data as SubscriptionRow);
 }
 

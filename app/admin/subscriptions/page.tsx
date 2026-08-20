@@ -13,6 +13,7 @@ import {
 import { formatDateRange } from "@/lib/admin/format";
 import { formatINR } from "@/content/pricing";
 import { AdminHeader } from "@/components/admin/AdminHeader";
+import { DataProblem } from "@/components/admin/DataProblem";
 import { SubscriptionFormModal } from "@/components/admin/SubscriptionFormModal";
 import { PaymentBadge, SubscriptionStateBadge } from "@/components/admin/badges";
 
@@ -20,10 +21,20 @@ export const dynamic = "force-dynamic";
 
 export default async function SubscriptionsPage() {
   const session = await verifySession();
-  const [subscriptions, clients] = await Promise.all([
-    listSubscriptions(),
-    listClientOptions(),
-  ]);
+  let subscriptions, clients;
+  try {
+    [subscriptions, clients] = await Promise.all([listSubscriptions(), listClientOptions()]);
+  } catch (error) {
+    return (
+      <>
+        <AdminHeader username={session.username} active="subscriptions" expiresAt={session.exp} />
+        <div className="container-content flex-1 py-12">
+          <h1 className="text-h2 text-brand-ink">Subscriptions</h1>
+          <DataProblem error={error} />
+        </div>
+      </>
+    );
+  }
 
   const packages = [...YOGA_MODES].flatMap((mode) =>
     packagesForMode(mode).map((p) => ({ id: p.id, label: p.label, mode })),
@@ -36,7 +47,7 @@ export default async function SubscriptionsPage() {
 
   return (
     <>
-      <AdminHeader username={session.username} active="subscriptions" />
+      <AdminHeader username={session.username} active="subscriptions" expiresAt={session.exp} />
 
       <div className="container-content flex-1 py-12">
         <div className="flex flex-wrap items-end justify-between gap-6">

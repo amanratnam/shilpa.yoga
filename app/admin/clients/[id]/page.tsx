@@ -61,7 +61,7 @@ export default async function ClientDetailPage({
 
   return (
     <>
-      <AdminHeader username={session.username} active="clients" />
+      <AdminHeader username={session.username} active="clients" expiresAt={session.exp} />
 
       <div className="container-content flex-1 py-12">
         <Link

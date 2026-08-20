@@ -5,6 +5,7 @@ import { listClients } from "@/lib/admin/clients";
 import { listSubscriptions } from "@/lib/admin/subscriptions";
 import { CLIENT_STATUSES, clientStatusLabels } from "@/lib/admin/enums";
 import { AdminHeader } from "@/components/admin/AdminHeader";
+import { DataProblem } from "@/components/admin/DataProblem";
 
 export const dynamic = "force-dynamic";
 
@@ -58,7 +59,23 @@ function SectionCard({
 
 export default async function AdminHomePage() {
   const session = await verifySession();
-  const [clients, subscriptions] = await Promise.all([listClients(), listSubscriptions()]);
+
+  // Caught here rather than thrown, so the page can explain what to fix.
+  // Next.js hides Server Component error messages in production.
+  let clients, subscriptions;
+  try {
+    [clients, subscriptions] = await Promise.all([listClients(), listSubscriptions()]);
+  } catch (error) {
+    return (
+      <>
+        <AdminHeader username={session.username} active="home" expiresAt={session.exp} />
+        <div className="container-content flex-1 py-12">
+          <h1 className="text-h2 text-brand-ink">Overview</h1>
+          <DataProblem error={error} />
+        </div>
+      </>
+    );
+  }
 
   const byStatus = Object.fromEntries(
     CLIENT_STATUSES.map((s) => [s, clients.filter((c) => c.status === s).length]),
@@ -66,7 +83,7 @@ export default async function AdminHomePage() {
 
   return (
     <>
-      <AdminHeader username={session.username} active="home" />
+      <AdminHeader username={session.username} active="home" expiresAt={session.exp} />
 
       <div className="container-content flex-1 py-12">
         <h1 className="text-h2 text-brand-ink">Overview</h1>

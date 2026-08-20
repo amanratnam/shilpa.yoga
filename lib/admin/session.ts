@@ -8,8 +8,15 @@
 
 export const SESSION_COOKIE = "shilpa_admin_session";
 
-/** One week, in seconds. */
-export const SESSION_MAX_AGE = 60 * 60 * 24 * 7;
+/**
+ * One hour, in seconds. This is an absolute lifetime measured from sign-in,
+ * not an idle timeout — the session ends an hour later even if you are still
+ * working. `SessionWatcher` warns shortly before that happens.
+ */
+export const SESSION_MAX_AGE = 60 * 60;
+
+/** Warn the admin this many seconds before the session ends. */
+export const SESSION_WARN_BEFORE = 5 * 60;
 
 export type SessionPayload = {
   username: string;

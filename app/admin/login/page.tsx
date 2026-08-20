@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Logo } from "@/components/layout/Logo";
 import { LoginForm } from "@/components/admin/LoginForm";
+import { SessionEndedBroadcast } from "@/components/admin/SessionEndedBroadcast";
 import { getSession } from "@/lib/admin/auth";
 import { logoutAction } from "@/app/admin/actions";
 
@@ -15,9 +16,9 @@ export const dynamic = "force-dynamic";
 export default async function AdminLoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ next?: string }>;
+  searchParams: Promise<{ next?: string; expired?: string; signedout?: string }>;
 }) {
-  const { next } = await searchParams;
+  const { next, expired, signedout } = await searchParams;
   // Reachable even when signed in, so there is always a way back to a login
   // form (and a way to switch user) rather than being bounced to the panel.
   const session = await getSession();
@@ -25,9 +26,27 @@ export default async function AdminLoginPage({
   return (
     <div className="grid flex-1 place-items-center px-6 py-16">
       <div className="w-full max-w-sm">
+        {/* Tells any other admin tabs the session is over. */}
+        {session ? null : <SessionEndedBroadcast />}
         <div className="mb-10 flex justify-center">
           <Logo />
         </div>
+
+        {expired ? (
+          <div className="mb-6 rounded-brand border border-brand-gold/60 bg-brand-gold/10 p-5">
+            <p className="text-small text-brand-ink">
+              Your session ended after an hour. Sign in again to continue.
+            </p>
+          </div>
+        ) : null}
+
+        {signedout && !session ? (
+          <div className="mb-6 rounded-brand border border-brand-ink/15 bg-brand-white p-5">
+            <p className="text-small text-brand-ink">
+              You&apos;ve been signed out in another tab.
+            </p>
+          </div>
+        ) : null}
 
         {session ? (
           <div className="mb-6 rounded-brand border border-brand-green/25 bg-brand-green/5 p-5">
