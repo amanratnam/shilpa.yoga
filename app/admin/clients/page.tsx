@@ -15,6 +15,8 @@ import { AdminHeader } from "@/components/admin/AdminHeader";
 import { DataProblem } from "@/components/admin/DataProblem";
 import { ClientFormModal } from "@/components/admin/ClientFormModal";
 import { ClientStatusBadge } from "@/components/admin/badges";
+import { CELL, META_LABEL } from "@/components/admin/tokens";
+import { cn } from "@/lib/utils";
 
 /** Client records are per-request data; never prerender this page. */
 export const dynamic = "force-dynamic";
@@ -83,7 +85,7 @@ export default async function ClientsPage() {
                       <th
                         key={h}
                         scope="col"
-                        className="px-6 py-4 text-eyebrow uppercase tracking-[0.1em] text-brand-stone"
+                        className={cn("px-5 py-3", META_LABEL)}
                       >
                         {h}
                       </th>
@@ -96,25 +98,25 @@ export default async function ClientsPage() {
                       key={client.id}
                       className="border-b border-brand-ink/10 transition-colors last:border-b-0 hover:bg-brand-cream/40"
                     >
-                      <td className="px-6 py-5">
+                      <td className={CELL}>
                         <div className="font-medium text-brand-ink">{client.fullName}</div>
                         <div className="mt-0.5 text-small text-brand-stone">
                           {genderLabels[client.gender]} · {client.age} yrs
                         </div>
                       </td>
-                      <td className="px-6 py-5 text-small text-brand-ink">
+                      <td className={cn(CELL, "text-small text-brand-ink")}>
                         {client.email || <span className="text-brand-stone/60">—</span>}
                       </td>
-                      <td className="px-6 py-5 text-small text-brand-ink">
+                      <td className={cn(CELL, "text-small text-brand-ink")}>
                         {referralSourceLabels[client.referralSource]}
                       </td>
-                      <td className="px-6 py-5 text-small text-brand-ink">
+                      <td className={cn(CELL, "text-small text-brand-ink")}>
                         {client.subscriptionCount ?? 0}
                       </td>
-                      <td className="px-6 py-5">
+                      <td className={CELL}>
                         <ClientStatusBadge status={client.status} />
                       </td>
-                      <td className="px-6 py-5 text-right">
+                      <td className={cn(CELL, "text-right")}>
                         <Link
                           href={`/admin/clients/${client.id}`}
                           className="inline-flex items-center gap-1.5 text-small font-medium text-brand-green underline-offset-4 hover:underline"

@@ -56,12 +56,12 @@ export function SubscriptionFormModal({
   return (
     <>
       {editing ? (
-        <Button variant="secondary" onClick={() => setOpen(true)}>
+        <Button size="sm" variant="quiet" onClick={() => setOpen(true)}>
           <Pencil className="h-4 w-4" strokeWidth={2} aria-hidden />
           {triggerLabel ?? "Edit"}
         </Button>
       ) : (
-        <Button onClick={() => setOpen(true)} className="shrink-0" disabled={noClients}>
+        <Button size="sm" onClick={() => setOpen(true)} className="shrink-0" disabled={noClients}>
           <Plus className="h-4 w-4" strokeWidth={2.5} aria-hidden />
           {triggerLabel ?? "Add a subscription"}
         </Button>
@@ -221,7 +221,7 @@ export function SubscriptionFormModal({
             <FormError message={state.error} />
 
             <div className="mt-2 flex justify-end gap-3 sm:col-span-2">
-              <Button type="button" variant="secondary" onClick={() => setOpen(false)}>
+              <Button type="button" size="sm" variant="quiet" onClick={() => setOpen(false)}>
                 Cancel
               </Button>
               <SubmitButton label={editing ? "Save changes" : "Save subscription"} />

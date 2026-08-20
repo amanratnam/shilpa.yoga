@@ -17,14 +17,15 @@ import { formatINR, yogaPackageById } from "@/content/pricing";
 import { receiptNumber } from "@/lib/admin/receipt";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { SubscriptionFormModal } from "@/components/admin/SubscriptionFormModal";
-import { PaymentBadge, SubscriptionStateBadge } from "@/components/admin/badges";
+import { PaymentStatus, SubscriptionStateBadge } from "@/components/admin/badges";
+import { META_LABEL } from "@/components/admin/tokens";
 
 export const dynamic = "force-dynamic";
 
 function Detail({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <dt className="text-eyebrow uppercase tracking-[0.1em] text-brand-stone">{label}</dt>
+      <dt className={META_LABEL}>{label}</dt>
       <dd className="mt-1.5 text-body text-brand-ink">{children}</dd>
     </div>
   );
@@ -65,14 +66,15 @@ export default async function SubscriptionDetailPage({
           <div className="flex flex-wrap items-center gap-4">
             <h1 className="text-h2 text-brand-ink">{sub.packageLabel}</h1>
             <SubscriptionStateBadge state={sub.state} />
-            <PaymentBadge paid={sub.paymentDone} />
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            {/* A plain link, so the browser handles the download itself. */}
+          <div className="flex flex-wrap items-center gap-2">
+            {/* A plain link, so the browser handles the download itself; a
+                Next.js <Link> would try to client-navigate to the PDF route.
+                Classes mirror Button size="sm" variant="quiet". */}
             <a
               href={`/admin/subscriptions/${sub.id}/receipt`}
-              className="inline-flex items-center justify-center gap-2 rounded-brand bg-brand-green px-8 py-4 text-small font-medium uppercase tracking-[0.05em] text-brand-cream transition-colors duration-300 ease-brand hover:bg-brand-ink"
+              className="inline-flex items-center justify-center gap-2 rounded-brand border border-brand-ink/15 bg-brand-white px-3.5 py-2 text-small font-medium text-brand-ink transition-colors duration-300 ease-brand hover:border-brand-ink/30 hover:bg-brand-cream"
             >
               <Download className="h-4 w-4" strokeWidth={2} aria-hidden />
               Generate receipt
@@ -108,7 +110,7 @@ export default async function SubscriptionDetailPage({
           <div className="rounded-brand border border-brand-ink/10 bg-brand-white p-8">
             <div className="flex items-center gap-2">
               <User className="h-4 w-4 text-brand-stone" strokeWidth={2} aria-hidden />
-              <h2 className="text-eyebrow uppercase tracking-[0.1em] text-brand-stone">
+              <h2 className={META_LABEL}>
                 Client
               </h2>
             </div>
@@ -133,7 +135,7 @@ export default async function SubscriptionDetailPage({
 
           {/* ---- Subscription ---- */}
           <div className="rounded-brand border border-brand-ink/10 bg-brand-white p-8">
-            <h2 className="text-eyebrow uppercase tracking-[0.1em] text-brand-stone">
+            <h2 className={META_LABEL}>
               Subscription
             </h2>
             <dl className="mt-6 grid gap-6 sm:grid-cols-2">
@@ -142,6 +144,9 @@ export default async function SubscriptionDetailPage({
               <Detail label="Start date">{formatDate(sub.startDate, "long")}</Detail>
               <Detail label="End date">{formatDate(sub.endDate, "long")}</Detail>
               <Detail label="Total sessions">{pkg ? pkg.sessions : "—"}</Detail>
+              <Detail label="Payment status">
+                <PaymentStatus paid={sub.paymentDone} />
+              </Detail>
               <Detail label="Payment mode">{paymentMethodLabels[sub.paymentMethod]}</Detail>
               <Detail label={sub.paymentDone ? "Amount received" : "Amount due"}>
                 <span className={sub.paymentDone ? "font-medium text-brand-green" : undefined}>

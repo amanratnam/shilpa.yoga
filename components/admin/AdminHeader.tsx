@@ -37,10 +37,10 @@ export function AdminHeader({
                   href={tab.href}
                   aria-current={isActive ? "page" : undefined}
                   className={cn(
-                    "rounded-brand px-4 py-2 text-small font-medium transition-colors duration-300 ease-brand",
+                    "rounded-brand px-3 py-1.5 text-small font-medium transition-colors duration-300 ease-brand",
                     isActive
-                      ? "bg-brand-green text-brand-cream"
-                      : "text-brand-stone hover:bg-brand-cream hover:text-brand-ink",
+                      ? "bg-brand-cream text-brand-green"
+                      : "text-brand-stone hover:bg-brand-cream/60 hover:text-brand-ink",
                   )}
                 >
                   {tab.label}

@@ -15,7 +15,9 @@ import { formatINR } from "@/content/pricing";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { DataProblem } from "@/components/admin/DataProblem";
 import { SubscriptionFormModal } from "@/components/admin/SubscriptionFormModal";
-import { PaymentBadge, SubscriptionStateBadge } from "@/components/admin/badges";
+import { PaymentStatus, SubscriptionStateBadge } from "@/components/admin/badges";
+import { CELL, META_LABEL } from "@/components/admin/tokens";
+import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -103,7 +105,7 @@ export default async function SubscriptionsPage() {
                       <th
                         key={h}
                         scope="col"
-                        className="px-6 py-4 text-eyebrow uppercase tracking-[0.1em] text-brand-stone"
+                        className={cn("px-5 py-3", META_LABEL)}
                       >
                         {h}
                       </th>
@@ -116,7 +118,7 @@ export default async function SubscriptionsPage() {
                       key={sub.id}
                       className="border-b border-brand-ink/10 transition-colors last:border-b-0 hover:bg-brand-cream/40"
                     >
-                      <td className="px-6 py-5">
+                      <td className={CELL}>
                         <Link
                           href={`/admin/clients/${sub.clientId}`}
                           className="font-medium text-brand-ink underline-offset-4 hover:text-brand-green hover:underline"
@@ -124,26 +126,26 @@ export default async function SubscriptionsPage() {
                           {sub.clientName ?? "Unknown"}
                         </Link>
                       </td>
-                      <td className="px-6 py-5 text-small text-brand-ink">
+                      <td className={cn(CELL, "text-small text-brand-ink")}>
                         {sub.packageLabel}
                         <div className="mt-0.5 text-small text-brand-stone">
                           {modeLabels[sub.yogaMode]}
                           {sub.packageAmount !== null ? ` · ${formatINR(sub.packageAmount)}` : ""}
                         </div>
                       </td>
-                      <td className="px-6 py-5 text-small text-brand-ink">
+                      <td className={cn(CELL, "text-small text-brand-ink")}>
                         {formatDateRange(sub.startDate, sub.endDate)}
                       </td>
-                      <td className="px-6 py-5">
-                        <PaymentBadge paid={sub.paymentDone} />
-                        <div className="mt-1 text-small text-brand-stone">
+                      <td className={CELL}>
+                        <PaymentStatus paid={sub.paymentDone} />
+                        <div className="mt-0.5 text-small text-brand-stone">
                           {paymentMethodLabels[sub.paymentMethod]}
                         </div>
                       </td>
-                      <td className="px-6 py-5">
+                      <td className={CELL}>
                         <SubscriptionStateBadge state={sub.state} />
                       </td>
-                      <td className="px-6 py-5">
+                      <td className={CELL}>
                         <div className="flex items-center justify-end gap-4">
                           <Link
                             href={`/admin/subscriptions/${sub.id}`}
