@@ -22,7 +22,7 @@ export const services: Service[] = [
       "Live, breath-led yoga you can join from anywhere in the world.",
     cardDescription:
       "Small live groups, sequenced intelligently around the body, not a follow-along video. Real attention, every class.",
-    priceLabel: "Trial ₹199 · ₹4,000 / month",
+    priceLabel: "Trial ₹199 · from ₹3,000 / month",
     image: images.serviceOnline,
   },
   {
@@ -34,7 +34,7 @@ export const services: Service[] = [
       "One-to-one practice shaped entirely around you, in your own home.",
     cardDescription:
       "Private, attentive teaching for a specific goal, an injury, or a steadier daily practice. Built around your body and your week.",
-    priceLabel: "Trial ₹499 · ₹6,000 / month",
+    priceLabel: "Trial ₹499 · from ₹6,000 / month",
     image: images.servicePersonal,
   },
 ];

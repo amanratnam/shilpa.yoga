@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { formatINR, yogaPackages } from "@/content/pricing";
 
 export const interestOptions = [
   { value: "online", label: "Online Yoga classes" },
@@ -8,16 +9,19 @@ export const interestOptions = [
 
 export type Interest = (typeof interestOptions)[number]["value"];
 
-/** Pricing tiers shown as a dependent dropdown, keyed by chosen interest. */
+/**
+ * Pricing tiers shown as a dependent dropdown, keyed by chosen interest.
+ * Derived from the shared pricing table so the enquiry form can never quote a
+ * price the classes pages disagree with.
+ */
+const optionsForMode = (mode: "online" | "personal") =>
+  yogaPackages
+    .filter((p) => p.mode === mode)
+    .map((p) => ({ value: p.id, label: `${p.shortLabel}, ${formatINR(p.amount)}` }));
+
 export const planOptions: Record<Interest, { value: string; label: string }[]> = {
-  online: [
-    { value: "trial", label: "Trial class, ₹199" },
-    { value: "online-monthly", label: "Monthly fees, ₹2,000 / month" },
-  ],
-  personal: [
-    { value: "single", label: "Trial session, ₹499" },
-    { value: "personal-monthly", label: "Monthly, ₹2,000 / month (12 to 16 sessions)" },
-  ],
+  online: optionsForMode("online"),
+  personal: optionsForMode("personal"),
   other: [],
 };
 
