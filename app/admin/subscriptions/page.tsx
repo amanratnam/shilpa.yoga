@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CalendarRange } from "lucide-react";
+import { ArrowRight, CalendarRange } from "lucide-react";
 import { verifySession } from "@/lib/admin/auth";
 import { listClientOptions } from "@/lib/admin/clients";
 import { listSubscriptions, packagesForMode } from "@/lib/admin/subscriptions";
@@ -132,8 +132,16 @@ export default async function SubscriptionsPage() {
                       <td className="px-6 py-5">
                         <SubscriptionStateBadge state={sub.state} />
                       </td>
-                      <td className="px-6 py-5 text-right">
-                        <SubscriptionFormModal
+                      <td className="px-6 py-5">
+                        <div className="flex items-center justify-end gap-4">
+                          <Link
+                            href={`/admin/subscriptions/${sub.id}`}
+                            className="inline-flex items-center gap-1.5 text-small font-medium text-brand-green underline-offset-4 hover:underline"
+                          >
+                            View
+                            <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden />
+                          </Link>
+                          <SubscriptionFormModal
                           clients={clients}
                           packages={packages}
                           modes={modes}
@@ -150,7 +158,8 @@ export default async function SubscriptionsPage() {
                             paymentMethod: sub.paymentMethod,
                             notes: sub.notes ?? "",
                           }}
-                        />
+                          />
+                        </div>
                       </td>
                     </tr>
                   ))}

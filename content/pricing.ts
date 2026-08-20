@@ -75,6 +75,8 @@ export type YogaPackage = {
   label: string;
   /** Just the package, for places that already show the mode and price. */
   shortLabel: string;
+  /** Number of classes the package covers, for receipts. */
+  sessions: number;
   mode: YogaMode;
   amount: number;
 };
@@ -86,6 +88,7 @@ export const yogaPackages: YogaPackage[] = (
     id: `${mode}-trial`,
     label: `${config.label} · ${config.trial.name} (${formatINR(config.trial.amount)})`,
     shortLabel: config.trial.name,
+    sessions: 1,
     mode,
     amount: config.trial.amount,
   },
@@ -93,6 +96,7 @@ export const yogaPackages: YogaPackage[] = (
     id: `${mode}-natal`,
     label: `${config.label} · ${config.natal.name}, single class (${formatINR(config.natal.amount)})`,
     shortLabel: `${config.natal.name}, single class`,
+    sessions: 1,
     mode,
     amount: config.natal.amount,
   },
@@ -100,6 +104,7 @@ export const yogaPackages: YogaPackage[] = (
     id: `${mode}-monthly-${tier.sessions}`,
     label: `${config.label} · Monthly, ${tier.sessions} sessions (${formatINR(tier.amount)})`,
     shortLabel: `Monthly, ${tier.sessions} sessions`,
+    sessions: tier.sessions,
     mode,
     amount: tier.amount,
   })),

@@ -5,8 +5,9 @@ import { logoutAction } from "@/app/admin/actions";
 import { cn } from "@/lib/utils";
 
 const tabs = [
-  { href: "/admin/clients", label: "Clients" },
-  { href: "/admin/subscriptions", label: "Subscriptions" },
+  { key: "home", href: "/admin", label: "Overview" },
+  { key: "clients", href: "/admin/clients", label: "Clients" },
+  { key: "subscriptions", href: "/admin/subscriptions", label: "Subscriptions" },
 ];
 
 export function AdminHeader({
@@ -14,7 +15,7 @@ export function AdminHeader({
   active,
 }: {
   username: string;
-  active: "clients" | "subscriptions";
+  active: "home" | "clients" | "subscriptions";
 }) {
   return (
     <header className="border-b border-brand-ink/10 bg-brand-white">
@@ -23,10 +24,10 @@ export function AdminHeader({
           <Logo />
           <nav aria-label="Admin sections" className="flex items-center gap-1">
             {tabs.map((tab) => {
-              const isActive = tab.href.endsWith(active);
+              const isActive = tab.key === active;
               return (
                 <Link
-                  key={tab.href}
+                  key={tab.key}
                   href={tab.href}
                   aria-current={isActive ? "page" : undefined}
                   className={cn(

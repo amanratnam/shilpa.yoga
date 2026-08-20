@@ -26,6 +26,7 @@ create table public.clients (
   -- Optional: walk-ins and phone enquiries may not have given an email yet.
   -- Stored lowercase so uniqueness is not case-sensitive.
   email           text,
+  phone           text,
   referral_source text        not null,
   status          text        not null check (status in ('active', 'potential', 'churned')),
   notes           text
