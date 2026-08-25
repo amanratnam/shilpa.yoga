@@ -18,7 +18,8 @@ import {
   referralSourceLabels,
 } from "@/lib/admin/enums";
 import { formatDate, formatDateRange } from "@/lib/admin/format";
-import { formatINR } from "@/content/pricing";
+import { getPricingConfig } from "@/lib/pricing/store";
+import { formatINR } from "@/lib/pricing/config";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { ClientFormModal } from "@/components/admin/ClientFormModal";
 import { SubscriptionFormModal } from "@/components/admin/SubscriptionFormModal";
@@ -52,9 +53,10 @@ export default async function ClientDetailPage({
   if (!client) notFound();
 
   const subscriptions = await listSubscriptionsForClient(id);
+  const config = await getPricingConfig();
 
   const packages = [...YOGA_MODES].flatMap((mode) =>
-    packagesForMode(mode).map((p) => ({ id: p.id, label: p.label, mode })),
+    packagesForMode(mode, config).map((p) => ({ id: p.id, label: p.label, mode })),
   );
   const modes = optionsOf(YOGA_MODES, modeLabels);
   const methods = optionsOf(PAYMENT_METHODS, paymentMethodLabels);

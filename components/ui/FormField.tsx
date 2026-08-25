@@ -3,7 +3,15 @@ import { AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const fieldBase =
-  "w-full rounded-brand border bg-brand-white px-4 py-3 text-body text-brand-ink placeholder:text-brand-stone/60 transition-colors";
+  "w-full rounded-brand border bg-brand-white text-brand-ink placeholder:text-brand-stone/60 transition-colors";
+
+/**
+ * Public forms use the roomy default. `compact` exists for dense admin grids
+ * (the pricing configurator), where a column of full-size fields would not fit
+ * and does not need to.
+ */
+const fieldSize = (compact?: boolean) =>
+  compact ? "px-3 py-2 text-small" : "px-4 py-3 text-body";
 
 const fieldState = (invalid?: boolean) =>
   invalid
@@ -12,13 +20,13 @@ const fieldState = (invalid?: boolean) =>
 
 export const Input = forwardRef<
   HTMLInputElement,
-  React.InputHTMLAttributes<HTMLInputElement> & { invalid?: boolean }
->(function Input({ className, invalid, ...props }, ref) {
+  React.InputHTMLAttributes<HTMLInputElement> & { invalid?: boolean; compact?: boolean }
+>(function Input({ className, invalid, compact, ...props }, ref) {
   return (
     <input
       ref={ref}
       aria-invalid={invalid || undefined}
-      className={cn(fieldBase, fieldState(invalid), className)}
+      className={cn(fieldBase, fieldSize(compact), fieldState(invalid), className)}
       {...props}
     />
   );
@@ -26,13 +34,13 @@ export const Input = forwardRef<
 
 export const Textarea = forwardRef<
   HTMLTextAreaElement,
-  React.TextareaHTMLAttributes<HTMLTextAreaElement> & { invalid?: boolean }
->(function Textarea({ className, invalid, ...props }, ref) {
+  React.TextareaHTMLAttributes<HTMLTextAreaElement> & { invalid?: boolean; compact?: boolean }
+>(function Textarea({ className, invalid, compact, ...props }, ref) {
   return (
     <textarea
       ref={ref}
       aria-invalid={invalid || undefined}
-      className={cn(fieldBase, fieldState(invalid), "min-h-32 resize-y", className)}
+      className={cn(fieldBase, fieldSize(compact), fieldState(invalid), "min-h-32 resize-y", className)}
       {...props}
     />
   );
@@ -40,13 +48,13 @@ export const Textarea = forwardRef<
 
 export const Select = forwardRef<
   HTMLSelectElement,
-  React.SelectHTMLAttributes<HTMLSelectElement> & { invalid?: boolean }
->(function Select({ className, invalid, children, ...props }, ref) {
+  React.SelectHTMLAttributes<HTMLSelectElement> & { invalid?: boolean; compact?: boolean }
+>(function Select({ className, invalid, compact, children, ...props }, ref) {
   return (
     <select
       ref={ref}
       aria-invalid={invalid || undefined}
-      className={cn(fieldBase, fieldState(invalid), "appearance-none pr-10", className)}
+      className={cn(fieldBase, fieldSize(compact), fieldState(invalid), "appearance-none pr-10", className)}
       {...props}
     >
       {children}

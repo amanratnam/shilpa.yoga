@@ -10,6 +10,8 @@ import {
   SunSalutationStrip,
 } from "@/components/art/YogaFigures";
 import { siteConfig } from "@/lib/site";
+import { getPricingConfig } from "@/lib/pricing/store";
+import { buildPlanOptions } from "@/lib/validation";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -56,7 +58,10 @@ const offerings = [
   "Pre & post-natal yoga",
 ];
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  // Live prices for the plan dropdown.
+  const planOptions = buildPlanOptions(await getPricingConfig());
+
   return (
     <section className="relative isolate overflow-hidden bg-brand-green text-brand-cream on-dark">
       {/* Ambient backdrop: drifting glow + breath rings, like soft studio light */}
@@ -91,7 +96,7 @@ export default function ContactPage() {
       <div className="container-content relative pb-12 md:pb-16">
         <div className="grid overflow-hidden rounded-brand shadow-2xl ring-1 ring-brand-gold/25 lg:grid-cols-[1.6fr_1fr]">
           <div className="bg-brand-cream p-6 text-brand-ink sm:p-8 md:p-10">
-            <ContactForm />
+            <ContactForm planOptions={planOptions} />
           </div>
 
           <aside className="relative isolate flex flex-col gap-6 overflow-hidden border-t border-brand-gold/20 bg-brand-green/95 p-6 sm:p-8 md:p-10 lg:border-l lg:border-t-0">

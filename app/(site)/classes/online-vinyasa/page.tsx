@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { ServicePage } from "@/components/sections/ServicePage";
-import { onlineVinyasaContent } from "@/content/classes";
+import { buildOnlineVinyasaContent } from "@/content/classes";
+import { getPricingConfig } from "@/lib/pricing/store";
+import { buildPlanOptions } from "@/lib/validation";
 
 export const metadata: Metadata = {
   title: "Online Yoga Classes",
@@ -9,6 +11,13 @@ export const metadata: Metadata = {
   alternates: { canonical: "/classes/online-vinyasa" },
 };
 
-export default function OnlineVinyasaPage() {
-  return <ServicePage content={onlineVinyasaContent} />;
+export default async function OnlineVinyasaPage() {
+  // Live prices, invalidated the moment the admin publishes a change.
+  const config = await getPricingConfig();
+  return (
+    <ServicePage
+      content={buildOnlineVinyasaContent(config)}
+      planOptions={buildPlanOptions(config)}
+    />
+  );
 }

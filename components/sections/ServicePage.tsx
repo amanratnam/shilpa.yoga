@@ -6,7 +6,7 @@ import { FAQ } from "@/components/sections/FAQ";
 import { EnquirySection } from "@/components/sections/EnquirySection";
 import type { AccordionItem } from "@/components/ui/Accordion";
 import type { SiteImage } from "@/content/images";
-import type { ContactInput } from "@/lib/validation";
+import type { ContactInput, PlanOptions } from "@/lib/validation";
 
 export type ServicePageContent = {
   hero: {
@@ -42,7 +42,14 @@ export type ServicePageContent = {
   };
 };
 
-export function ServicePage({ content }: { content: ServicePageContent }) {
+export function ServicePage({
+  content,
+  planOptions,
+}: {
+  content: ServicePageContent;
+  /** Enquiry dropdown options, resolved from live pricing by the page. */
+  planOptions: PlanOptions;
+}) {
   return (
     <>
       <PageHero
@@ -100,6 +107,7 @@ export function ServicePage({ content }: { content: ServicePageContent }) {
       <FAQ tone="light" items={content.faqs} />
 
       <EnquirySection
+        planOptions={planOptions}
         eyebrow={content.enquiry.eyebrow}
         title={content.enquiry.title}
         subtitle={content.enquiry.subtitle}

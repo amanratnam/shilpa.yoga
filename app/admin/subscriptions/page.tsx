@@ -11,7 +11,8 @@ import {
   paymentMethodLabels,
 } from "@/lib/admin/enums";
 import { formatDateRange } from "@/lib/admin/format";
-import { formatINR } from "@/content/pricing";
+import { getPricingConfig } from "@/lib/pricing/store";
+import { formatINR } from "@/lib/pricing/config";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { DataProblem } from "@/components/admin/DataProblem";
 import { SubscriptionFormModal } from "@/components/admin/SubscriptionFormModal";
@@ -23,9 +24,10 @@ export const dynamic = "force-dynamic";
 
 export default async function SubscriptionsPage() {
   const session = await verifySession();
-  let subscriptions, clients;
+  let subscriptions, clients, config;
   try {
     [subscriptions, clients] = await Promise.all([listSubscriptions(), listClientOptions()]);
+    config = await getPricingConfig();
   } catch (error) {
     return (
       <>
@@ -39,7 +41,7 @@ export default async function SubscriptionsPage() {
   }
 
   const packages = [...YOGA_MODES].flatMap((mode) =>
-    packagesForMode(mode).map((p) => ({ id: p.id, label: p.label, mode })),
+    packagesForMode(mode, config).map((p) => ({ id: p.id, label: p.label, mode })),
   );
   const modes = optionsOf(YOGA_MODES, modeLabels);
   const methods = optionsOf(PAYMENT_METHODS, paymentMethodLabels);
