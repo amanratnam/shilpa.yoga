@@ -12,8 +12,17 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
     <>
       <JsonLd data={organizationJsonLd} />
       <JsonLd data={websiteJsonLd} />
+      {/* Visible only once focused, so keyboard users can jump the nav. */}
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-brand focus:bg-brand-green focus:px-4 focus:py-2.5 focus:text-small focus:font-medium focus:text-brand-cream"
+      >
+        Skip to main content
+      </a>
       <Navbar />
-      <main className="flex-1">{children}</main>
+      <main id="main" className="flex-1">
+        {children}
+      </main>
       <Footer />
     </>
   );

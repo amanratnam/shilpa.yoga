@@ -27,7 +27,7 @@ export function StorySection() {
 
   return (
     <section ref={ref} className="overflow-hidden bg-brand-cream text-brand-ink">
-      <div className="container-content section-y">
+      <div className="container-content py-12 md:py-16">
         <ChapterHeading
           number="01"
           eyebrow="The teacher"

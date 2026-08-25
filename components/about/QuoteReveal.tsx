@@ -35,8 +35,10 @@ function Word({
 }
 
 /**
- * Apple-launch-style pinned statement: the section holds the viewport for a
- * couple of scroll lengths while the quote illuminates word by word.
+ * Pinned statement: the section holds the viewport while the quote illuminates
+ * word by word. Height is deliberately just over one extra viewport — enough
+ * for the reveal to read as deliberate, without making a single sentence cost
+ * the reader two full screens of scrolling.
  */
 export function QuoteReveal() {
   const reduce = useReducedMotion();
@@ -45,10 +47,10 @@ export function QuoteReveal() {
     target: ref,
     offset: ["start start", "end end"],
   });
-  const quoteProgress = useTransform(scrollYProgress, [0.05, 0.75], [0, 1]);
+  const quoteProgress = useTransform(scrollYProgress, [0.05, 0.7], [0, 1]);
   const markOpacity = useTransform(scrollYProgress, [0, 0.12], [0, 1]);
-  const nameOpacity = useTransform(scrollYProgress, [0.78, 0.92], [0, 1]);
-  const nameY = useTransform(scrollYProgress, [0.78, 0.92], [16, 0]);
+  const nameOpacity = useTransform(scrollYProgress, [0.74, 0.88], [0, 1]);
+  const nameY = useTransform(scrollYProgress, [0.74, 0.88], [16, 0]);
 
   if (reduce) {
     return (
@@ -69,7 +71,7 @@ export function QuoteReveal() {
   return (
     <section
       ref={ref}
-      className="relative h-[220vh] bg-[linear-gradient(170deg,#1F3D2E_0%,#142A1F_100%)] text-brand-cream on-dark"
+      className="relative h-[120vh] bg-[linear-gradient(170deg,#1F3D2E_0%,#142A1F_100%)] text-brand-cream on-dark"
     >
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">
         <div

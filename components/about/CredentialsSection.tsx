@@ -29,7 +29,7 @@ export function CredentialsSection() {
         <TreePoseFigure />
       </div>
 
-      <div className="container-content section-y">
+      <div className="container-content py-12 md:py-16">
         <ChapterHeading
           number="05"
           eyebrow="Training & lineage"

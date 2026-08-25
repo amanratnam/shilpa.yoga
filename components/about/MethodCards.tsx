@@ -66,7 +66,7 @@ export function MethodCards() {
         aria-hidden
         className="animate-glow-drift pointer-events-none absolute -right-32 top-1/4 h-[26rem] w-[26rem] rounded-full bg-brand-gold/[0.07] blur-3xl"
       />
-      <div className="container-content section-y">
+      <div className="container-content py-12 md:py-16">
         <ChapterHeading
           number="02"
           eyebrow="How I teach"

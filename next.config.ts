@@ -11,6 +11,12 @@ const nextConfig: NextConfig = {
         hostname: "aofcqupyahbyybpdizzw.supabase.co",
         pathname: "/storage/v1/object/public/**",
       },
+      // YouTube poster frames for the click-to-play video facade.
+      {
+        protocol: "https",
+        hostname: "i.ytimg.com",
+        pathname: "/vi/**",
+      },
     ],
   },
 };
