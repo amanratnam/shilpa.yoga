@@ -3,7 +3,7 @@ import { AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const fieldBase =
-  "w-full rounded-brand border bg-brand-white text-brand-ink placeholder:text-brand-stone/60 transition-colors";
+  "w-full rounded-brand border bg-brand-white text-brand-ink placeholder:text-brand-stone transition-colors";
 
 /**
  * Public forms use the roomy default. `compact` exists for dense admin grids

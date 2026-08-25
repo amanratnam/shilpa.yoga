@@ -86,7 +86,7 @@ export function JourneyNotebook() {
         className="animate-glow-drift pointer-events-none absolute -left-32 top-10 h-72 w-72 rounded-full bg-brand-gold/10 blur-3xl"
       />
 
-      <div className="container-content section-y">
+      <div className="container-content py-12 md:py-16">
         <ChapterHeading
           number="04"
           eyebrow="The journey"
@@ -202,7 +202,7 @@ export function JourneyNotebook() {
                     <p className="mt-2 text-body italic text-brand-stone">
                       {entry.sub}
                     </p>
-                    <p className="mt-auto self-end text-small italic text-brand-stone/70">
+                    <p className="mt-auto self-end text-small italic text-brand-stone">
                       — page {active + 1} of {entries.length}
                     </p>
                   </div>

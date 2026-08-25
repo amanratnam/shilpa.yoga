@@ -8,10 +8,8 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import { SmartImage } from "@/components/ui/SmartImage";
+import { VideoEmbed } from "@/components/ui/VideoEmbed";
 import { Badge } from "@/components/ui/Badge";
-import { BreathRings } from "@/components/art/YogaFigures";
-import { images } from "@/content/images";
 import { siteConfig } from "@/lib/site";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -55,7 +53,7 @@ export function AboutHero() {
   return (
     <section
       ref={ref}
-      className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-brand-green text-brand-cream on-dark"
+      className="relative isolate flex min-h-[90svh] flex-col overflow-hidden bg-brand-green text-brand-cream on-dark"
     >
       {/* Ambient studio light + rising gold dust */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
@@ -79,7 +77,7 @@ export function AboutHero() {
           ))}
       </div>
 
-      <div className="container-content grid flex-1 items-center gap-10 pb-24 pt-28 md:pb-28 md:pt-32 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+      <div className="container-content grid flex-1 items-center gap-8 pb-16 pt-14 md:gap-10 md:pb-24 md:pt-28 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14">
         <motion.div
           style={reduce ? undefined : { y: textY, opacity: textOpacity }}
           className="flex flex-col gap-6"
@@ -112,42 +110,33 @@ export function AboutHero() {
 
         <motion.div
           style={reduce ? undefined : { y: imageY, scale: imageScale }}
-          className="relative mx-auto w-full max-w-xs sm:max-w-sm"
+          className="relative mx-auto w-full max-w-xl lg:max-w-none"
         >
-          {/* Breathing aura behind the portrait */}
+          {/* Soft light behind the player, in place of the portrait's rings */}
           <div
             aria-hidden
-            className="absolute -inset-10 -z-10 text-brand-gold/50 sm:-inset-14"
-          >
-            <BreathRings className="h-full w-full" />
-          </div>
-          <div
-            aria-hidden
-            className="animate-breathe absolute -inset-3 -z-10 rounded-full bg-brand-gold/15 blur-2xl"
+            className="animate-breathe absolute -inset-6 -z-10 rounded-brand bg-brand-gold/10 blur-2xl"
           />
           <motion.div
+            className="relative"
             {...(reduce
               ? {}
               : {
-                  initial: { opacity: 0, scale: 0.94 },
+                  initial: { opacity: 0, scale: 0.96 },
                   animate: { opacity: 1, scale: 1 },
                   transition: { duration: 1, ease: EASE, delay: 0.2 },
                 })}
           >
-            {/* Gold offset frame */}
-            <div className="absolute -bottom-4 -right-4 h-full w-full rounded-brand border border-brand-gold/60" />
-            <div className="relative aspect-[3/4] overflow-hidden rounded-brand">
-              <SmartImage
-                image={images.aboutPortrait}
-                fill
-                priority
-                sizes="(min-width: 1024px) 38vw, 90vw"
-              />
-              <div
-                aria-hidden
-                className="absolute inset-0 bg-gradient-to-t from-brand-green/30 to-transparent"
-              />
-            </div>
+            {/* Gold offset frame, kept from the portrait treatment */}
+            <div
+              aria-hidden
+              className="absolute -bottom-3 -right-3 h-full w-full rounded-brand border border-brand-gold/60 sm:-bottom-4 sm:-right-4"
+            />
+            <VideoEmbed
+              videoId="GDi7XioXirA"
+              title="Shilpa on teaching anatomy-based yoga"
+              posterAlt="Shilpa teaching a yoga class"
+            />
           </motion.div>
         </motion.div>
       </div>

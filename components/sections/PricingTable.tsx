@@ -30,17 +30,19 @@ export function PricingTable({
 
       <div
         className={cn(
-          "mx-auto mt-14 grid gap-6",
-          // Four plans read as a 2x2 block; three-across would leave one card
-          // stranded on a row of its own.
-          plans.length === 4 && "sm:grid-cols-2",
+          // items-start: cards take their natural height. Stretching them to match
+          // the tallest left the shorter plans with a large gap between their
+          // last feature and their button, which read as broken rather than airy.
+          "mx-auto mt-10 grid items-start gap-5",
+          // Four or more plans sit four-across on desktop, so the full set is
+          // comparable at a glance and any fifth card starts a second row.
+          plans.length >= 4 && "sm:grid-cols-2 lg:grid-cols-4",
           plans.length === 3 && "lg:grid-cols-3",
           plans.length < 3 && "max-w-3xl sm:grid-cols-2",
-          plans.length > 4 && "lg:grid-cols-3",
         )}
       >
         {plans.map((plan, i) => (
-          <Reveal key={plan.name} delay={i * 0.08} className="h-full">
+          <Reveal key={plan.name} delay={i * 0.08}>
             <PlanCard plan={plan} />
           </Reveal>
         ))}
@@ -49,7 +51,7 @@ export function PricingTable({
       {note ? (
         <p
           className={cn(
-            "mx-auto mt-10 max-w-2xl text-center text-small",
+            "mx-auto mt-8 max-w-2xl text-center text-small",
             dark ? "text-brand-cream/70" : "text-brand-stone",
           )}
         >

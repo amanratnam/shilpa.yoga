@@ -28,6 +28,15 @@ export function Navbar() {
     };
   }, [mobileOpen]);
 
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [mobileOpen]);
+
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
@@ -94,19 +103,28 @@ export function Navbar() {
         {/* Mobile toggle */}
         <button
           type="button"
-          className="lg:hidden"
+          // -mr-2.5 keeps the enlarged target optically aligned to the gutter.
+          className="-mr-2.5 grid h-11 w-11 place-items-center rounded-brand text-brand-ink lg:hidden"
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileOpen}
+          aria-controls="mobile-nav"
           onClick={() => setMobileOpen((v) => !v)}
         >
-          {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          {mobileOpen ? (
+            <X className="h-6 w-6" aria-hidden />
+          ) : (
+            <Menu className="h-6 w-6" aria-hidden />
+          )}
         </button>
       </nav>
     </header>
 
       {/* Mobile panel, outside the backdrop-blur header so it positions against the viewport */}
       {mobileOpen ? (
-        <div className="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto bg-brand-cream md:top-20 lg:hidden">
+        <div
+          id="mobile-nav"
+          className="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto bg-brand-cream md:top-20 lg:hidden"
+        >
           <div className="container-content flex flex-col gap-1 py-8">
             {mainNav.map((item) => (
               <div key={item.href} className="border-b border-brand-ink/10 py-2">
@@ -124,7 +142,7 @@ export function Navbar() {
                         key={child.href}
                         href={child.href}
                         onClick={() => setMobileOpen(false)}
-                        className="py-2 text-body text-brand-stone"
+                        className="block py-2.5 text-body text-brand-stone"
                       >
                         {child.label}
                       </Link>

@@ -11,12 +11,15 @@ import type { Service } from "@/content/services";
 
 export function ServiceCards({
   services,
+  priceLabels,
   eyebrow = "What I offer",
   title = "Three ways to practice",
   intro,
   tone = "light",
 }: {
   services: Service[];
+  /** Live price summary per service key, resolved by the calling page. */
+  priceLabels: Record<Service["key"], string>;
   eyebrow?: string;
   title?: React.ReactNode;
   intro?: React.ReactNode;
@@ -48,7 +51,7 @@ export function ServiceCards({
                 <h3 className="text-h3">{service.title}</h3>
                 <p className="text-body text-brand-stone">{service.cardDescription}</p>
                 <p className="mt-2 text-small font-medium text-brand-ink">
-                  {service.priceLabel}
+                  {priceLabels[service.key]}
                 </p>
                 <div className="mt-4">
                   <ArrowLink href={service.href}>Learn more</ArrowLink>

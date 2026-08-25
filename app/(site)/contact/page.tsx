@@ -12,6 +12,11 @@ import {
 import { siteConfig } from "@/lib/site";
 import { getPricingConfig } from "@/lib/pricing/store";
 import { buildPlanOptions } from "@/lib/validation";
+import {
+  formatINR,
+  sortedMonthly,
+  type PricingConfig,
+} from "@/lib/pricing/config";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -52,15 +57,27 @@ const details = [
   },
 ];
 
-const offerings = [
-  "Online yoga, ₹199 trial then from ₹3,000/mo",
-  "Personal sessions in Gurgaon, ₹499 trial",
-  "Pre & post-natal yoga",
-];
+/** Quoted prices follow the pricing configurator, never a hardcoded copy. */
+function offeringsFor(config: PricingConfig): string[] {
+  const online = config.modes.online;
+  const cheapestOnline = sortedMonthly(online)[0];
+  return [
+    `Online yoga, ${formatINR(online.trial.amount)} trial${
+      cheapestOnline ? ` then from ${formatINR(cheapestOnline.amount)}/mo` : ""
+    }`,
+    `Personal sessions in Gurgaon, ${formatINR(config.modes.personal.trial.amount)} trial`,
+    "Pre & post-natal yoga",
+    `Corporate sessions, from ${formatINR(
+      Math.min(online.corporate.amount, config.modes.personal.corporate.amount),
+    )}/session`,
+  ];
+}
 
 export default async function ContactPage() {
   // Live prices for the plan dropdown.
-  const planOptions = buildPlanOptions(await getPricingConfig());
+  const config = await getPricingConfig();
+  const planOptions = buildPlanOptions(config);
+  const offerings = offeringsFor(config);
 
   return (
     <section className="relative isolate overflow-hidden bg-brand-green text-brand-cream on-dark">

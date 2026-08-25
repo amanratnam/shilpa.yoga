@@ -5,11 +5,14 @@ import { SocialProof } from "@/components/sections/SocialProof";
 import { PhilosophyBlock } from "@/components/sections/PhilosophyBlock";
 import { CTASection } from "@/components/layout/CTASection";
 import { images } from "@/content/images";
-import { services } from "@/content/services";
+import { priceLabel, services } from "@/content/services";
+import { getPricingConfig } from "@/lib/pricing/store";
 import { testimonials, differentiators } from "@/content/home";
 import { siteConfig } from "@/lib/site";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const config = await getPricingConfig();
+
   return (
     <>
       <HomeHero />
@@ -34,6 +37,10 @@ export default function HomePage() {
 
       <ServiceCards
         services={services}
+        priceLabels={{
+          online: priceLabel("online", config),
+          personal: priceLabel("personal", config),
+        }}
         tone="dark"
         eyebrow="What I offer"
         title="Two ways to practice"

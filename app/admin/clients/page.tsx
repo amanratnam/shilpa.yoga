@@ -105,7 +105,7 @@ export default async function ClientsPage() {
                         </div>
                       </td>
                       <td className={cn(CELL, "text-small text-brand-ink")}>
-                        {client.email || <span className="text-brand-stone/60">—</span>}
+                        {client.email || <span className="text-brand-stone">—</span>}
                       </td>
                       <td className={cn(CELL, "text-small text-brand-ink")}>
                         {referralSourceLabels[client.referralSource]}

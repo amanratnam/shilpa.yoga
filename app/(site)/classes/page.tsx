@@ -3,7 +3,8 @@ import { PageHero } from "@/components/sections/PageHero";
 import { FeatureSplit } from "@/components/sections/FeatureSplit";
 import { CTASection } from "@/components/layout/CTASection";
 import { Button } from "@/components/ui/Button";
-import { serviceByKey } from "@/content/services";
+import { priceLabel, serviceByKey } from "@/content/services";
+import { getPricingConfig } from "@/lib/pricing/store";
 
 export const metadata: Metadata = {
   title: "Classes",
@@ -12,7 +13,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/classes" },
 };
 
-export default function ClassesPage() {
+export default async function ClassesPage() {
+  const config = await getPricingConfig();
   const online = serviceByKey.online;
   const personal = serviceByKey.personal;
 
@@ -37,7 +39,7 @@ export default function ClassesPage() {
             around the body, with options for every level and real-time
             adjustments. Beginners are genuinely welcome.
           </p>
-          <p className="text-small font-medium text-brand-ink">{online.priceLabel}</p>
+          <p className="text-small font-medium text-brand-ink">{priceLabel("online", config)}</p>
           <div>
             <Button href={online.href}>Explore online classes</Button>
           </div>
@@ -58,7 +60,7 @@ export default function ClassesPage() {
             across Gurgaon and Delhi NCR.
           </p>
           <p className="text-small font-medium text-brand-cream">
-            {personal.priceLabel}
+            {priceLabel("personal", config)}
           </p>
           <div>
             <Button href={personal.href} tone="dark">
