@@ -13,7 +13,8 @@ import {
   paymentMethodLabels,
 } from "@/lib/admin/enums";
 import { formatDate } from "@/lib/admin/format";
-import { formatINR, yogaPackageById } from "@/content/pricing";
+import { formatINR } from "@/lib/pricing/config";
+import { getPricingConfig } from "@/lib/pricing/store";
 import { receiptNumber } from "@/lib/admin/receipt";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { SubscriptionFormModal } from "@/components/admin/SubscriptionFormModal";
@@ -44,9 +45,9 @@ export default async function SubscriptionDetailPage({
   const client = await getClient(sub.clientId);
   if (!client) notFound();
 
-  const pkg = yogaPackageById.get(sub.yogaPackage);
+  const config = await getPricingConfig();
   const packages = [...YOGA_MODES].flatMap((mode) =>
-    packagesForMode(mode).map((p) => ({ id: p.id, label: p.label, mode })),
+    packagesForMode(mode, config).map((p) => ({ id: p.id, label: p.label, mode })),
   );
 
   return (
@@ -143,7 +144,7 @@ export default async function SubscriptionDetailPage({
               <Detail label="Package">{sub.packageLabel}</Detail>
               <Detail label="Start date">{formatDate(sub.startDate, "long")}</Detail>
               <Detail label="End date">{formatDate(sub.endDate, "long")}</Detail>
-              <Detail label="Total sessions">{pkg ? pkg.sessions : "—"}</Detail>
+              <Detail label="Total sessions">{sub.packageSessions ?? "—"}</Detail>
               <Detail label="Payment status">
                 <PaymentStatus paid={sub.paymentDone} />
               </Detail>

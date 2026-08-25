@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { ArrowRight, CalendarRange, Users } from "lucide-react";
+import { ArrowRight, CalendarRange, IndianRupee, Users } from "lucide-react";
 import { verifySession } from "@/lib/admin/auth";
 import { listClients } from "@/lib/admin/clients";
 import { listSubscriptions } from "@/lib/admin/subscriptions";
+import { getPricingConfig } from "@/lib/pricing/store";
 import { CLIENT_STATUSES, clientStatusLabels } from "@/lib/admin/enums";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { DataProblem } from "@/components/admin/DataProblem";
@@ -64,9 +65,13 @@ export default async function AdminHomePage() {
 
   // Caught here rather than thrown, so the page can explain what to fix.
   // Next.js hides Server Component error messages in production.
-  let clients, subscriptions;
+  let clients, subscriptions, pricing;
   try {
-    [clients, subscriptions] = await Promise.all([listClients(), listSubscriptions()]);
+    [clients, subscriptions, pricing] = await Promise.all([
+      listClients(),
+      listSubscriptions(),
+      getPricingConfig(),
+    ]);
   } catch (error) {
     return (
       <>
@@ -123,6 +128,21 @@ export default async function AdminHomePage() {
                 label: "Unpaid",
                 value: subscriptions.filter((s) => !s.paymentDone).length,
               },
+            ]}
+          />
+
+          <SectionCard
+            href="/admin/pricing"
+            title="Pricing"
+            blurb="Every price the site quotes, published from one place."
+            icon={IndianRupee}
+            stats={[
+              {
+                label: "Monthly tiers",
+                value:
+                  pricing.modes.online.monthly.length + pricing.modes.personal.monthly.length,
+              },
+              { label: "Prepay discount", value: `${pricing.discount.percent}%` },
             ]}
           />
         </div>

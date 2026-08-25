@@ -31,7 +31,12 @@ export function PricingTable({
       <div
         className={cn(
           "mx-auto mt-14 grid gap-6",
-          plans.length >= 3 ? "lg:grid-cols-3" : "max-w-3xl sm:grid-cols-2",
+          // Four plans read as a 2x2 block; three-across would leave one card
+          // stranded on a row of its own.
+          plans.length === 4 && "sm:grid-cols-2",
+          plans.length === 3 && "lg:grid-cols-3",
+          plans.length < 3 && "max-w-3xl sm:grid-cols-2",
+          plans.length > 4 && "lg:grid-cols-3",
         )}
       >
         {plans.map((plan, i) => (

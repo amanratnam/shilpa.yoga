@@ -1,7 +1,7 @@
 import { Section, type Tone } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ContactForm } from "@/components/forms/ContactForm";
-import type { ContactInput } from "@/lib/validation";
+import type { ContactInput, PlanOptions } from "@/lib/validation";
 import { siteConfig } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -10,12 +10,14 @@ export function EnquirySection({
   title,
   subtitle,
   interest,
+  planOptions,
   tone = "dark",
 }: {
   eyebrow?: string;
   title: React.ReactNode;
   subtitle?: React.ReactNode;
   interest: ContactInput["interest"];
+  planOptions: PlanOptions;
   tone?: Tone;
 }) {
   const dark = tone === "dark";
@@ -39,7 +41,7 @@ export function EnquirySection({
             !dark && "border border-brand-ink/10",
           )}
         >
-          <ContactForm defaultInterest={interest} />
+          <ContactForm defaultInterest={interest} planOptions={planOptions} />
         </div>
       </div>
     </Section>

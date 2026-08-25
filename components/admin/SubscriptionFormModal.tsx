@@ -50,7 +50,15 @@ export function SubscriptionFormModal({
   const errors = state.fieldErrors ?? {};
 
   // The package list depends on the chosen mode.
-  const visiblePackages = packages.filter((p) => p.mode === mode);
+  const forMode = packages.filter((p) => p.mode === mode);
+  // A subscription may sit on a package the admin has since retired from the
+  // configurator. Keep it selectable while editing that row, clearly marked,
+  // so its history stays editable instead of silently changing package.
+  const retired =
+    defaults && mode === defaults.yogaMode && !packages.some((p) => p.id === defaults.yogaPackage)
+      ? { id: defaults.yogaPackage, label: `${defaults.yogaPackage} (retired)`, mode }
+      : null;
+  const visiblePackages = retired ? [retired, ...forMode] : forMode;
   const noClients = clients.length === 0 && !fixedClientId;
 
   return (
@@ -70,11 +78,14 @@ export function SubscriptionFormModal({
       {open ? (
         <Modal
           title={editing ? "Edit subscription" : "Add a subscription"}
-          description="Packages are pulled from the live pricing on the classes pages."
+          description="Packages and prices come from the pricing configurator."
           onClose={() => setOpen(false)}
         >
           <form action={formAction} className="mt-8 grid gap-5 sm:grid-cols-2">
             {editing ? <input type="hidden" name="id" value={defaults!.id} /> : null}
+            {editing ? (
+              <input type="hidden" name="existingPackage" value={defaults!.yogaPackage} />
+            ) : null}
             {returnTo ? <input type="hidden" name="returnTo" value={returnTo} /> : null}
 
             {fixedClientId ? (

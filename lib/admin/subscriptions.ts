@@ -3,7 +3,14 @@ import { z } from "zod";
 import { verifySession } from "@/lib/admin/auth";
 import { supabaseAdmin } from "@/lib/admin/supabase";
 import { dataError } from "@/lib/admin/errors";
-import { yogaPackageById, yogaPackages } from "@/content/pricing";
+import { getPricingConfig } from "@/lib/pricing/store";
+import {
+  buildPackages,
+  packageIndex,
+  sessionsFromPackageId,
+  type PricingConfig,
+  type YogaPackage,
+} from "@/lib/pricing/config";
 import {
   PAYMENT_METHODS,
   YOGA_MODES,
@@ -12,12 +19,25 @@ import {
   type YogaMode,
 } from "@/lib/admin/enums";
 
-export const subscriptionSchema = z
+/**
+ * Built per request against the live pricing config, so a package the admin
+ * has retired stops being selectable. `allowPackageId` keeps the package a
+ * subscription was *already* sold on valid while editing that row, so
+ * retiring a tier never makes an existing record unsaveable.
+ */
+export function buildSubscriptionSchema(
+  packages: Map<string, YogaPackage>,
+  allowPackageId?: string,
+) {
+  const knows = (id: string) => packages.has(id) || (!!allowPackageId && id === allowPackageId);
+  const modeOf = (id: string) => packages.get(id)?.mode;
+
+  return z
   .object({
     clientId: z.uuid("Select a client"),
     yogaMode: z.enum(YOGA_MODES, { error: "Select a yoga mode" }),
     // Checked against the live pricing table, so packages can never drift.
-    yogaPackage: z.string().refine((id) => yogaPackageById.has(id), "Select a yoga package"),
+    yogaPackage: z.string().refine(knows, "Select a yoga package"),
     startDate: z.iso.date("Select a subscription start date"),
     endDate: z.iso.date("Select a subscription end date"),
     paymentDone: z.boolean(),
@@ -31,14 +51,18 @@ export const subscriptionSchema = z
   // The form filters packages by mode, but Server Actions accept direct POSTs,
   // so the pairing is enforced here too.
   .refine(
-    (data) => yogaPackageById.get(data.yogaPackage)?.mode === modeToPricingMode(data.yogaMode),
+    (data) =>
+      // A retired package kept for an edit has no live mode to check against.
+      data.yogaPackage === allowPackageId ||
+      modeOf(data.yogaPackage) === modeToPricingMode(data.yogaMode),
     {
       message: "That package is not available for the selected yoga mode",
       path: ["yogaPackage"],
     },
   );
+}
 
-export type SubscriptionInput = z.infer<typeof subscriptionSchema>;
+export type SubscriptionInput = z.infer<ReturnType<typeof buildSubscriptionSchema>>;
 
 /** Where a subscription sits relative to today. */
 export type SubscriptionState = "upcoming" | "current" | "expired";
@@ -55,6 +79,8 @@ export type SubscriptionRecord = SubscriptionInput & {
   /** Package name without the mode or price, e.g. "Monthly, 8 sessions". */
   packageLabel: string;
   packageAmount: number | null;
+  /** Classes the package covers, for receipts. */
+  packageSessions: number | null;
   state: SubscriptionState;
   /** Joined from `clients`, for the subscriptions list view. */
   clientName?: string;
@@ -71,6 +97,8 @@ type SubscriptionRow = {
   payment_done: boolean;
   payment_method: string;
   notes: string | null;
+  package_label: string | null;
+  package_amount: number | null;
   clients?: { full_name: string } | null;
 };
 
@@ -82,17 +110,23 @@ function stateOf(startDate: string, endDate: string): SubscriptionState {
   return "current";
 }
 
-function toRecord(row: SubscriptionRow): SubscriptionRecord {
-  const pkg = yogaPackageById.get(row.yoga_package);
+/**
+ * Rows written before the snapshot columns existed resolve against the live
+ * config, exactly as every row used to. Anything sold since carries its own
+ * label and amount, so a later price change cannot rewrite it.
+ */
+function toRecord(row: SubscriptionRow, live: Map<string, YogaPackage>): SubscriptionRecord {
+  const pkg = live.get(row.yoga_package);
   return {
     id: row.id,
     createdAt: row.created_at,
     clientId: row.client_id,
     yogaMode: row.yoga_mode as YogaMode,
     yogaPackage: row.yoga_package,
-    // Fall back to the stored id so a renamed package still renders something.
-    packageLabel: pkg?.shortLabel ?? row.yoga_package,
-    packageAmount: pkg?.amount ?? null,
+    // Fall back to the stored id so a retired package still renders something.
+    packageLabel: row.package_label ?? pkg?.shortLabel ?? row.yoga_package,
+    packageAmount: row.package_amount ?? pkg?.amount ?? null,
+    packageSessions: pkg?.sessions ?? sessionsFromPackageId(row.yoga_package),
     startDate: row.start_date,
     endDate: row.end_date,
     paymentDone: row.payment_done,
@@ -103,7 +137,7 @@ function toRecord(row: SubscriptionRow): SubscriptionRecord {
   };
 }
 
-function toColumns(input: SubscriptionInput) {
+function toColumns(input: SubscriptionInput, pkg: YogaPackage | undefined) {
   return {
     client_id: input.clientId,
     yoga_mode: input.yogaMode,
@@ -113,7 +147,15 @@ function toColumns(input: SubscriptionInput) {
     payment_done: input.paymentDone,
     payment_method: input.paymentMethod,
     notes: input.notes || null,
+    // Snapshot the price as sold. Left untouched when the package is one the
+    // admin has since retired, so an edit cannot erase the original amount.
+    ...(pkg ? { package_label: pkg.shortLabel, package_amount: pkg.amount } : {}),
   };
+}
+
+/** The live package list, for resolving rows and validating writes. */
+async function livePackages(): Promise<Map<string, YogaPackage>> {
+  return packageIndex(await getPricingConfig());
 }
 
 export async function listSubscriptions(): Promise<SubscriptionRecord[]> {
@@ -125,7 +167,8 @@ export async function listSubscriptions(): Promise<SubscriptionRecord[]> {
     .order("start_date", { ascending: false });
 
   if (error) throw dataError(error, "Could not load subscriptions");
-  return (data as SubscriptionRow[]).map(toRecord);
+  const live = await livePackages();
+  return (data as SubscriptionRow[]).map((row) => toRecord(row, live));
 }
 
 /** A client's full history, newest first — the audit trail on their page. */
@@ -141,7 +184,8 @@ export async function listSubscriptionsForClient(
     .order("start_date", { ascending: false });
 
   if (error) throw dataError(error, "Could not load subscriptions");
-  return (data as SubscriptionRow[]).map(toRecord);
+  const live = await livePackages();
+  return (data as SubscriptionRow[]).map((row) => toRecord(row, live));
 }
 
 export async function getSubscription(id: string): Promise<SubscriptionRecord | null> {
@@ -154,7 +198,7 @@ export async function getSubscription(id: string): Promise<SubscriptionRecord | 
     .maybeSingle();
 
   if (error) throw dataError(error, "Could not load subscription");
-  return data ? toRecord(data as SubscriptionRow) : null;
+  return data ? toRecord(data as SubscriptionRow, await livePackages()) : null;
 }
 
 export async function insertSubscription(
@@ -162,14 +206,15 @@ export async function insertSubscription(
 ): Promise<SubscriptionRecord> {
   await verifySession();
 
+  const live = await livePackages();
   const { data, error } = await supabaseAdmin()
     .from("subscriptions")
-    .insert(toColumns(input))
+    .insert(toColumns(input, live.get(input.yogaPackage)))
     .select("*")
     .single();
 
   if (error) throw dataError(error, "Could not save subscription");
-  return toRecord(data as SubscriptionRow);
+  return toRecord(data as SubscriptionRow, live);
 }
 
 export async function updateSubscription(
@@ -178,18 +223,20 @@ export async function updateSubscription(
 ): Promise<SubscriptionRecord> {
   await verifySession();
 
+  const live = await livePackages();
   const { data, error } = await supabaseAdmin()
     .from("subscriptions")
-    .update(toColumns(input))
+    .update(toColumns(input, live.get(input.yogaPackage)))
     .eq("id", id)
     .select("*")
     .single();
 
   if (error) throw dataError(error, "Could not update subscription");
-  return toRecord(data as SubscriptionRow);
+  return toRecord(data as SubscriptionRow, live);
 }
 
 /** Packages offered for a given mode, for the dependent dropdown in the form. */
-export function packagesForMode(mode: YogaMode) {
-  return yogaPackages.filter((p) => p.mode === modeToPricingMode(mode));
+export function packagesForMode(mode: YogaMode, config: PricingConfig) {
+  const target = modeToPricingMode(mode);
+  return buildPackages(config).filter((p) => p.mode === target);
 }

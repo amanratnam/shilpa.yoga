@@ -7,8 +7,8 @@ import { CheckCircle2 } from "lucide-react";
 import {
   contactSchema,
   interestOptions,
-  planOptions,
   type ContactInput,
+  type PlanOptions,
 } from "@/lib/validation";
 import { countries } from "@/lib/countries";
 import { FormField, Input, Textarea, Select } from "@/components/ui/FormField";
@@ -16,8 +16,11 @@ import { Button } from "@/components/ui/Button";
 
 export function ContactForm({
   defaultInterest = "online",
+  planOptions,
 }: {
   defaultInterest?: ContactInput["interest"];
+  /** Resolved from live pricing by the server page that renders this form. */
+  planOptions: PlanOptions;
 }) {
   const [submitted, setSubmitted] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);

@@ -1,7 +1,7 @@
 import "server-only";
 import { PDFDocument, StandardFonts, rgb, type PDFFont, type PDFImage } from "pdf-lib";
 import { cdnAsset } from "@/content/images";
-import { formatINR, yogaPackageById } from "@/content/pricing";
+import { formatINR } from "@/lib/pricing/config";
 import { siteConfig } from "@/lib/site";
 import { genderLabels, modeLabels, paymentMethodLabels } from "@/lib/admin/enums";
 import type { ClientRecord } from "@/lib/admin/clients";
@@ -68,7 +68,8 @@ export async function buildReceiptPdf(
 ): Promise<Uint8Array> {
   const pdf = await PDFDocument.create();
 
-  const pkg = yogaPackageById.get(sub.yogaPackage);
+  // Everything printed comes off the subscription record, which snapshots the
+  // price as sold — a later price change must never alter an issued receipt.
   const amount = sub.packageAmount;
 
   pdf.setTitle(`Receipt ${receiptNumber(sub.id)} — ${client.fullName}`);
@@ -224,7 +225,7 @@ export async function buildReceiptPdf(
     ["Subscription end", formatDate(sub.endDate)],
   );
   row(
-    ["Total sessions", pkg ? `${pkg.sessions}` : "—"],
+    ["Total sessions", sub.packageSessions !== null ? `${sub.packageSessions}` : "—"],
     ["Payment mode", paymentMethodLabels[sub.paymentMethod]],
   );
 

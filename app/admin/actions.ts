@@ -15,10 +15,12 @@ import { verifySession } from "@/lib/admin/auth";
 import { clientSchema, insertClient, updateClient } from "@/lib/admin/clients";
 import { diagnose } from "@/lib/admin/errors";
 import {
+  buildSubscriptionSchema,
   insertSubscription,
-  subscriptionSchema,
   updateSubscription,
 } from "@/lib/admin/subscriptions";
+import { packageIndex, pricingConfigSchema } from "@/lib/pricing/config";
+import { getPricingConfig, publishPricingConfig } from "@/lib/pricing/store";
 
 export type ActionState = {
   error?: string;
@@ -155,7 +157,17 @@ export async function saveSubscriptionAction(
 ): Promise<ActionState> {
   await verifySession();
 
-  const parsed = subscriptionSchema.safeParse({
+  const id = str(formData, "id");
+
+  // Validate against live pricing, but keep the package this row was already
+  // sold on acceptable so retiring a tier never blocks editing its history.
+  const existingPackage = str(formData, "existingPackage");
+  const schema = buildSubscriptionSchema(
+    packageIndex(await getPricingConfig()),
+    existingPackage || undefined,
+  );
+
+  const parsed = schema.safeParse({
     clientId: str(formData, "clientId"),
     yogaMode: str(formData, "yogaMode"),
     yogaPackage: str(formData, "yogaPackage"),
@@ -167,7 +179,6 @@ export async function saveSubscriptionAction(
   });
   if (!parsed.success) return { fieldErrors: fieldErrorsOf(parsed.error) };
 
-  const id = str(formData, "id");
   // Where to land afterwards: the client's page when added from there.
   const returnTo = str(formData, "returnTo");
 
@@ -184,4 +195,41 @@ export async function saveSubscriptionAction(
   revalidatePath("/admin/subscriptions");
   revalidatePath(`/admin/clients/${parsed.data.clientId}`);
   redirect(returnTo.startsWith("/admin") ? returnTo : "/admin/subscriptions");
+}
+
+// ---------------------------------------------------------------------------
+// Pricing
+// ---------------------------------------------------------------------------
+
+/**
+ * Publish a new pricing configuration.
+ *
+ * The whole config travels as one JSON field rather than as dozens of named
+ * inputs: monthly tiers are a variable-length list, so a flat form would need
+ * index-encoded names and a parser on this side. The client builds the object
+ * it already renders from, and Zod is the gate.
+ */
+export async function publishPricingAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const session = await verifySession();
+
+  let raw: unknown;
+  try {
+    raw = JSON.parse(str(formData, "config"));
+  } catch {
+    return { error: "Could not read the pricing form. Reload the page and try again." };
+  }
+
+  const parsed = pricingConfigSchema.safeParse(raw);
+  if (!parsed.success) return { fieldErrors: fieldErrorsOf(parsed.error) };
+
+  try {
+    await publishPricingConfig(parsed.data, session.username);
+  } catch (error) {
+    return { error: saveErrorMessage(error, "Could not publish these prices.") };
+  }
+
+  redirect("/admin/pricing?published=1");
 }

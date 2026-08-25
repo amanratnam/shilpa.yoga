@@ -9,6 +9,7 @@ const tabs = [
   { key: "home", href: "/admin", label: "Overview" },
   { key: "clients", href: "/admin/clients", label: "Clients" },
   { key: "subscriptions", href: "/admin/subscriptions", label: "Subscriptions" },
+  { key: "pricing", href: "/admin/pricing", label: "Pricing" },
 ];
 
 export function AdminHeader({
@@ -18,7 +19,7 @@ export function AdminHeader({
   expiresAt,
 }: {
   username: string;
-  active: "home" | "clients" | "subscriptions";
+  active: "home" | "clients" | "subscriptions" | "pricing";
   expiresAt: number;
 }) {
   return (

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { formatINR, yogaPackages } from "@/content/pricing";
+import { buildPackages, formatINR, type PricingConfig } from "@/lib/pricing/config";
 
 export const interestOptions = [
   { value: "online", label: "Online Yoga classes" },
@@ -9,21 +9,24 @@ export const interestOptions = [
 
 export type Interest = (typeof interestOptions)[number]["value"];
 
+export type PlanOptions = Record<Interest, { value: string; label: string }[]>;
+
 /**
  * Pricing tiers shown as a dependent dropdown, keyed by chosen interest.
- * Derived from the shared pricing table so the enquiry form can never quote a
- * price the classes pages disagree with.
+ *
+ * Built from the live pricing config so the enquiry form can never quote a
+ * price the classes pages disagree with. The form is a Client Component, so a
+ * server page resolves this and passes it down as a prop.
  */
-const optionsForMode = (mode: "online" | "personal") =>
-  yogaPackages
-    .filter((p) => p.mode === mode)
-    .map((p) => ({ value: p.id, label: `${p.shortLabel}, ${formatINR(p.amount)}` }));
+export function buildPlanOptions(config: PricingConfig): PlanOptions {
+  const packages = buildPackages(config);
+  const forMode = (mode: "online" | "personal") =>
+    packages
+      .filter((p) => p.mode === mode)
+      .map((p) => ({ value: p.id, label: `${p.shortLabel}, ${formatINR(p.amount)}` }));
 
-export const planOptions: Record<Interest, { value: string; label: string }[]> = {
-  online: optionsForMode("online"),
-  personal: optionsForMode("personal"),
-  other: [],
-};
+  return { online: forMode("online"), personal: forMode("personal"), other: [] };
+}
 
 export const contactSchema = z.object({
   name: z.string().min(2, "Please enter your name.").max(80),

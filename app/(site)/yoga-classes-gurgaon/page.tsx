@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { ServicePage } from "@/components/sections/ServicePage";
-import { yogaClassesGurgaon } from "@/content/seo";
+import { buildYogaClassesGurgaon } from "@/content/seo";
+import { getPricingConfig } from "@/lib/pricing/store";
+import { buildPlanOptions } from "@/lib/validation";
 
 export const metadata: Metadata = {
   title: "Yoga Classes in Gurgaon",
@@ -9,6 +11,13 @@ export const metadata: Metadata = {
   alternates: { canonical: "/yoga-classes-gurgaon" },
 };
 
-export default function YogaClassesGurgaonPage() {
-  return <ServicePage content={yogaClassesGurgaon} />;
+export default async function YogaClassesGurgaonPage() {
+  // Live prices, invalidated the moment the admin publishes a change.
+  const config = await getPricingConfig();
+  return (
+    <ServicePage
+      content={buildYogaClassesGurgaon(config)}
+      planOptions={buildPlanOptions(config)}
+    />
+  );
 }
