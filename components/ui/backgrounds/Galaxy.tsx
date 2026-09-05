@@ -39,6 +39,8 @@ uniform float uSpeed;
 uniform vec2 uMouse;
 uniform float uGlowIntensity;
 uniform float uSaturation;
+uniform vec3 uTint;
+uniform float uTintStrength;
 uniform bool uMouseRepulsion;
 uniform float uTwinkleIntensity;
 uniform float uRotationSpeed;
@@ -118,6 +120,10 @@ vec3 StarLayer(vec2 uv) {
       float sat = length(base - vec3(dot(base, vec3(0.299, 0.587, 0.114)))) * uSaturation;
       float val = max(max(base.r, base.g), base.b);
       base = hsv2rgb(vec3(hue, sat, val));
+      // Pull each star toward one brand colour. The hue above is derived from
+      // a per-star hash, so shifting it only rotates a rainbow; mixing toward
+      // a fixed tint is what actually makes the field match a palette.
+      base = mix(base, uTint * val, uTintStrength);
 
       vec2 pad = vec2(tris(seed * 34.0 + uTime * uSpeed / 10.0), tris(seed * 38.0 + uTime * uSpeed / 30.0)) - 0.5;
 
@@ -198,6 +204,10 @@ interface GalaxyProps {
   mouseInteraction?: boolean;
   glowIntensity?: number;
   saturation?: number;
+  /** Star colour to blend toward, as linear 0-1 RGB. */
+  tint?: [number, number, number];
+  /** 0 keeps the stock multicoloured field, 1 makes every star the tint. */
+  tintStrength?: number;
   mouseRepulsion?: boolean;
   twinkleIntensity?: number;
   rotationSpeed?: number;
@@ -218,6 +228,8 @@ export function Galaxy({
   mouseInteraction = true,
   glowIntensity = 0.3,
   saturation = 0.0,
+  tint = [1.0, 1.0, 1.0],
+  tintStrength = 0.0,
   mouseRepulsion = true,
   repulsionStrength = 2,
   twinkleIntensity = 0.3,
@@ -293,6 +305,8 @@ export function Galaxy({
         },
         uGlowIntensity: { value: glowIntensity },
         uSaturation: { value: saturation },
+        uTint: { value: new Float32Array(tint) },
+        uTintStrength: { value: tintStrength },
         uMouseRepulsion: { value: mouseRepulsion },
         uTwinkleIntensity: { value: twinkleIntensity },
         uRotationSpeed: { value: rotationSpeed },
@@ -331,11 +345,18 @@ export function Galaxy({
     animateId = requestAnimationFrame(update);
     ctn.appendChild(gl.canvas);
 
+    // Hero copy and the video sit on top of this canvas, so listening on the
+    // container itself caught almost nothing. Listen on the window and
+    // hit-test the rect so the whole hero responds to the pointer.
     function handleMouseMove(e: MouseEvent) {
       const rect = ctn.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = 1.0 - (e.clientY - rect.top) / rect.height;
-      targetMousePos.current = { x, y };
+      const px = e.clientX - rect.left;
+      const py = e.clientY - rect.top;
+      if (px < 0 || py < 0 || px > rect.width || py > rect.height) {
+        targetMouseActive.current = 0.0;
+        return;
+      }
+      targetMousePos.current = { x: px / rect.width, y: 1.0 - py / rect.height };
       targetMouseActive.current = 1.0;
     }
 
@@ -344,16 +365,16 @@ export function Galaxy({
     }
 
     if (mouseInteraction) {
-      ctn.addEventListener('mousemove', handleMouseMove);
-      ctn.addEventListener('mouseleave', handleMouseLeave);
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseout', handleMouseLeave);
     }
 
     return () => {
       cancelAnimationFrame(animateId);
       window.removeEventListener('resize', resize);
       if (mouseInteraction) {
-        ctn.removeEventListener('mousemove', handleMouseMove);
-        ctn.removeEventListener('mouseleave', handleMouseLeave);
+        window.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('mouseout', handleMouseLeave);
       }
       ctn.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
@@ -369,6 +390,8 @@ export function Galaxy({
     mouseInteraction,
     glowIntensity,
     saturation,
+    tint,
+    tintStrength,
     mouseRepulsion,
     twinkleIntensity,
     rotationSpeed,
