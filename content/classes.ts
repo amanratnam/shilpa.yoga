@@ -1,8 +1,8 @@
 import { images } from "@/content/images";
 import type { ServicePageContent } from "@/components/sections/ServicePage";
-import type { PlanOption } from "@/components/sections/PricingTable";
+import type { Plan, PlanOption } from "@/components/sections/PricingTable";
 import {
-  formatINR,
+  moneyOf,
   multiMonthNote,
   sortedMonthly,
   type PricingConfig,
@@ -14,9 +14,33 @@ function monthlyOptions(mode: PricingMode, config: PricingConfig): PlanOption[] 
   return sortedMonthly(config.modes[mode]).map((tier) => ({
     id: `${mode}-monthly-${tier.sessions}`,
     pill: String(tier.sessions),
-    price: formatINR(tier.amount),
+    price: moneyOf(tier, config),
     sessions: tier.sessions,
   }));
+}
+
+/**
+ * The drop-in class. Absent from configurations published before this option
+ * existed, in which case the card simply is not rendered.
+ */
+function singleSessionPlan(
+  mode: PricingMode,
+  config: PricingConfig,
+  description: string,
+  features: string[],
+): Plan[] {
+  const single = config.modes[mode].single;
+  if (!single) return [];
+  return [
+    {
+      name: single.name,
+      price: moneyOf(single, config),
+      cadence: "/ session",
+      description,
+      features,
+      cta: { label: "Enquire to Book", href: "#enquire" },
+    },
+  ];
 }
 
 // Copy and pricing confirmed with the client (May 2026).
@@ -90,7 +114,7 @@ export function buildOnlineVinyasaContent(config: PricingConfig): ServicePageCon
       plans: [
         {
           name: p.trial.name,
-          price: formatINR(p.trial.amount),
+          price: moneyOf(p.trial, config),
           cadence: "/ session",
           description: "Your first class, book a time directly.",
           features: [
@@ -103,34 +127,17 @@ export function buildOnlineVinyasaContent(config: PricingConfig): ServicePageCon
             href: "https://calendly.com/namaste-shilpa/yoga-course-trial",
           },
         },
-        {
-          name: p.natal.name,
-          price: formatINR(p.natal.amount),
-          cadence: "/ class",
-          description: "Specialised support through pregnancy and recovery.",
-          features: [
-            "Sequencing adapted to your trimester or stage of recovery",
-            "Safe work for the pelvic floor, hips and lower back",
-            "Breathwork for labour preparation and postnatal calm",
-            "Gentle rebuilding of core strength and posture after birth",
-            "Cleared with your doctor before we begin",
+        ...singleSessionPlan(
+          "online",
+          config,
+          "One class, no package, in whichever style you want.",
+          [
+            "A single live class, booked when it suits you",
+            "Ashtanga, Vinyasa, Iyengar or a mix, your pick",
+            "Ideal while travelling or between routines",
+            "No monthly commitment",
           ],
-          cta: { label: "Enquire to Book", href: "#enquire" },
-        },
-        {
-          name: p.corporate.name,
-          price: formatINR(p.corporate.amount),
-          cadence: "/ session",
-          description: "Yoga for your team, delivered live to wherever they work.",
-          features: [
-            "A live session for your whole team, priced per session",
-            "Desk-body focus: neck, shoulders, hips and lower back",
-            "Breathwork for focus and stress, usable at a desk",
-            "No mats or changing rooms needed",
-            "Scheduled around your working day",
-          ],
-          cta: { label: "Enquire for Corporate", href: "#enquire" },
-        },
+        ),
         {
           name: "Monthly Fees",
           cadence: "/ month",
@@ -146,6 +153,34 @@ export function buildOnlineVinyasaContent(config: PricingConfig): ServicePageCon
           ],
           footnote: multiMonthNote(config),
           cta: { label: "Enquire to Book", href: "#enquire" },
+        },
+        {
+          name: p.natal.name,
+          price: moneyOf(p.natal, config),
+          cadence: "/ class",
+          description: "Specialised support through pregnancy and recovery.",
+          features: [
+            "Sequencing adapted to your trimester or stage of recovery",
+            "Safe work for the pelvic floor, hips and lower back",
+            "Breathwork for labour preparation and postnatal calm",
+            "Gentle rebuilding of core strength and posture after birth",
+            "Cleared with your doctor before we begin",
+          ],
+          cta: { label: "Enquire to Book", href: "#enquire" },
+        },
+        {
+          name: p.corporate.name,
+          price: moneyOf(p.corporate, config),
+          cadence: "/ session",
+          description: "Yoga for your team, delivered live to wherever they work.",
+          features: [
+            "A live session for your whole team, priced per session",
+            "Desk-body focus: neck, shoulders, hips and lower back",
+            "Breathwork for focus and stress, usable at a desk",
+            "No mats or changing rooms needed",
+            "Scheduled around your working day",
+          ],
+          cta: { label: "Enquire for Corporate", href: "#enquire" },
         },
       ],
       note: "All online classes are conducted live on Zoom or Google Meet and are not recorded. Payments are handled directly after a quick connect, so I can understand your needs and tailor the best offering for you.",
@@ -250,7 +285,7 @@ export function buildPersonalGurgaonContent(config: PricingConfig): ServicePageC
       plans: [
         {
           name: p.trial.name,
-          price: formatINR(p.trial.amount),
+          price: moneyOf(p.trial, config),
           cadence: "/ session",
           description: "A one-to-one trial, in the comfort of your home.",
           features: [
@@ -260,34 +295,18 @@ export function buildPersonalGurgaonContent(config: PricingConfig): ServicePageC
           ],
           cta: { label: "Enquire to Book", href: "#enquire" },
         },
-        {
-          name: p.natal.name,
-          price: formatINR(p.natal.amount),
-          cadence: "/ session",
-          description: "One-to-one support through pregnancy and recovery.",
-          features: [
-            "Sequencing adapted to your trimester or stage of recovery",
-            "Hands-on guidance for the pelvic floor, hips and lower back",
-            "Breathwork for labour preparation and postnatal calm",
-            "Gentle rebuilding of core strength and posture after birth",
-            "Practised at home, coordinated with your doctor",
+        ...singleSessionPlan(
+          "personal",
+          config,
+          "A one-off private session while you are in Delhi NCR.",
+          [
+            "One private session, wherever you are staying",
+            "Ashtanga, Vinyasa, Iyengar or a mix, your pick",
+            "Built for visitors and short stays in Delhi NCR",
+            "I travel to you across Gurgaon and Delhi NCR",
+            "No monthly commitment",
           ],
-          cta: { label: "Enquire to Book", href: "#enquire" },
-        },
-        {
-          name: p.corporate.name,
-          price: formatINR(p.corporate.amount),
-          cadence: "/ session",
-          description: "In-person yoga at your office, across Gurgaon.",
-          features: [
-            "I travel to your workplace, priced per session",
-            "Desk-body focus: neck, shoulders, hips and lower back",
-            "Suitable for groups, in whatever space you have",
-            "Practised in work clothes, no mats required",
-            "Scheduled around your working day",
-          ],
-          cta: { label: "Enquire for Corporate", href: "#enquire" },
-        },
+        ),
         {
           name: "Monthly",
           cadence: "/ month",
@@ -303,6 +322,34 @@ export function buildPersonalGurgaonContent(config: PricingConfig): ServicePageC
           ],
           footnote: multiMonthNote(config),
           cta: { label: "Enquire to Book", href: "#enquire" },
+        },
+        {
+          name: p.natal.name,
+          price: moneyOf(p.natal, config),
+          cadence: "/ session",
+          description: "One-to-one support through pregnancy and recovery.",
+          features: [
+            "Sequencing adapted to your trimester or stage of recovery",
+            "Hands-on guidance for the pelvic floor, hips and lower back",
+            "Breathwork for labour preparation and postnatal calm",
+            "Gentle rebuilding of core strength and posture after birth",
+            "Practised at home, coordinated with your doctor",
+          ],
+          cta: { label: "Enquire to Book", href: "#enquire" },
+        },
+        {
+          name: p.corporate.name,
+          price: moneyOf(p.corporate, config),
+          cadence: "/ session",
+          description: "In-person yoga at your office, across Gurgaon.",
+          features: [
+            "I travel to your workplace, priced per session",
+            "Desk-body focus: neck, shoulders, hips and lower back",
+            "Suitable for groups, in whatever space you have",
+            "Practised in work clothes, no mats required",
+            "Scheduled around your working day",
+          ],
+          cta: { label: "Enquire for Corporate", href: "#enquire" },
         },
       ],
       note: "For personal classes, travel is limited to Gurgaon. The final payment schedule is finalised after our first connect, where we decide on the best fitness plan for you.",

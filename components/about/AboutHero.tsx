@@ -9,22 +9,11 @@ import {
 } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { VideoEmbed } from "@/components/ui/VideoEmbed";
+import { Galaxy } from "@/components/ui/backgrounds/Galaxy";
 import { Badge } from "@/components/ui/Badge";
 import { siteConfig } from "@/lib/site";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-
-/* Deterministic gold dust (no Math.random — SSR-safe). */
-const dust = [
-  { left: "8%", bottom: "5%", size: 3, delay: "0s", opacity: 0.45 },
-  { left: "22%", bottom: "12%", size: 2, delay: "1.6s", opacity: 0.3 },
-  { left: "35%", bottom: "2%", size: 4, delay: "3.4s", opacity: 0.5 },
-  { left: "52%", bottom: "9%", size: 2, delay: "0.8s", opacity: 0.35 },
-  { left: "64%", bottom: "4%", size: 3, delay: "4.6s", opacity: 0.45 },
-  { left: "76%", bottom: "14%", size: 2, delay: "2.2s", opacity: 0.3 },
-  { left: "88%", bottom: "6%", size: 3, delay: "5.8s", opacity: 0.4 },
-  { left: "44%", bottom: "16%", size: 2, delay: "7s", opacity: 0.3 },
-];
 
 export function AboutHero() {
   const reduce = useReducedMotion();
@@ -55,26 +44,29 @@ export function AboutHero() {
       ref={ref}
       className="relative isolate flex min-h-[90svh] flex-col overflow-hidden bg-brand-green text-brand-cream on-dark"
     >
-      {/* Ambient studio light + rising gold dust */}
+      {/* Full-bleed starfield, tinted to the brand gold, over the green ground.
+          It replaces the hand-rolled gold dust — two particle systems in one
+          hero read as noise rather than atmosphere. */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <Galaxy
+          // Low saturation keeps the field warm-white rather than the stock
+          // blue-heavy palette; the hue shift pulls what colour remains
+          // towards the brand gold.
+          hueShift={45}
+          saturation={0.22}
+          density={0.55}
+          glowIntensity={0.18}
+          twinkleIntensity={0.2}
+          starSpeed={0.25}
+          speed={0.6}
+          rotationSpeed={0.04}
+          // The hero's own content sits above this and swallows the pointer,
+          // so interaction listeners here would never fire.
+          mouseInteraction={false}
+          mouseRepulsion={false}
+        />
         <div className="animate-glow-drift absolute -left-28 top-16 h-[24rem] w-[24rem] rounded-full bg-brand-gold/[0.09] blur-3xl" />
         <div className="animate-glow-drift absolute -bottom-24 right-0 h-[28rem] w-[28rem] rounded-full bg-brand-cream/[0.06] blur-3xl [animation-delay:6s]" />
-        {!reduce &&
-          dust.map((d, i) => (
-            <span
-              key={i}
-              className="animate-dust-float absolute rounded-full bg-brand-gold"
-              style={{
-                left: d.left,
-                bottom: d.bottom,
-                width: d.size,
-                height: d.size,
-                animationDelay: d.delay,
-                ["--dust-opacity" as string]: String(d.opacity),
-                opacity: 0,
-              }}
-            />
-          ))}
       </div>
 
       <div className="container-content grid flex-1 items-center gap-8 pb-16 pt-14 md:gap-10 md:pb-24 md:pt-28 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14">

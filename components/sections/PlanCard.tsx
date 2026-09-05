@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { formatMoney, type Currency, type Money } from "@/lib/pricing/config";
 import { cn } from "@/lib/utils";
 
 /** One selectable rung of a plan, e.g. "12 sessions a month". */
@@ -10,8 +11,8 @@ export type PlanOption = {
   id: string;
   /** Short text on the selector pill, e.g. "12". */
   pill: string;
-  /** Formatted price for this option, e.g. "₹4,000". */
-  price: string;
+  /** Both currencies; the section's toggle decides which is shown. */
+  price: Money;
   /** Substituted into any `{sessions}` token in the plan's features. */
   sessions: number;
 };
@@ -19,7 +20,7 @@ export type PlanOption = {
 export type Plan = {
   name: string;
   /** Static price. Ignored when `options` is set — the selection drives it. */
-  price?: string;
+  price?: Money;
   cadence?: string;
   description?: string;
   features: string[];
@@ -33,11 +34,12 @@ export type Plan = {
   footnote?: string;
 };
 
-export function PlanCard({ plan }: { plan: Plan }) {
+export function PlanCard({ plan, currency }: { plan: Plan; currency: Currency }) {
   const [selectedId, setSelectedId] = useState(plan.options?.[0]?.id);
   const selected = plan.options?.find((o) => o.id === selectedId) ?? plan.options?.[0];
 
-  const price = selected?.price ?? plan.price;
+  const money = selected?.price ?? plan.price;
+  const price = money ? formatMoney(money, currency) : undefined;
   // Features may reference the chosen tier, e.g. "{sessions} sessions a month".
   const features = plan.features.map((f) =>
     selected ? f.replace(/\{sessions\}/g, String(selected.sessions)) : f,
@@ -92,7 +94,10 @@ export function PlanCard({ plan }: { plan: Plan }) {
                   type="button"
                   role="radio"
                   aria-checked={active}
-                  aria-label={`${option.sessions} sessions a month, ${option.price}`}
+                  aria-label={`${option.sessions} sessions a month, ${formatMoney(
+                    option.price,
+                    currency,
+                  )}`}
                   onClick={() => setSelectedId(option.id)}
                   className={cn(
                     // min-w/min-h keep every pill a 44px touch target.
