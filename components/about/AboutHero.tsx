@@ -49,21 +49,21 @@ export function AboutHero() {
           hero read as noise rather than atmosphere. */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <Galaxy
-          // Low saturation keeps the field warm-white rather than the stock
-          // blue-heavy palette; the hue shift pulls what colour remains
-          // towards the brand gold.
-          hueShift={45}
-          saturation={0.22}
+          // brand-gold #C9A961 as 0-1 RGB. Tinting is what actually matches
+          // the palette: the stock hue is a per-star hash, so hueShift alone
+          // only rotates a rainbow.
+          tint={[0.788, 0.663, 0.380]}
+          tintStrength={0.92}
+          saturation={0.35}
           density={0.55}
-          glowIntensity={0.18}
-          twinkleIntensity={0.2}
+          glowIntensity={0.2}
+          twinkleIntensity={0.25}
           starSpeed={0.25}
           speed={0.6}
           rotationSpeed={0.04}
-          // The hero's own content sits above this and swallows the pointer,
-          // so interaction listeners here would never fire.
-          mouseInteraction={false}
-          mouseRepulsion={false}
+          mouseInteraction
+          mouseRepulsion
+          repulsionStrength={2.5}
         />
         <div className="animate-glow-drift absolute -left-28 top-16 h-[24rem] w-[24rem] rounded-full bg-brand-gold/[0.09] blur-3xl" />
         <div className="animate-glow-drift absolute -bottom-24 right-0 h-[28rem] w-[28rem] rounded-full bg-brand-cream/[0.06] blur-3xl [animation-delay:6s]" />

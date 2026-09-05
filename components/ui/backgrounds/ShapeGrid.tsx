@@ -316,6 +316,15 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
       const mouseX = event.clientX - rect.left;
       const mouseY = event.clientY - rect.top;
 
+      // The grid sits behind page content, so listening on the canvas only
+      // ever caught the slivers not covered by cards. Listening on the window
+      // and hit-testing the rect makes the whole band respond, including
+      // where the pointer is over a card.
+      if (mouseX < 0 || mouseY < 0 || mouseX > rect.width || mouseY > rect.height) {
+        handleMouseLeave();
+        return;
+      }
+
       if (isHex) {
         const colShift = Math.floor(gridOffset.current.x / hexHoriz);
         const offsetX = ((gridOffset.current.x % hexHoriz) + hexHoriz) % hexHoriz;
@@ -405,16 +414,16 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
       }
     };
 
-    const handleMouseLeave = () => {
+    function handleMouseLeave() {
       if (hoveredSquareRef.current && hoverTrailAmount > 0) {
         trailCells.current.unshift({ ...hoveredSquareRef.current });
         if (trailCells.current.length > hoverTrailAmount) trailCells.current.length = hoverTrailAmount;
       }
       hoveredSquareRef.current = null;
-    };
+    }
 
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseout', handleMouseLeave);
     let isVisible = false;
     let isPageVisible = !document.hidden;
 
@@ -454,8 +463,8 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
       tryStop();
       io.disconnect();
       document.removeEventListener('visibilitychange', onVisibility);
-      canvas.removeEventListener('mousemove', handleMouseMove);
-      canvas.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseout', handleMouseLeave);
     };
   }, [direction, driftSpeed, borderColor, hoverFillColor, squareSize, shape, hoverTrailAmount, vignetteColor]);
 
