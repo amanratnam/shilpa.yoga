@@ -28,6 +28,12 @@ function withMode(
   return { ...config, modes: { ...config.modes, [mode]: next } };
 }
 
+/** Mirrors `usdOf`'s fallback, so the placeholder matches what will publish. */
+function autoUsd(inr: number, usdRate: number): number {
+  if (!usdRate) return 0;
+  return Math.max(1, Math.round(inr / usdRate));
+}
+
 function FieldLabel({ children, htmlFor }: { children: string; htmlFor: string }) {
   return (
     <label htmlFor={htmlFor} className={cn("mb-1.5 block", META_LABEL)}>
@@ -36,24 +42,62 @@ function FieldLabel({ children, htmlFor }: { children: string; htmlFor: string }
   );
 }
 
-/** A named single-price option: trial, prenatal/postnatal, corporate. */
+type NamedPrice = { name: string; amount: number; amountUsd?: number };
+
+/**
+ * Dollar inputs are blankable on purpose. An empty field means "convert from
+ * the rupee price at the configured rate", which is why the placeholder shows
+ * what that conversion would be rather than leaving the box looking unset.
+ */
+function UsdInput({
+  id,
+  value,
+  fallback,
+  onChange,
+}: {
+  id: string;
+  value: number | undefined;
+  fallback: number;
+  onChange: (next: number | undefined) => void;
+}) {
+  return (
+    <Input
+      id={id}
+      compact
+      type="number"
+      min={0}
+      step={0.01}
+      inputMode="decimal"
+      placeholder={`auto ${fallback}`}
+      value={value === undefined ? "" : String(value)}
+      onChange={(e) =>
+        onChange(e.target.value === "" ? undefined : Number(e.target.value))
+      }
+    />
+  );
+}
+
+/** A named single-price option: trial, prenatal/postnatal, corporate, single. */
 function SingleOption({
   mode,
   slot,
   hint,
   value,
+  usdRate,
   onChange,
 }: {
   mode: PricingMode;
-  slot: "trial" | "natal" | "corporate";
+  slot: "trial" | "natal" | "corporate" | "single";
   hint: string;
-  value: { name: string; amount: number };
-  onChange: (next: { name: string; amount: number }) => void;
+  value: NamedPrice;
+  usdRate: number;
+  onChange: (next: NamedPrice) => void;
 }) {
   const nameId = `${mode}-${slot}-name`;
   const amountId = `${mode}-${slot}-amount`;
+  const usdId = `${mode}-${slot}-usd`;
   return (
-    <div className="grid gap-3 sm:grid-cols-[1fr_10rem]">
+    <div className="grid gap-3 sm:grid-cols-[1fr_8rem_8rem]">
       <div>
         <FieldLabel htmlFor={nameId}>Label shown on the site</FieldLabel>
         <Input
@@ -76,6 +120,15 @@ function SingleOption({
           onChange={(e) => onChange({ ...value, amount: Number(e.target.value) })}
         />
       </div>
+      <div>
+        <FieldLabel htmlFor={usdId}>$ price</FieldLabel>
+        <UsdInput
+          id={usdId}
+          value={value.amountUsd}
+          fallback={autoUsd(value.amount, usdRate)}
+          onChange={(amountUsd) => onChange({ ...value, amountUsd })}
+        />
+      </div>
     </div>
   );
 }
@@ -84,14 +137,19 @@ function ModePanel({
   mode,
   value,
   discountPercent,
+  usdRate,
   onChange,
 }: {
   mode: PricingMode;
   value: ModePricing;
   discountPercent: number;
+  usdRate: number;
   onChange: (next: ModePricing) => void;
 }) {
-  const setTier = (index: number, patch: Partial<{ sessions: number; amount: number }>) =>
+  const setTier = (
+    index: number,
+    patch: Partial<{ sessions: number; amount: number; amountUsd: number | undefined }>,
+  ) =>
     onChange({
       ...value,
       monthly: value.monthly.map((t, i) => (i === index ? { ...t, ...patch } : t)),
@@ -117,6 +175,7 @@ function ModePanel({
           slot="trial"
           hint="₹ per session"
           value={value.trial}
+          usdRate={usdRate}
           onChange={(trial) => onChange({ ...value, trial })}
         />
         <SingleOption
@@ -124,6 +183,7 @@ function ModePanel({
           slot="natal"
           hint="₹ per class"
           value={value.natal}
+          usdRate={usdRate}
           onChange={(natal) => onChange({ ...value, natal })}
         />
         <SingleOption
@@ -131,7 +191,17 @@ function ModePanel({
           slot="corporate"
           hint="₹ per session"
           value={value.corporate}
+          usdRate={usdRate}
           onChange={(corporate) => onChange({ ...value, corporate })}
+        />
+
+        <SingleOption
+          mode={mode}
+          slot="single"
+          hint="₹ per session"
+          value={value.single ?? { name: "Single Session", amount: 0 }}
+          usdRate={usdRate}
+          onChange={(single) => onChange({ ...value, single })}
         />
 
         {/* ---- Monthly tiers: one row per session-count combination ---- */}
@@ -171,6 +241,9 @@ function ModePanel({
                     ₹ per month
                   </th>
                   <th scope="col" className={cn("px-4 py-2", META_LABEL)}>
+                    $ per month
+                  </th>
+                  <th scope="col" className={cn("px-4 py-2", META_LABEL)}>
                     After {discountPercent}% prepay
                   </th>
                   <th scope="col" className="px-4 py-2">
@@ -205,6 +278,14 @@ function ModePanel({
                         aria-label={`Rupees per month, row ${i + 1}`}
                         value={String(tier.amount)}
                         onChange={(e) => setTier(i, { amount: Number(e.target.value) })}
+                      />
+                    </td>
+                    <td className="px-4 py-2.5">
+                      <UsdInput
+                        id={`${mode}-monthly-${i}-usd`}
+                        value={tier.amountUsd}
+                        fallback={autoUsd(tier.amount, usdRate)}
+                        onChange={(amountUsd) => setTier(i, { amountUsd })}
                       />
                     </td>
                     <td className="px-4 py-2.5 text-small text-brand-stone">
@@ -267,7 +348,7 @@ export function PricingConfigurator({
         <p className="mt-0.5 text-small text-brand-stone">
           Shown as a footnote under the monthly plans on both classes pages.
         </p>
-        <div className="mt-4 grid gap-3 sm:grid-cols-[10rem_10rem]">
+        <div className="mt-4 grid gap-3 sm:grid-cols-[10rem_10rem_12rem]">
           <div>
             <FieldLabel htmlFor="discount-months">Months upfront</FieldLabel>
             <Input
@@ -305,6 +386,22 @@ export function PricingConfigurator({
               }
             />
           </div>
+          <div>
+            <FieldLabel htmlFor="usd-rate">₹ per $1</FieldLabel>
+            <Input
+              id="usd-rate"
+              compact
+              type="number"
+              min={1}
+              step={0.5}
+              inputMode="decimal"
+              value={String(config.usdRate)}
+              onChange={(e) => setConfig({ ...config, usdRate: Number(e.target.value) })}
+            />
+            <p className="mt-1 text-small text-brand-stone">
+              Only fills in dollar prices left blank.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -315,6 +412,7 @@ export function PricingConfigurator({
             mode={mode}
             value={config.modes[mode]}
             discountPercent={config.discount.percent}
+            usdRate={config.usdRate}
             onChange={(next) => setConfig(withMode(config, mode, next))}
           />
         ))}
