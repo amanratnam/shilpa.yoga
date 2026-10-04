@@ -24,10 +24,10 @@ export function HomeHero() {
         <div className="absolute inset-0 bg-gradient-to-t from-brand-green via-brand-green/35 to-transparent" />
       </div>
 
-      <div className="container-content flex min-h-[66vh] flex-col justify-end pb-14 pt-28 md:min-h-[70vh] md:pb-20">
+      <div className="container-content flex min-h-[66svh] flex-col justify-end pb-14 pt-28 md:min-h-[70svh] md:pb-20">
         <div className="max-w-3xl">
           <p className="eyebrow mb-5">
-            Online &amp; in-person yoga · 500-Hour RYT, Yoga Alliance USA
+            Online &amp; in-person yoga · Certified Yoga Teacher &amp; Trainer
           </p>
           <h1 className="text-display font-bold lowercase leading-[0.95] text-brand-cream">
             <span className="block">strong body,</span>

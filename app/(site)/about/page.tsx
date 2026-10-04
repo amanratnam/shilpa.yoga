@@ -12,7 +12,7 @@ import { CredentialsSection } from "@/components/about/CredentialsSection";
 export const metadata: Metadata = {
   title: "About Shilpa",
   description:
-    "Shilpa is a Yoga Alliance USA Registered Yoga Teacher in Gurgaon, teaching anatomy-based Vinyasa online worldwide and one-to-one across Delhi NCR.",
+    "Shilpa is a certified yoga teacher and trainer in Gurgaon, teaching anatomy-based Vinyasa online worldwide and one-to-one across Delhi NCR.",
   alternates: { canonical: "/about" },
 };
 

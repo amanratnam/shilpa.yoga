@@ -83,9 +83,9 @@ export default async function ContactPage() {
     <section className="relative isolate overflow-hidden bg-brand-green text-brand-cream on-dark">
       {/* Ambient backdrop: drifting glow + breath rings, like soft studio light */}
       <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden>
-        <div className="animate-glow-drift absolute -right-24 -top-24 h-[24rem] w-[24rem] rounded-full bg-brand-gold/[0.08] blur-3xl md:h-[30rem] md:w-[30rem]" />
-        <div className="animate-glow-drift absolute -left-32 top-1/3 h-[22rem] w-[22rem] rounded-full bg-brand-cream/[0.07] blur-3xl [animation-delay:5s]" />
-        <div className="animate-glow-drift absolute -bottom-40 right-1/4 h-[26rem] w-[26rem] rounded-full bg-brand-gold/[0.06] blur-3xl [animation-delay:9s]" />
+        <div className="md:animate-glow-drift absolute -right-24 -top-24 h-[24rem] w-[24rem] rounded-full bg-brand-gold/[0.08] blur-3xl md:h-[30rem] md:w-[30rem]" />
+        <div className="md:animate-glow-drift absolute -left-32 top-1/3 h-[22rem] w-[22rem] rounded-full bg-brand-cream/[0.07] blur-3xl [animation-delay:5s]" />
+        <div className="md:animate-glow-drift absolute -bottom-40 right-1/4 h-[26rem] w-[26rem] rounded-full bg-brand-gold/[0.06] blur-3xl [animation-delay:9s]" />
       </div>
 
       {/* Hero: text with a meditating figure breathing inside expanding rings */}

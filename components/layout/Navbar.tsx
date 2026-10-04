@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/Button";
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  // Desktop dropdown opened by tap/click, for touch tablets that can't hover.
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -21,10 +23,42 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Any route change closes the menu — including the logo, back/forward and
+  // in-page links, which don't pass through the menu's own onClick handlers.
+  const [lastPath, setLastPath] = useState(pathname);
+  if (pathname !== lastPath) {
+    setLastPath(pathname);
+    setMobileOpen(false);
+    setOpenMenu(null);
+  }
+
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    if (!openMenu) return;
+    const close = (e: PointerEvent) => {
+      if (!(e.target as Element).closest("[data-nav-menu]")) setOpenMenu(null);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpenMenu(null);
+    };
+    document.addEventListener("pointerdown", close);
+    document.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = "";
+      document.removeEventListener("pointerdown", close);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [openMenu]);
+
+  useEffect(() => {
+    // Lock on <html> only: it propagates to the viewport, whereas setting it
+    // on <body> as well turns the body into its own scroll container and the
+    // sticky header scrolls away with the page behind the menu.
+    document.documentElement.style.overflow = mobileOpen ? "hidden" : "";
+    // Keep screen readers and taps inside the open menu.
+    const main = document.getElementById("main");
+    if (main) main.inert = mobileOpen;
+    return () => {
+      document.documentElement.style.overflow = "";
+      if (main) main.inert = false;
     };
   }, [mobileOpen]);
 
@@ -54,22 +88,49 @@ export function Navbar() {
         {/* Desktop nav */}
         <ul className="hidden items-center gap-8 lg:flex">
           {mainNav.map((item) => (
-            <li key={item.href} className="group relative">
+            <li
+              key={item.href}
+              className="group relative flex items-center"
+              data-nav-menu={item.children ? "" : undefined}
+            >
               <Link
                 href={item.href}
                 className={cn(
-                  "inline-flex items-center gap-1 py-2 text-small font-medium uppercase tracking-[0.05em] transition-colors hover:text-brand-gold",
+                  "inline-flex items-center py-2 text-small font-medium uppercase tracking-[0.05em] transition-colors hover:text-brand-gold",
                   isActive(item.href) ? "text-brand-green" : "text-brand-ink",
                 )}
               >
                 {item.label}
-                {item.children ? (
-                  <ChevronDown className="h-3.5 w-3.5 transition-transform group-hover:rotate-180" aria-hidden />
-                ) : null}
               </Link>
+              {item.children ? (
+                // Hover opens the menu on desktops; this button opens it on
+                // touch tablets, where hover and tap-focus never fire.
+                <button
+                  type="button"
+                  aria-label={`${item.label} menu`}
+                  aria-expanded={openMenu === item.href}
+                  onClick={() => setOpenMenu((m) => (m === item.href ? null : item.href))}
+                  className="-mr-2 grid h-9 w-7 place-items-center text-brand-ink transition-colors hover:text-brand-gold"
+                >
+                  <ChevronDown
+                    className={cn(
+                      "h-3.5 w-3.5 transition-transform group-hover:rotate-180",
+                      openMenu === item.href && "rotate-180",
+                    )}
+                    aria-hidden
+                  />
+                </button>
+              ) : null}
 
               {item.children ? (
-                <div className="invisible absolute left-0 top-full w-64 translate-y-1 pt-3 opacity-0 transition-all duration-200 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+                <div
+                  className={cn(
+                    "absolute left-0 top-full w-64 pt-3 transition-all duration-200 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100",
+                    openMenu === item.href
+                      ? "visible translate-y-0 opacity-100"
+                      : "invisible translate-y-1 opacity-0",
+                  )}
+                >
                   <div className="overflow-hidden rounded-brand border border-brand-ink/10 bg-brand-white shadow-lg">
                     {item.children.map((child) => (
                       <Link
@@ -123,7 +184,8 @@ export function Navbar() {
       {mobileOpen ? (
         <div
           id="mobile-nav"
-          className="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto bg-brand-cream md:top-20 lg:hidden"
+          // z-[45] clears other fixed page furniture (the About scroll ring).
+          className="fixed inset-x-0 bottom-0 top-16 z-[45] animate-fade-rise overflow-y-auto overscroll-contain bg-brand-cream [animation-duration:0.3s] md:top-20 lg:hidden"
         >
           <div className="container-content flex flex-col gap-1 py-8">
             {mainNav.map((item) => (

@@ -25,7 +25,7 @@ export default function TermsPage() {
       <p>
         Shilpa Yoga Space offers live online yoga classes worldwide, and one-to-one
         and pre/post-natal yoga in person across Gurgaon and Delhi NCR, taught by
-        Shilpa, a 500-hour Registered Yoga Teacher with Yoga Alliance USA.
+        Shilpa, a certified yoga teacher and trainer.
       </p>
 
       <h2>Booking a class or session</h2>

@@ -49,6 +49,53 @@ export function getAllPosts(): PostMeta[] {
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
+/**
+ * Posts matching every word of `query`, searched across the title, summary,
+ * tags and body. Posts that match in the title or tags rank above ones that
+ * only mention a word in passing; ties stay newest first. An empty query
+ * returns everything, newest first.
+ */
+export function searchPosts(query: string): PostMeta[] {
+  const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+  const all = getAllPosts();
+  if (terms.length === 0) return all;
+
+  const scored = all.map((meta) => {
+    const title = meta.title.toLowerCase();
+    const tags = meta.tags.join(" ").toLowerCase();
+    const description = meta.description.toLowerCase();
+    const body = (getPostBySlug(meta.slug)?.content ?? "").toLowerCase();
+    let score = 0;
+    for (const t of terms) {
+      const termScore =
+        (title.includes(t) ? 4 : 0) +
+        (tags.includes(t) ? 3 : 0) +
+        (description.includes(t) ? 2 : 0) +
+        (body.includes(t) ? 1 : 0);
+      // Every word has to appear somewhere.
+      if (termScore === 0) return { meta, score: 0 };
+      score += termScore;
+    }
+    return { meta, score };
+  });
+
+  return scored
+    .filter((s) => s.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .map((s) => s.meta);
+}
+
+/** Up to `limit` other posts, preferring ones that share a tag with `slug`. */
+export function getRelatedPosts(slug: string, limit = 3): PostMeta[] {
+  const all = getAllPosts();
+  const current = all.find((p) => p.slug === slug);
+  const others = all.filter((p) => p.slug !== slug);
+  if (!current) return others.slice(0, limit);
+  const shared = (p: PostMeta) => p.tags.filter((t) => current.tags.includes(t)).length;
+  // Stable sort keeps newest-first within each overlap score.
+  return [...others].sort((a, b) => shared(b) - shared(a)).slice(0, limit);
+}
+
 export function getPostBySlug(slug: string): Post | null {
   const mdx = path.join(BLOG_DIR, `${slug}.mdx`);
   const md = path.join(BLOG_DIR, `${slug}.md`);

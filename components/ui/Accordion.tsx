@@ -16,7 +16,16 @@ export function Accordion({
   tone?: Tone;
   className?: string;
 }) {
-  const [open, setOpen] = useState<number | null>(0);
+  // Several can be open at once: collapsing the answer above the one just
+  // tapped used to yank the tapped question up the screen on phones.
+  const [open, setOpen] = useState<Set<number>>(() => new Set([0]));
+  const toggle = (i: number) =>
+    setOpen((prev) => {
+      const next = new Set(prev);
+      if (next.has(i)) next.delete(i);
+      else next.add(i);
+      return next;
+    });
   const dark = tone === "dark";
 
   return (
@@ -30,12 +39,12 @@ export function Accordion({
       )}
     >
       {items.map((item, i) => {
-        const isOpen = open === i;
+        const isOpen = open.has(i);
         return (
           <div key={i}>
             <button
               type="button"
-              onClick={() => setOpen(isOpen ? null : i)}
+              onClick={() => toggle(i)}
               aria-expanded={isOpen}
               className="flex w-full items-center justify-between gap-4 py-5 text-left"
             >

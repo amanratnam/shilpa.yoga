@@ -65,8 +65,8 @@ export function AboutHero() {
           mouseRepulsion
           repulsionStrength={2.5}
         />
-        <div className="animate-glow-drift absolute -left-28 top-16 h-[24rem] w-[24rem] rounded-full bg-brand-gold/[0.09] blur-3xl" />
-        <div className="animate-glow-drift absolute -bottom-24 right-0 h-[28rem] w-[28rem] rounded-full bg-brand-cream/[0.06] blur-3xl [animation-delay:6s]" />
+        <div className="md:animate-glow-drift absolute -left-28 top-16 h-[24rem] w-[24rem] rounded-full bg-brand-gold/[0.09] blur-3xl" />
+        <div className="md:animate-glow-drift absolute -bottom-24 right-0 h-[28rem] w-[28rem] rounded-full bg-brand-cream/[0.06] blur-3xl [animation-delay:6s]" />
       </div>
 
       <div className="container-content grid flex-1 items-center gap-8 pb-16 pt-14 md:gap-10 md:pb-24 md:pt-28 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14">
@@ -89,7 +89,7 @@ export function AboutHero() {
             className="max-w-xl text-h4 font-normal text-brand-cream/85"
             {...entrance(0.3)}
           >
-            A Registered Yoga Teacher who came to this work through the body,
+            A certified yoga teacher who came to this work through the body,
             its limits, its patterns, and how precisely it responds when you
             finally listen.
           </motion.p>

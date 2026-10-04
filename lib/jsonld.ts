@@ -20,7 +20,7 @@ export const organizationJsonLd = {
   founder: {
     "@type": "Person",
     name: siteConfig.teacher.name,
-    jobTitle: "Registered Yoga Teacher (RYT 200, Yoga Alliance USA)",
+    jobTitle: "Certified Yoga Teacher & Trainer",
   },
   sameAs: [siteConfig.social.instagram],
 };

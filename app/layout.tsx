@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     "online yoga classes",
     "personal yoga sessions",
     "yoga Gurgaon",
-    "Yoga Alliance RYT",
+    "certified yoga teacher",
     "anatomy-based yoga",
   ],
   authors: [{ name: siteConfig.teacher.name }],
@@ -61,7 +61,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={outfit.variable}>
+    <html lang="en" data-scroll-behavior="smooth" className={outfit.variable}>
       <body className="flex min-h-dvh flex-col">{children}</body>
     </html>
   );

@@ -271,8 +271,14 @@ export function Galaxy({
     // holder rather than a `let` that lint and TS would both complain about.
     const state: { program?: Program } = {};
 
+    let lastSize = '';
     function resize() {
       const scale = 1;
+      // The iOS URL bar collapsing fires resize repeatedly at the same size;
+      // setSize clears the canvas, so skip the no-op ones.
+      const size = `${ctn.offsetWidth}x${ctn.offsetHeight}`;
+      if (size === lastSize) return;
+      lastSize = size;
       renderer.setSize(ctn.offsetWidth * scale, ctn.offsetHeight * scale);
       if (state.program) {
         state.program.uniforms.uResolution.value = new Color(
@@ -282,7 +288,8 @@ export function Galaxy({
         );
       }
     }
-    window.addEventListener('resize', resize, false);
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(ctn);
     resize();
 
     const geometry = new Triangle(gl);
@@ -321,7 +328,7 @@ export function Galaxy({
     state.program = program;
 
     const mesh = new Mesh(gl, { geometry, program });
-    let animateId: number;
+    let animateId = 0;
 
     function update(t: number) {
       animateId = requestAnimationFrame(update);
@@ -342,8 +349,27 @@ export function Galaxy({
 
       renderer.render({ scene: mesh });
     }
-    animateId = requestAnimationFrame(update);
     ctn.appendChild(gl.canvas);
+
+    // Only render while the hero is on screen and the tab is visible; a
+    // full-viewport shader running under the rest of the page made phones
+    // stutter through every scroll animation below it.
+    let onScreen = false;
+    function syncLoop() {
+      const shouldRun = onScreen && document.visibilityState === 'visible';
+      if (shouldRun && !animateId) {
+        animateId = requestAnimationFrame(update);
+      } else if (!shouldRun && animateId) {
+        cancelAnimationFrame(animateId);
+        animateId = 0;
+      }
+    }
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      onScreen = entry.isIntersecting;
+      syncLoop();
+    });
+    visibilityObserver.observe(ctn);
+    document.addEventListener('visibilitychange', syncLoop);
 
     // Hero copy and the video sit on top of this canvas, so listening on the
     // container itself caught almost nothing. Listen on the window and
@@ -364,15 +390,21 @@ export function Galaxy({
       targetMouseActive.current = 0.0;
     }
 
-    if (mouseInteraction) {
+    // Touch screens send a synthetic mousemove on tap and never a mouseout, so
+    // the repulsion would lock onto wherever the finger last landed.
+    const pointerInteraction =
+      mouseInteraction && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (pointerInteraction) {
       window.addEventListener('mousemove', handleMouseMove);
       window.addEventListener('mouseout', handleMouseLeave);
     }
 
     return () => {
       cancelAnimationFrame(animateId);
-      window.removeEventListener('resize', resize);
-      if (mouseInteraction) {
+      visibilityObserver.disconnect();
+      resizeObserver.disconnect();
+      document.removeEventListener('visibilitychange', syncLoop);
+      if (pointerInteraction) {
         window.removeEventListener('mousemove', handleMouseMove);
         window.removeEventListener('mouseout', handleMouseLeave);
       }

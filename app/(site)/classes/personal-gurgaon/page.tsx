@@ -7,7 +7,7 @@ import { buildPlanOptions } from "@/lib/validation";
 export const metadata: Metadata = {
   title: "Personal Yoga Sessions in Gurgaon",
   description:
-    "One-to-one yoga in Gurgaon, injury-aware, goal-focused private sessions in your home, taught by a Yoga Alliance USA RYT.",
+    "One-to-one yoga in Gurgaon, injury-aware, goal-focused private sessions in your home, taught by a certified yoga teacher.",
   alternates: { canonical: "/classes/personal-gurgaon" },
 };
 

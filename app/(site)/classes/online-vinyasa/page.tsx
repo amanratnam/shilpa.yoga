@@ -7,7 +7,7 @@ import { buildPlanOptions } from "@/lib/validation";
 export const metadata: Metadata = {
   title: "Online Yoga Classes",
   description:
-    "Live, small-group online yoga with a Yoga Alliance USA RYT. Vinyasa, Ashtanga and more, taught live, beginners welcome. Book a free introductory class.",
+    "Live, small-group online yoga with a certified yoga teacher. Vinyasa, Ashtanga and more, taught live, beginners welcome. Book a free introductory class.",
   alternates: { canonical: "/classes/online-vinyasa" },
 };
 

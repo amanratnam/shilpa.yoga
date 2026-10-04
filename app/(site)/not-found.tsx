@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/Button";
 
 export default function NotFound() {
   return (
-    <Section tone="dark" className="grid min-h-[70vh] place-items-center">
+    <Section tone="dark" className="grid min-h-[70svh] place-items-center">
       <div className="flex flex-col items-center gap-8 text-center">
         <SectionHeading
           align="center"

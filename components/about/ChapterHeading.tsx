@@ -54,11 +54,16 @@ export function ChapterHeading({
       {/* Ghost chapter number, drifting slower than the page */}
       <motion.span
         aria-hidden
-        style={reduce ? undefined : { y: ghostY }}
+        // framer writes `transform` inline, which would wipe a Tailwind
+        // -translate-x-1/2, so the centring offset travels with the motion.
+        style={{
+          x: align === "center" ? "-50%" : 0,
+          ...(reduce ? {} : { y: ghostY }),
+        }}
         className={cn(
           "pointer-events-none absolute -top-16 select-none text-[7rem] font-bold leading-none tracking-tighter sm:-top-24 sm:text-[11rem] md:text-[13rem]",
           tone === "dark" ? "text-brand-cream/[0.05]" : "text-brand-green/[0.05]",
-          align === "center" ? "left-1/2 -translate-x-1/2" : "-left-3",
+          align === "center" ? "left-1/2" : "-left-3",
         )}
       >
         {number}

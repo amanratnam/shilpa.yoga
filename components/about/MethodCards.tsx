@@ -64,7 +64,7 @@ export function MethodCards() {
     <section className="relative isolate overflow-hidden bg-brand-green text-brand-cream on-dark">
       <div
         aria-hidden
-        className="animate-glow-drift pointer-events-none absolute -right-32 top-1/4 h-[26rem] w-[26rem] rounded-full bg-brand-gold/[0.07] blur-3xl"
+        className="md:animate-glow-drift pointer-events-none absolute -right-32 top-1/4 h-[26rem] w-[26rem] rounded-full bg-brand-gold/[0.07] blur-3xl"
       />
       <div className="container-content py-12 md:py-16">
         <ChapterHeading

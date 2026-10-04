@@ -9,8 +9,8 @@ import { images } from "@/content/images";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 const credentials = [
-  "Advanced 500-Hour Yoga TTC, Vinyasa Yoga Ashram",
-  "RYT 500, registered with Yoga Alliance USA",
+  "Certified Yoga Teacher & Trainer",
+  "Advanced teacher training, Vinyasa Yoga Ashram",
   "Pre- and post-natal yoga trained",
   "Anatomy-led, injury-aware sequencing",
   "Teaching across studios, homes and online",
@@ -35,7 +35,7 @@ export function CredentialsSection() {
           eyebrow="Training & lineage"
           takeaway={
             <>
-              Certified, registered,{" "}
+              Certified, experienced,{" "}
               <span className="text-brand-gold">and still a student.</span>
             </>
           }
