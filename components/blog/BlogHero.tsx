@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { useReducedMotion } from "@/lib/useMediaQuery";
 import { Coffee, Leaf, Sparkles, Wind } from "lucide-react";
 import { BreathRings, MeditatingFigure } from "@/components/art/YogaFigures";
 

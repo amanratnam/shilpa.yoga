@@ -7,8 +7,8 @@ import {
   useSpring,
   useTransform,
   useMotionValueEvent,
-  useReducedMotion,
 } from "framer-motion";
+import { useReducedMotion } from "@/lib/useMediaQuery";
 import {
   MountainFigure,
   ForwardFoldFigure,

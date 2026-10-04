@@ -99,6 +99,23 @@ const config: Config = {
           "88%": { opacity: "var(--dust-opacity, 0.5)" },
           "100%": { transform: "translateY(-45vh)", opacity: "0" },
         },
+        // Home hero: a headline line rising out of its own mask
+        "line-rise": {
+          "0%": { transform: "translateY(110%)" },
+          "100%": { transform: "translateY(0)" },
+        },
+        // Home hero: a ring released from the portal on every exhale
+        ripple: {
+          "0%": { transform: "scale(1)", opacity: "0.55" },
+          "100%": { transform: "scale(1.75)", opacity: "0" },
+        },
+        // Home hero: the "scroll to step inside" cue line
+        "cue-drop": {
+          "0%": { transform: "scaleY(0)", transformOrigin: "top" },
+          "45%": { transform: "scaleY(1)", transformOrigin: "top" },
+          "55%": { transform: "scaleY(1)", transformOrigin: "bottom" },
+          "100%": { transform: "scaleY(0)", transformOrigin: "bottom" },
+        },
       },
       animation: {
         "fade-rise": "fade-rise 0.6s ease-out both",
@@ -108,6 +125,9 @@ const config: Config = {
         "glow-drift": "glow-drift 16s ease-in-out infinite",
         "joint-pulse": "joint-pulse 2.4s ease-in-out infinite",
         "dust-float": "dust-float 9s linear infinite",
+        "line-rise": "line-rise 1s cubic-bezier(0.22, 1, 0.36, 1) both",
+        ripple: "ripple 5.5s cubic-bezier(0.22, 1, 0.36, 1) forwards",
+        "cue-drop": "cue-drop 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite",
       },
       transitionTimingFunction: {
         brand: "cubic-bezier(0.22, 1, 0.36, 1)",

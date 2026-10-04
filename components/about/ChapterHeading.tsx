@@ -5,8 +5,8 @@ import {
   motion,
   useScroll,
   useTransform,
-  useReducedMotion,
 } from "framer-motion";
+import { useReducedMotion } from "@/lib/useMediaQuery";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { cn } from "@/lib/utils";
 

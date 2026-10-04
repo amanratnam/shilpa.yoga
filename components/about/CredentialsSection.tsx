@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useReducedMotion } from "@/lib/useMediaQuery";
 import { SmartImage } from "@/components/ui/SmartImage";
 import { ChapterHeading } from "@/components/about/ChapterHeading";
 import { TreePoseFigure } from "@/components/art/YogaFigures";

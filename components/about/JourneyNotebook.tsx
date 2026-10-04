@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { useReducedMotion } from "@/lib/useMediaQuery";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ChapterHeading } from "@/components/about/ChapterHeading";
 import { images, type SiteImage } from "@/content/images";
