@@ -11,7 +11,7 @@
 
 import { Renderer, Program, Mesh, Color, Triangle } from 'ogl';
 import { useEffect, useRef } from 'react';
-import { useReducedMotion } from 'framer-motion';
+import { useReducedMotion } from '@/lib/useMediaQuery';
 
 const vertexShader = `
 attribute vec2 uv;

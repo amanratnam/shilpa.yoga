@@ -5,9 +5,9 @@ import {
   motion,
   useScroll,
   useTransform,
-  useReducedMotion,
   type MotionValue,
 } from "framer-motion";
+import { useReducedMotion } from "@/lib/useMediaQuery";
 
 const QUOTE =
   "I want you to leave a class understanding your own body a little better than when you arrived. That understanding is the practice.";

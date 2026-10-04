@@ -5,8 +5,8 @@ import {
   motion,
   useScroll,
   useTransform,
-  useReducedMotion,
 } from "framer-motion";
+import { useReducedMotion } from "@/lib/useMediaQuery";
 import { SmartImage } from "@/components/ui/SmartImage";
 import { ChapterHeading } from "@/components/about/ChapterHeading";
 import { images } from "@/content/images";

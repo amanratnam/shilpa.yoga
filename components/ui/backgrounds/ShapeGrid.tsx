@@ -11,7 +11,7 @@
  */
 
 import React, { useRef, useEffect } from 'react';
-import { useReducedMotion } from 'framer-motion';
+import { useReducedMotion } from '@/lib/useMediaQuery';
 
 type CanvasStrokeStyle = string | CanvasGradient | CanvasPattern;
 

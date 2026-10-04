@@ -1,4 +1,4 @@
-import { HomeHero } from "@/components/sections/HomeHero";
+import { HomeHero } from "@/components/home/HomeHero";
 import { FeatureSplit } from "@/components/sections/FeatureSplit";
 import { ServiceCards } from "@/components/sections/ServiceCards";
 import { SocialProof } from "@/components/sections/SocialProof";
@@ -7,15 +7,20 @@ import { CTASection } from "@/components/layout/CTASection";
 import { images } from "@/content/images";
 import { priceLabel, services } from "@/content/services";
 import { getPricingConfig } from "@/lib/pricing/store";
+import { PRICING_MODES, moneyOf } from "@/lib/pricing/config";
 import { testimonials, differentiators } from "@/content/home";
 import { siteConfig } from "@/lib/site";
 
 export default async function HomePage() {
   const config = await getPricingConfig();
+  // The cheapest way to try a class, whichever mode it's in.
+  const trialFrom = PRICING_MODES.map((mode) => moneyOf(config.modes[mode].trial, config)).reduce(
+    (low, m) => (m.inr < low.inr ? m : low),
+  );
 
   return (
     <>
-      <HomeHero />
+      <HomeHero trialFrom={trialFrom} />
 
       <FeatureSplit
         eyebrow="Why Shilpa Yoga Space"

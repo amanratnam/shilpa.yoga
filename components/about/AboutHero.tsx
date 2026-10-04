@@ -5,8 +5,8 @@ import {
   motion,
   useScroll,
   useTransform,
-  useReducedMotion,
 } from "framer-motion";
+import { useReducedMotion } from "@/lib/useMediaQuery";
 import { ChevronDown } from "lucide-react";
 import { VideoEmbed } from "@/components/ui/VideoEmbed";
 import { Galaxy } from "@/components/ui/backgrounds/Galaxy";
