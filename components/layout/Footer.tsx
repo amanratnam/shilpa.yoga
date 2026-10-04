@@ -1,13 +1,12 @@
 import Link from "next/link";
 import { siteConfig, footerNav, legalNav } from "@/lib/site";
 import { Logo } from "@/components/layout/Logo";
-import { Badge } from "@/components/ui/Badge";
-import { InstagramIcon, YouTubeIcon } from "@/components/ui/icons";
+import { InstagramIcon, WhatsAppIcon, YouTubeIcon } from "@/components/ui/icons";
 
 function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
   const external = /^https?:/.test(href);
   const className =
-    "text-small text-brand-cream/75 transition-colors hover:text-brand-gold";
+    "inline-block py-1 text-small text-brand-cream/75 transition-colors hover:text-brand-gold";
   return external ? (
     <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
       {children}
@@ -19,65 +18,71 @@ function FooterLink({ href, children }: { href: string; children: React.ReactNod
   );
 }
 
+const socials = [
+  { label: "Instagram", href: siteConfig.social.instagram, Icon: InstagramIcon },
+  { label: "YouTube", href: siteConfig.social.youtube, Icon: YouTubeIcon },
+  { label: "WhatsApp", href: siteConfig.contact.whatsapp, Icon: WhatsAppIcon },
+];
+
 export function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer className="bg-brand-green text-brand-cream on-dark">
-      <div className="container-content py-section-sm md:py-section">
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
-          <div className="flex flex-col gap-5">
+      <div className="container-content py-10 md:py-12">
+        <div className="grid gap-8 lg:grid-cols-[1.2fr_2fr] lg:gap-12">
+          <div className="flex flex-col gap-4">
             <Logo tone="dark" />
             <p className="max-w-xs text-small text-brand-cream/75">
-              Anatomy-based Vinyasa yoga, live online worldwide, and one-to-one in
-              person across Gurgaon and Delhi NCR.
+              Anatomy-based yoga with a certified teacher, live online worldwide
+              and one-to-one across Gurgaon and Delhi NCR.
             </p>
-            <Badge tone="dark">{siteConfig.teacher.credential}</Badge>
+            <div className="-ml-2 flex items-center">
+              {socials.map(({ label, href, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  // 40px hit area around a 20px glyph.
+                  className="grid h-10 w-10 place-items-center text-brand-cream/75 transition-colors hover:text-brand-gold"
+                >
+                  <Icon className="h-5 w-5" />
+                </a>
+              ))}
+            </div>
           </div>
 
-          {footerNav.map((col) => (
-            <div key={col.title} className="flex flex-col gap-4">
-              <p className="text-eyebrow uppercase tracking-[0.1em] text-brand-gold">
-                {col.title}
-              </p>
-              <ul className="flex flex-col gap-2.5">
-                {col.links.map((link) => (
-                  <li key={link.href}>
-                    <FooterLink href={link.href}>{link.label}</FooterLink>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {/* Two columns on phones keeps the labels on one line; three once
+              there is room. */}
+          <div className="grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-3">
+            {footerNav.map((col) => (
+              <div key={col.title} className="flex flex-col gap-2">
+                <p className="text-eyebrow uppercase tracking-[0.1em] text-brand-gold">
+                  {col.title}
+                </p>
+                <ul className="flex flex-col">
+                  {col.links.map((link) => (
+                    <li key={link.href}>
+                      <FooterLink href={link.href}>{link.label}</FooterLink>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-brand-cream/15 pt-8 md:flex-row md:items-center md:justify-between">
+        <div className="mt-8 flex flex-col gap-2 border-t border-brand-cream/15 pt-5 md:flex-row md:items-center md:justify-between">
           <p className="text-small text-brand-cream/60">
             © {year} {siteConfig.name}. {siteConfig.teacher.location}.
           </p>
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+          <div className="flex flex-wrap items-center gap-x-5">
             {legalNav.map((link) => (
               <FooterLink key={link.href} href={link.href}>
                 {link.label}
               </FooterLink>
             ))}
-            <a
-              href={siteConfig.social.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-              className="text-brand-cream/75 transition-colors hover:text-brand-gold"
-            >
-              <InstagramIcon className="h-5 w-5" />
-            </a>
-            <a
-              href={siteConfig.social.youtube}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="YouTube"
-              className="text-brand-cream/75 transition-colors hover:text-brand-gold"
-            >
-              <YouTubeIcon className="h-5 w-5" />
-            </a>
           </div>
         </div>
       </div>

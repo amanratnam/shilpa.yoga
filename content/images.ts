@@ -192,6 +192,64 @@ export const images = {
     ready: true,
   }),
 
+  // Later posts reuse Shilpa's own photography until dedicated covers exist.
+  blogBackPain: img({
+    src: "/images/shilpa/teaching-updog.jpg",
+    alt: "Shilpa guiding a student through a gentle supported backbend",
+    width: 1800,
+    height: 1200,
+    label: "Blog, back care",
+    ready: true,
+  }),
+  blogPrenatal: img({
+    src: "/images/shilpa/portrait.jpg",
+    alt: "Shilpa in a deep supported squat with hands at heart centre",
+    width: 1050,
+    height: 1400,
+    label: "Blog, prenatal yoga",
+    ready: true,
+  }),
+  blogFirstClass: img({
+    src: "/images/practice/online-class.jpg",
+    alt: "A student following a yoga class at home on a laptop",
+    width: 1067,
+    height: 1600,
+    label: "Blog, first class",
+    ready: true,
+  }),
+  blogSleep: img({
+    src: "/images/practice/river-wide.jpg",
+    alt: "A still riverbank wrapped in early-morning mist",
+    width: 1800,
+    height: 1350,
+    label: "Blog, sleep",
+    ready: true,
+  }),
+  blogGym: img({
+    src: "/images/shilpa/teaching-adjust.jpg",
+    alt: "Shilpa adjusting a student's strong standing balance",
+    width: 1200,
+    height: 1800,
+    label: "Blog, yoga and the gym",
+    ready: true,
+  }),
+  blogSunSalutation: img({
+    src: "/images/hero/homepage-hero.jpg",
+    alt: "Shilpa in a flowing side-bend on a misty riverbank",
+    width: 1920,
+    height: 1440,
+    label: "Blog, sun salutations",
+    ready: true,
+  }),
+  blogMidlife: img({
+    src: "/images/shilpa/practice-river.jpg",
+    alt: "Shilpa standing tall in a quiet riverside posture",
+    width: 1050,
+    height: 1400,
+    label: "Blog, yoga after 40",
+    ready: true,
+  }),
+
   // ---- Journey (TTC milestones) ----
   journey1: img({
     src: "/images/journey/1.jpg",

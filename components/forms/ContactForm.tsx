@@ -99,7 +99,6 @@ export function ContactForm({
         <FormField
           label="Phone / WhatsApp"
           htmlFor="phone"
-          hint="Optional"
           error={errors.phone?.message}
         >
           <Input
@@ -144,7 +143,7 @@ export function ContactForm({
         </FormField>
 
         {plans.length > 0 ? (
-          <FormField label="Category" htmlFor="plan" hint="Optional">
+          <FormField label="Category" htmlFor="plan">
             <Select id="plan" {...register("plan")}>
               <option value="">No preference yet</option>
               {plans.map((p) => (
@@ -162,13 +161,15 @@ export function ContactForm({
       <FormField
         label="Notes / remarks"
         htmlFor="message"
-        hint="Optional, anything that helps me prepare (goals, injuries, schedule)"
         error={errors.message?.message}
       >
         <Textarea
           id="message"
-          rows={5}
-          placeholder="Tell me a little about your experience, goals, or any injuries to work around."
+          rows={6}
+          // The prompt is long; a smaller placeholder lets all of it show on
+          // a phone without scrolling inside the box.
+          className="placeholder:text-small placeholder:leading-relaxed"
+          placeholder="Please mention if you have any injuries I need to know. What is your experience with yoga, or any fitness regime like gym, running, pilates, dance, etc. What is your goal by doing yoga? All this helps me give the best teaching experience to you."
           invalid={!!errors.message}
           {...register("message")}
         />

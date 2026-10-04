@@ -109,7 +109,7 @@ export function buildOnlineVinyasaContent(config: PricingConfig): ServicePageCon
     },
     pricing: {
       eyebrow: "Pricing",
-      title: "Begin your practice",
+      title: "Choose the option that suits you best",
       intro: "Start with an introductory class to feel how I teach, then settle into a steady monthly rhythm.",
       plans: [
         {
@@ -139,7 +139,7 @@ export function buildOnlineVinyasaContent(config: PricingConfig): ServicePageCon
           ],
         ),
         {
-          name: "Monthly Fees",
+          name: "Monthly Classes",
           cadence: "/ month",
           description: "A consistent practice, woven into your week.",
           featured: true,
@@ -280,7 +280,7 @@ export function buildPersonalGurgaonContent(config: PricingConfig): ServicePageC
     },
     pricing: {
       eyebrow: "Pricing",
-      title: "Session options",
+      title: "Choose the option that suits you best",
       intro: "Begin with a trial session at home, then settle into a steady monthly rhythm.",
       plans: [
         {
@@ -308,7 +308,7 @@ export function buildPersonalGurgaonContent(config: PricingConfig): ServicePageC
           ],
         ),
         {
-          name: "Monthly",
+          name: "Monthly Classes",
           cadence: "/ month",
           description: "A consistent, personalised practice.",
           featured: true,

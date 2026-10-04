@@ -84,8 +84,8 @@ export function StorySection() {
             </blockquote>
             <p className="text-body text-brand-stone">
               That curiosity became a way of teaching. I trained intensively,
-              earning an advanced 500-hour certification at Vinyasa Yoga Ashram
-              and registering with Yoga Alliance USA, and built a practice
+              becoming a certified yoga teacher and trainer at Vinyasa Yoga
+              Ashram, and built a practice
               rooted in understanding rather than performance, first for
               myself, then for the students who kept asking for the{" "}
               <em>why</em> behind each pose.

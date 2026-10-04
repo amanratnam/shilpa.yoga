@@ -11,16 +11,14 @@ export const siteConfig = {
   taglineWords: ["move", "with", "intention"],
   tagline: "Move with intention",
   description:
-    "Online and in-person yoga with Shilpa, a 500-hour Registered Yoga Teacher with Yoga Alliance USA. Live classes worldwide and one-to-one sessions in Gurgaon, for strength, calm, and a clearer mind.",
+    "Online and in-person yoga with Shilpa, a certified yoga teacher and trainer. Live classes worldwide and one-to-one sessions in Gurgaon, for strength, calm, and a clearer mind.",
   url: "https://www.shilpa.yoga",
   locale: "en_IN",
   teacher: {
     name: "Shilpa",
-    credential: "RYT 500 · Yoga Alliance USA",
-    certification: "500-Hour Yoga TTC · Vinyasa Yoga Ashram",
+    credential: "Certified Yoga Teacher & Trainer",
+    certification: "Certified Yoga Teacher · Vinyasa Yoga Ashram",
     school: "Vinyasa Yoga Ashram",
-    // Placeholder registration number, replace with real Yoga Alliance ID.
-    rytNumber: "RYT-500 · #00000000",
     location: "Gurgaon, Delhi NCR, India",
   },
   contact: {
@@ -78,9 +76,8 @@ export const footerNav: { title: string; links: { label: string; href: string }[
     title: "Connect",
     links: [
       { label: "Contact", href: "/contact" },
-      { label: "Instagram", href: "https://instagram.com/shilpayogaspace" },
-      { label: "YouTube", href: "https://www.youtube.com/@shilpayogaspace" },
       { label: "WhatsApp", href: siteConfig.contact.whatsapp },
+      // Instagram and YouTube sit as icons beside the logo in the footer.
     ],
   },
 ];

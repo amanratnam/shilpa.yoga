@@ -71,12 +71,15 @@ function CarouselArrows({
   canNext,
   onPrev,
   onNext,
+  position,
 }: {
   dark: boolean;
   canPrev: boolean;
   canNext: boolean;
   onPrev: () => void;
   onNext: () => void;
+  /** Short "2 / 5" readout between the arrows; the full one sits under the track. */
+  position: string;
 }) {
   // Nothing overflows, so the controls would be decoration.
   if (!canPrev && !canNext) return null;
@@ -90,10 +93,19 @@ function CarouselArrows({
   );
 
   return (
-    <div className="flex gap-2">
+    <div className="flex items-center gap-2">
       <button type="button" onClick={onPrev} disabled={!canPrev} aria-label="Previous plans" className={base}>
         <ChevronLeft className="h-5 w-5" strokeWidth={2} aria-hidden />
       </button>
+      <span
+        aria-hidden
+        className={cn(
+          "min-w-12 text-center text-small tabular-nums",
+          dark ? "text-brand-cream/80" : "text-brand-stone",
+        )}
+      >
+        {position}
+      </span>
       <button type="button" onClick={onNext} disabled={!canNext} aria-label="Next plans" className={base}>
         <ChevronRight className="h-5 w-5" strokeWidth={2} aria-hidden />
       </button>
@@ -101,9 +113,73 @@ function CarouselArrows({
   );
 }
 
+/**
+ * Where the reader is in the track: a "1–4 of 5" count plus one dot per card,
+ * with the visible cards lit. Dots double as jump links on every screen size.
+ */
+function CarouselPagination({
+  dark,
+  total,
+  first,
+  visible,
+  onSelect,
+}: {
+  dark: boolean;
+  total: number;
+  first: number;
+  visible: number;
+  onSelect: (index: number) => void;
+}) {
+  const last = Math.min(total, first + visible);
+  const label =
+    visible > 1 ? `Showing ${first + 1}–${last} of ${total}` : `${first + 1} of ${total}`;
+
+  return (
+    <div className="mt-6 flex flex-col items-center gap-2">
+      <div className="flex items-center">
+        {Array.from({ length: total }, (_, i) => {
+          const active = i >= first && i < last;
+          return (
+            <button
+              key={i}
+              type="button"
+              onClick={() => onSelect(i)}
+              aria-label={`Show plan ${i + 1} of ${total}`}
+              aria-current={active ? "true" : undefined}
+              // The dot is small; the button around it keeps a 32px target.
+              className="group grid h-8 w-8 place-items-center"
+            >
+              <span
+                aria-hidden
+                className={cn(
+                  "block h-2 rounded-full transition-all duration-300 ease-brand",
+                  active
+                    ? cn("w-5", dark ? "bg-brand-gold" : "bg-brand-green")
+                    : cn(
+                        "w-2",
+                        dark
+                          ? "bg-brand-cream/30 group-hover:bg-brand-cream/60"
+                          : "bg-brand-ink/20 group-hover:bg-brand-ink/40",
+                      ),
+                )}
+              />
+            </button>
+          );
+        })}
+      </div>
+      <p
+        aria-live="polite"
+        className={cn("text-small tabular-nums", dark ? "text-brand-cream/70" : "text-brand-stone")}
+      >
+        {label}
+      </p>
+    </div>
+  );
+}
+
 export function PricingTable({
   eyebrow = "Pricing",
-  title = "Simple, honest pricing",
+  title = "Choose the option that suits you best",
   intro,
   plans,
   tone = "light",
@@ -125,6 +201,15 @@ export function PricingTable({
   const reduce = useReducedMotion();
   const trackRef = useRef<HTMLDivElement>(null);
   const [canScroll, setCanScroll] = useState({ prev: false, next: false });
+  const [view, setView] = useState({ first: 0, visible: 1 });
+
+  /** Width of one card plus the gap after it — the distance between snaps. */
+  const cardStep = (el: HTMLElement) => {
+    const card = el.firstElementChild as HTMLElement | null;
+    if (!card) return 0;
+    const gap = parseFloat(getComputedStyle(el).columnGap) || 0;
+    return card.offsetWidth + gap;
+  };
 
   /** Recomputed from the DOM rather than a page index, so it stays honest
    *  when the reader scrolls or drags the track themselves. */
@@ -133,7 +218,25 @@ export function PricingTable({
     if (!el) return;
     // A pixel of slack: sub-pixel widths leave scrollLeft just shy of the end.
     const maxScroll = el.scrollWidth - el.clientWidth;
-    setCanScroll({ prev: el.scrollLeft > 1, next: el.scrollLeft < maxScroll - 1 });
+    const atEnd = el.scrollLeft >= maxScroll - 1;
+    setCanScroll({ prev: el.scrollLeft > 1, next: !atEnd });
+
+    const step = cardStep(el);
+    if (!step) return;
+    const total = el.children.length;
+    // Cards wholly in view; the peek of the next card on phones doesn't count.
+    // The track's padding isn't card space, but the trailing gap is.
+    const style = getComputedStyle(el);
+    const inner =
+      el.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+    const gap = parseFloat(style.columnGap) || 0;
+    const visible = Math.max(1, Math.min(total, Math.floor((inner + gap + 2) / step)));
+    const first = atEnd
+      ? Math.max(0, total - visible)
+      : Math.min(total - visible, Math.round(el.scrollLeft / step));
+    setView((prev) =>
+      prev.first === first && prev.visible === visible ? prev : { first, visible },
+    );
   }, []);
 
   useEffect(() => {
@@ -149,6 +252,12 @@ export function PricingTable({
       observer.disconnect();
     };
   }, [syncArrows, plans.length]);
+
+  const scrollToCard = (index: number) => {
+    const el = trackRef.current;
+    if (!el) return;
+    el.scrollTo({ left: index * cardStep(el), behavior: reduce ? "auto" : "smooth" });
+  };
 
   /** Advance by whole pages, so the arrows track what is actually visible. */
   const scrollByPage = (direction: 1 | -1) => {
@@ -190,6 +299,11 @@ export function PricingTable({
           canNext={canScroll.next}
           onPrev={() => scrollByPage(-1)}
           onNext={() => scrollByPage(1)}
+          position={
+            view.visible > 1
+              ? `${view.first + 1}–${Math.min(plans.length, view.first + view.visible)} / ${plans.length}`
+              : `${view.first + 1} / ${plans.length}`
+          }
         />
       </div>
 
@@ -198,34 +312,48 @@ export function PricingTable({
         and any further ones are reachable by the arrows, so adding a sixth
         plan needs no layout change. It stays a plain scroll container, so
         trackpads, touch and keyboard all work without the arrows.
+        One reveal covers the whole track: a per-card reveal never fired for
+        cards parked off to the side, so they faded in mid-swipe on phones.
       */}
-      <div
-        ref={trackRef}
-        role="group"
-        aria-label="Pricing plans"
-        tabIndex={0}
-        className={cn(
-          "mt-8 flex snap-x snap-mandatory items-start gap-5 overflow-x-auto pb-2",
-          // The scrollbar would cut across the card shadows.
-          "[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
-        )}
-      >
-        {plans.map((plan, i) => (
-          <div
-            key={plan.name}
-            className={cn(
-              "shrink-0 snap-start",
-              // One card on phones, two on tablets, four from lg — the gap is
-              // 1.25rem, so four cards share 3.75rem of gutters.
-              "basis-[86%] sm:basis-[calc((100%-1.25rem)/2)] lg:basis-[calc((100%-3.75rem)/4)]",
-            )}
-          >
-            <Reveal delay={i * 0.08}>
+      <Reveal>
+        <div
+          ref={trackRef}
+          role="group"
+          aria-label="Pricing plans"
+          tabIndex={0}
+          className={cn(
+            // The padding (offset by negative margin) gives the featured ring
+            // and the hover lift room inside the clipping scroll container.
+            "-mx-2 mt-6 flex snap-x snap-mandatory scroll-px-2 items-start gap-5 overflow-x-auto overscroll-x-contain px-2 pb-4 pt-2",
+            // The scrollbar would cut across the card shadows.
+            "[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+          )}
+        >
+          {plans.map((plan) => (
+            <div
+              key={plan.name}
+              className={cn(
+                "shrink-0 snap-start",
+                // One card on phones, two on tablets, four from lg — the gap is
+                // 1.25rem, so four cards share 3.75rem of gutters.
+                "basis-[86%] sm:basis-[calc((100%-1.25rem)/2)] lg:basis-[calc((100%-3.75rem)/4)]",
+              )}
+            >
               <PlanCard plan={plan} currency={currency} />
-            </Reveal>
-          </div>
-        ))}
-      </div>
+            </div>
+          ))}
+        </div>
+      </Reveal>
+
+      {canScroll.prev || canScroll.next ? (
+        <CarouselPagination
+          dark={dark}
+          total={plans.length}
+          first={view.first}
+          visible={view.visible}
+          onSelect={scrollToCard}
+        />
+      ) : null}
 
       {note ? (
         <p

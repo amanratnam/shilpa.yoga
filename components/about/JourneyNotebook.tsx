@@ -48,6 +48,7 @@ export function JourneyNotebook() {
   const reduce = useReducedMotion();
   const [active, setActive] = useState(0);
   const startX = useRef<number | null>(null);
+  const startY = useRef<number | null>(null);
 
   const go = useCallback((i: number) => {
     setActive(((i % entries.length) + entries.length) % entries.length);
@@ -63,14 +64,29 @@ export function JourneyNotebook() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  // Warm the cache so the first flip to each page never shows an empty frame.
+  useEffect(() => {
+    entries.forEach((e) => {
+      const img = new Image();
+      img.src = e.image.src;
+    });
+  }, []);
+
   const onTouchStart = (e: React.TouchEvent) => {
     startX.current = e.touches[0].clientX;
+    startY.current = e.touches[0].clientY;
   };
   const onTouchEnd = (e: React.TouchEvent) => {
-    if (startX.current === null) return;
+    if (startX.current === null || startY.current === null) return;
     const dx = e.changedTouches[0].clientX - startX.current;
-    if (Math.abs(dx) > 40) go(active + (dx < 0 ? 1 : -1));
+    const dy = e.changedTouches[0].clientY - startY.current;
+    // Only a clearly sideways swipe turns the page; a vertical scroll that
+    // drifts a little sideways shouldn't.
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      go(active + (dx < 0 ? 1 : -1));
+    }
     startX.current = null;
+    startY.current = null;
   };
 
   const entry = entries[active];
@@ -83,7 +99,7 @@ export function JourneyNotebook() {
     >
       <div
         aria-hidden
-        className="animate-glow-drift pointer-events-none absolute -left-32 top-10 h-72 w-72 rounded-full bg-brand-gold/10 blur-3xl"
+        className="md:animate-glow-drift pointer-events-none absolute -left-32 top-10 h-72 w-72 rounded-full bg-brand-gold/10 blur-3xl"
       />
 
       <div className="container-content py-12 md:py-16">
@@ -123,10 +139,16 @@ export function JourneyNotebook() {
             onTouchStart={onTouchStart}
             onTouchEnd={onTouchEnd}
           >
+            {/* The deep shadow lives on a static layer: on the flipping page
+                itself the 90px blur was repainted every frame on phones. */}
+            <div
+              aria-hidden
+              className="absolute inset-0 rounded-brand shadow-[0_35px_90px_-20px_rgba(0,0,0,0.8)]"
+            />
             <AnimatePresence initial={false}>
               <motion.article
                 key={active}
-                className="absolute inset-0 flex flex-col overflow-hidden rounded-brand bg-brand-cream text-brand-ink shadow-[0_35px_90px_-20px_rgba(0,0,0,0.8)]"
+                className="absolute inset-0 flex flex-col overflow-hidden rounded-brand bg-brand-cream text-brand-ink"
                 style={{ ...paperStyle, transformOrigin: "top center" }}
                 initial={
                   reduce ? { opacity: 0 } : { opacity: 0.85, y: 10, scale: 0.985 }
@@ -226,20 +248,27 @@ export function JourneyNotebook() {
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center">
               {entries.map((_, i) => (
                 <button
                   key={i}
+                  type="button"
                   onClick={() => go(i)}
                   aria-label={`Go to page ${i + 1}`}
                   aria-current={i === active || undefined}
-                  className={cn(
-                    "h-2 rounded-full transition-all duration-300 ease-brand",
-                    i === active
-                      ? "w-8 bg-brand-gold"
-                      : "w-2 bg-brand-cream/20 hover:bg-brand-cream/40",
-                  )}
-                />
+                  // The pill is 8px tall; the button around it is a 44px target.
+                  className="group grid h-11 min-w-11 place-items-center"
+                >
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "block h-2 rounded-full transition-all duration-300 ease-brand",
+                      i === active
+                        ? "w-8 bg-brand-gold"
+                        : "w-2 bg-brand-cream/20 group-hover:bg-brand-cream/40",
+                    )}
+                  />
+                </button>
               ))}
             </div>
             <button

@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const fieldBase =
@@ -50,15 +50,27 @@ export const Select = forwardRef<
   HTMLSelectElement,
   React.SelectHTMLAttributes<HTMLSelectElement> & { invalid?: boolean; compact?: boolean }
 >(function Select({ className, invalid, compact, children, ...props }, ref) {
+  // appearance-none strips the native arrow, which left selects looking like
+  // plain text inputs (most noticeably on phones); this chevron replaces it.
   return (
-    <select
-      ref={ref}
-      aria-invalid={invalid || undefined}
-      className={cn(fieldBase, fieldSize(compact), fieldState(invalid), "appearance-none pr-10", className)}
-      {...props}
-    >
-      {children}
-    </select>
+    <div className="relative">
+      <select
+        ref={ref}
+        aria-invalid={invalid || undefined}
+        className={cn(fieldBase, fieldSize(compact), fieldState(invalid), "appearance-none pr-10", className)}
+        {...props}
+      >
+        {children}
+      </select>
+      <ChevronDown
+        className={cn(
+          "pointer-events-none absolute top-1/2 -translate-y-1/2 text-brand-stone",
+          compact ? "right-2.5 h-4 w-4" : "right-3.5 h-5 w-5",
+        )}
+        strokeWidth={2}
+        aria-hidden
+      />
+    </div>
   );
 });
 

@@ -422,8 +422,13 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
       hoveredSquareRef.current = null;
     }
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseout', handleMouseLeave);
+    // A tap on touch screens fires a lone synthetic mousemove with no
+    // mouseout, which left a lit square stuck wherever the finger landed.
+    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (canHover) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseout', handleMouseLeave);
+    }
     let isVisible = false;
     let isPageVisible = !document.hidden;
 

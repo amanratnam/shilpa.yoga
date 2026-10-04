@@ -7,7 +7,7 @@ import { buildPlanOptions } from "@/lib/validation";
 export const metadata: Metadata = {
   title: "Yoga Classes in Gurgaon",
   description:
-    "Personal and small-group yoga classes in Gurgaon & Delhi NCR. Anatomy-based, injury-aware teaching at home or studio, by a Yoga Alliance USA RYT.",
+    "Personal and small-group yoga classes in Gurgaon & Delhi NCR. Anatomy-based, injury-aware teaching at home or studio, by a certified yoga teacher.",
   alternates: { canonical: "/yoga-classes-gurgaon" },
 };
 

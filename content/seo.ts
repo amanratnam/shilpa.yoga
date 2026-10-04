@@ -12,7 +12,7 @@ export function buildYogaClassesGurgaon(config: PricingConfig): ServicePageConte
       eyebrow: "Yoga classes in Gurgaon",
       title: "Yoga classes in Gurgaon, taught around your body",
       subtitle:
-        "Personal and small-group yoga across Gurgaon and Delhi NCR, anatomy-led, injury-aware, and led by a Yoga Alliance USA Registered Yoga Teacher.",
+        "Personal and small-group yoga across Gurgaon and Delhi NCR, anatomy-led, injury-aware, and led by a certified yoga teacher and trainer.",
       image: images.personalHero,
       actions: [
         { label: "Book a session", href: "#enquire" },
@@ -98,7 +98,7 @@ export function buildOnlineYogaIndia(config: PricingConfig): ServicePageContent 
       eyebrow: "Online yoga classes · India",
       title: "Online yoga classes for India and beyond",
       subtitle:
-        "Live, small-group Vinyasa you can join from anywhere in India, sequenced around the body, taught live by a Yoga Alliance USA RYT.",
+        "Live, small-group Vinyasa you can join from anywhere in India, sequenced around the body, taught live by a certified yoga teacher.",
       image: images.onlineHero,
       actions: [
         {

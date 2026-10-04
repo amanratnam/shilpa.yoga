@@ -36,9 +36,12 @@ function Word({
 
 /**
  * Pinned statement: the section holds the viewport while the quote illuminates
- * word by word. Height is deliberately just over one extra viewport — enough
- * for the reveal to read as deliberate, without making a single sentence cost
- * the reader two full screens of scrolling.
+ * word by word. On desktop the height is just over one viewport — enough for
+ * the reveal to read as deliberate, without making a single sentence cost the
+ * reader two full screens of scrolling. Phones get more runway: 20% of a short
+ * viewport is a single flick, which skipped the reveal entirely.
+ * `svh` rather than `vh`, so the pinned quote isn't hidden under the iOS
+ * toolbar, and rather than `dvh`, so the scroll length can't change mid-scroll.
  */
 export function QuoteReveal() {
   const reduce = useReducedMotion();
@@ -71,13 +74,18 @@ export function QuoteReveal() {
   return (
     <section
       ref={ref}
-      className="relative h-[120vh] bg-[linear-gradient(170deg,#1F3D2E_0%,#142A1F_100%)] text-brand-cream on-dark"
+      className="relative h-[160svh] bg-[linear-gradient(170deg,#1F3D2E_0%,#142A1F_100%)] text-brand-cream on-dark md:h-[120vh]"
     >
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+      <div className="sticky top-0 flex h-svh items-center overflow-hidden">
+        {/* The wrapper owns the centring translate; the drift keyframes
+            overwrite `transform` on whatever they animate. A radial gradient
+            stands in for blur-3xl, which is costly to animate on phones. */}
         <div
           aria-hidden
-          className="animate-glow-drift pointer-events-none absolute left-1/2 top-1/2 h-[30rem] w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-gold/[0.06] blur-3xl"
-        />
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[30rem] w-[30rem] -translate-x-1/2 -translate-y-1/2"
+        >
+          <div className="h-full w-full animate-glow-drift rounded-full bg-[radial-gradient(closest-side,rgba(201,169,97,0.09),transparent)]" />
+        </div>
         <div className="container-content mx-auto max-w-4xl text-center">
           <motion.span
             aria-hidden

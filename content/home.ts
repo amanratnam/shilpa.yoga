@@ -3,7 +3,7 @@
 export type Stat = { value: string; label: string };
 
 export const homepageStats: Stat[] = [
-  { value: "RYT 200", label: "Yoga Alliance USA registered" },
+  { value: "Certified", label: "Yoga teacher & trainer" },
   { value: "8+ yrs", label: "Teaching across studios & online" },
   { value: "600+", label: "Students guided through practice" },
   { value: "Hatha–Vinyasa", label: "Lineage & methodology" },
@@ -46,8 +46,8 @@ export const differentiators: { title: string; body: string }[] = [
     body: "Classes and cohorts are kept deliberately small so attention stays personal. You are seen, adjusted and met where you are, whether on screen or on the mat beside me.",
   },
   {
-    title: "Genuinely Yoga Alliance trained",
-    body: "Certified with Yoga Alliance USA and grounded in theory, ethics and the body, so what you learn is rooted in real understanding, not internet trends.",
+    title: "Properly certified",
+    body: "A certified yoga teacher and trainer, grounded in theory, ethics and the body, so what you learn is rooted in real understanding, not internet trends.",
   },
 ];
 

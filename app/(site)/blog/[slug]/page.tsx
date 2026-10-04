@@ -8,7 +8,10 @@ import { Section } from "@/components/ui/Section";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { CTASection } from "@/components/layout/CTASection";
 import { SmartImage } from "@/components/ui/SmartImage";
-import { getAllPosts, getPostBySlug, formatDate } from "@/lib/blog";
+import { ShareBar } from "@/components/blog/ShareBar";
+import { BlogCard } from "@/components/blog/BlogCard";
+import { Reveal } from "@/components/ui/Reveal";
+import { getAllPosts, getPostBySlug, getRelatedPosts, formatDate } from "@/lib/blog";
 import { blogCover } from "@/content/images";
 import { siteConfig } from "@/lib/site";
 
@@ -63,6 +66,9 @@ export default async function BlogPostPage({
     },
   });
 
+  const canonicalUrl = `${siteConfig.url}/blog/${slug}`;
+  const related = getRelatedPosts(slug);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -71,7 +77,7 @@ export default async function BlogPostPage({
     datePublished: post.meta.date,
     author: { "@type": "Person", name: post.meta.author },
     publisher: { "@type": "Organization", name: siteConfig.name },
-    mainEntityOfPage: `${siteConfig.url}/blog/${slug}`,
+    mainEntityOfPage: canonicalUrl,
   };
 
   return (
@@ -99,12 +105,56 @@ export default async function BlogPostPage({
           <p className="mt-5 text-small text-brand-cream/70">
             {post.meta.author} · {formatDate(post.meta.date)} · {post.meta.readingTime}
           </p>
+          <ShareBar
+            title={post.meta.title}
+            canonicalUrl={canonicalUrl}
+            tone="dark"
+            label={null}
+            compact
+            className="mt-6"
+          />
         </div>
       </section>
 
       <Section tone="light">
         <article className="prose prose-brand mx-auto">{content}</article>
+        <div className="mx-auto mt-12 max-w-[70ch] rounded-brand border border-brand-ink/10 bg-brand-white p-6 sm:p-8">
+          <p className="text-h4">Found this useful?</p>
+          <p className="mt-1 text-body text-brand-stone">
+            Pass it on to someone who&apos;d enjoy it, copy the link or share it
+            straight to your favourite app.
+          </p>
+          <ShareBar
+            title={post.meta.title}
+            canonicalUrl={canonicalUrl}
+            label={null}
+            className="mt-5"
+          />
+        </div>
       </Section>
+
+      {related.length > 0 ? (
+        <Section tone="white">
+          <div className="mb-8 flex items-end justify-between gap-4">
+            <h2 className="text-h3">Keep reading</h2>
+            <Link
+              href="/blog"
+              className="inline-flex min-h-11 items-center gap-1 text-small font-medium text-brand-green transition-colors hover:text-brand-gold"
+            >
+              All notes
+            </Link>
+          </div>
+          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {related.map((p, i) => (
+              <li key={p.slug} className={i === 2 ? "sm:hidden lg:block" : undefined}>
+                <Reveal delay={i * 0.07} className="h-full">
+                  <BlogCard post={p} />
+                </Reveal>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      ) : null}
 
       <CTASection
         eyebrow="Practice with me"

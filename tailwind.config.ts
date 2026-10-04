@@ -2,6 +2,10 @@ import type { Config } from "tailwindcss";
 import typography from "@tailwindcss/typography";
 
 const config: Config = {
+  // Touch screens keep :hover applied after a tap, which left cards lifted and
+  // links tinted until the next tap elsewhere. Hover styles now only apply on
+  // devices that can actually hover.
+  future: { hoverOnlyWhenSupported: true },
   content: [
     "./app/**/*.{ts,tsx,mdx}",
     "./components/**/*.{ts,tsx,mdx}",
