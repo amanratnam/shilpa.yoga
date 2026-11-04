@@ -99,6 +99,32 @@ const config: Config = {
           "88%": { opacity: "var(--dust-opacity, 0.5)" },
           "100%": { transform: "translateY(-45vh)", opacity: "0" },
         },
+        // Offer pages: a diya flame and its glow
+        flicker: {
+          "0%, 100%": { transform: "scale(1) rotate(-1deg)", opacity: "1" },
+          "30%": { transform: "scale(1.06, 0.94) rotate(2deg)", opacity: "0.9" },
+          "60%": { transform: "scale(0.96, 1.05) rotate(-2deg)", opacity: "1" },
+        },
+        // Offer pages: fairy-light bulbs
+        twinkle: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.35" },
+        },
+        // Offer pages: tricolour bands
+        wave: {
+          "0%, 100%": { transform: "translateX(0)" },
+          "50%": { transform: "translateX(-3%)" },
+        },
+        // Offer pages: light passing across the claim button
+        sheen: {
+          "0%, 60%": { transform: "translateX(0) skewX(-12deg)" },
+          "100%": { transform: "translateX(450%) skewX(-12deg)" },
+        },
+        // Offer pages: gulal splashes
+        blob: {
+          "0%, 100%": { transform: "translate(0, 0) scale(1)" },
+          "50%": { transform: "translate(4%, -6%) scale(1.15)" },
+        },
         // Home hero: a headline line rising out of its own mask
         "line-rise": {
           "0%": { transform: "translateY(110%)" },

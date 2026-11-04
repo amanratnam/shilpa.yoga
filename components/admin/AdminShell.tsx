@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarRange, IndianRupee, LayoutDashboard, Users } from "lucide-react";
+import { CalendarRange, IndianRupee, Inbox, LayoutDashboard, Users } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
 import { SessionWatcher } from "@/components/admin/SessionWatcher";
 import { SignOutButton } from "@/components/admin/SignOutButton";
@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
  */
 const NAV = [
   { href: "/admin/dashboard", label: "Dashboard", Icon: LayoutDashboard },
+  { href: "/admin/leads", label: "Leads", Icon: Inbox },
   { href: "/admin/clients", label: "Clients", Icon: Users },
   { href: "/admin/subscriptions", label: "Subscriptions", Icon: CalendarRange },
   { href: "/admin/pricing", label: "Pricing", Icon: IndianRupee },
@@ -108,7 +109,7 @@ export function AdminShell({
         {/* ---- Bottom tabs (phones and tablets) ---- */}
         <nav
           aria-label="Admin sections"
-          className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-4 border-t border-brand-ink/10 bg-brand-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
+          className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-brand-ink/10 bg-brand-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
         >
           {NAV.map(({ href, label, Icon }) => {
             const active = isActive(href);
@@ -124,7 +125,7 @@ export function AdminShell({
               >
                 <span
                   className={cn(
-                    "grid h-7 w-12 place-items-center rounded-full transition-colors",
+                    "grid h-7 w-11 place-items-center rounded-full transition-colors",
                     active && "bg-brand-green/10",
                   )}
                 >
