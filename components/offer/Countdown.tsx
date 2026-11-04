@@ -39,10 +39,10 @@ export function Countdown({ endsOn, label }: { endsOn: string; label: string }) 
       {cells.map((c) => (
         <div
           key={c.u}
-          className="flex min-w-[3.25rem] flex-col items-center rounded-xl border border-[var(--line)] bg-[var(--field)] px-2 py-1.5"
+          className="flex min-w-[3.25rem] flex-col items-center rounded-brand border border-brand-cream/20 bg-brand-cream/[0.06] px-2 py-1.5 backdrop-blur-sm"
         >
           <span className="text-lg font-semibold tabular-nums leading-tight">{String(c.v).padStart(2, "0")}</span>
-          <span className="text-[0.625rem] uppercase tracking-[0.12em] opacity-60">{c.u}</span>
+          <span className="text-[0.625rem] uppercase tracking-[0.12em] text-brand-cream/60">{c.u}</span>
         </div>
       ))}
     </div>

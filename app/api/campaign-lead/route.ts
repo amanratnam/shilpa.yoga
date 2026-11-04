@@ -60,7 +60,7 @@ export async function POST(request: Request) {
         email: lead.email || "(not given)",
         phone: lead.phone,
         country: lead.country || "Not given",
-        course: `${campaign.name} offer · Online group classes (${campaign.discountPercent}% off)`,
+        course: `${campaign.name} offer · Online group classes (free extra classes)`,
         category: lead.planInterest || undefined,
         notes,
       };

@@ -30,14 +30,14 @@ export function StickyClaim({ label, note }: { label: string; note: string }) {
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-40 border-t border-[var(--line)] bg-[var(--bg)] px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur transition-transform duration-300 lg:hidden ${show ? "translate-y-0" : "translate-y-full"}`}
+      className={`fixed inset-x-0 bottom-0 z-40 border-t border-brand-ink/10 bg-brand-cream/95 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur transition-transform duration-300 lg:hidden ${show ? "translate-y-0" : "translate-y-full"}`}
     >
       <a
         href="#claim"
-        className="flex min-h-12 items-center justify-between gap-3 rounded-full bg-[var(--accent)] pl-5 pr-2 text-[var(--on-accent)]"
+        className="flex min-h-12 items-center justify-between gap-3 rounded-brand bg-brand-green pl-5 pr-2 text-brand-cream"
       >
-        <span className="text-[0.9375rem] font-semibold">{label}</span>
-        <span className="rounded-full bg-black/10 px-3 py-1.5 text-xs font-medium">{note}</span>
+        <span className="text-small font-medium uppercase tracking-[0.05em]">{label}</span>
+        <span className="rounded-brand bg-brand-cream/10 px-3 py-1.5 text-xs font-medium text-brand-gold">{note}</span>
       </a>
     </div>
   );

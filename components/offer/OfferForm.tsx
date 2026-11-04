@@ -26,7 +26,7 @@ function Chips({
 }) {
   return (
     <fieldset>
-      <legend className="mb-2 text-[0.8125rem] font-medium opacity-90">{legend}</legend>
+      <legend className="mb-2 text-[0.8125rem] font-medium text-brand-cream/85">{legend}</legend>
       <div className="flex flex-wrap gap-2">
         {options.map((o) => {
           const active = value === o.value;
@@ -34,10 +34,10 @@ function Chips({
             <label
               key={o.value}
               className={cn(
-                "inline-flex min-h-10 cursor-pointer items-center rounded-full border px-3.5 text-[0.8125rem] font-medium transition-colors",
+                "inline-flex min-h-10 cursor-pointer items-center rounded-brand border px-3.5 text-[0.8125rem] font-medium transition-colors duration-200",
                 active
-                  ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--on-accent)]"
-                  : "border-[var(--line)] hover:border-[var(--accent)]",
+                  ? "border-brand-gold bg-brand-gold text-brand-ink"
+                  : "border-white/20 bg-white/[0.06] text-brand-cream hover:border-brand-gold/70",
               )}
             >
               <input
@@ -57,8 +57,9 @@ function Chips({
   );
 }
 
+/** Inputs read as glass within glass: translucent, with a gold focus. */
 const field =
-  "w-full rounded-xl border border-[var(--line)] bg-[var(--field)] px-3.5 py-3 text-base text-[var(--ink)] placeholder:text-current placeholder:opacity-40 transition-colors focus:border-[var(--accent)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)]";
+  "w-full rounded-brand border border-white/20 bg-white/[0.08] px-3.5 py-3 text-base text-brand-cream placeholder:text-brand-cream/40 transition-colors focus:border-brand-gold focus:bg-white/[0.12] focus:outline-none focus:ring-1 focus:ring-brand-gold";
 
 /**
  * The short enquiry form on every offer page. Sends the campaign slug, plus
@@ -67,12 +68,10 @@ const field =
 export function OfferForm({
   campaign,
   campaignName,
-  discountPercent,
   plans,
 }: {
   campaign: string;
   campaignName: string;
-  discountPercent: number;
   /** Plan pills, e.g. "8 classes / month". */
   plans: Choice[];
 }) {
@@ -138,17 +137,17 @@ export function OfferForm({
           animate={{ opacity: 1, scale: 1 }}
           className="flex flex-col items-center gap-4 py-8 text-center"
         >
-          <CheckCircle2 className="h-12 w-12 text-[var(--accent)]" strokeWidth={1.5} aria-hidden />
+          <CheckCircle2 className="h-12 w-12 text-brand-gold" strokeWidth={1.5} aria-hidden />
           <h3 className="text-2xl font-semibold">You&apos;re in, {firstName}!</h3>
           <p className="max-w-xs text-[0.9375rem] opacity-80">
-            Your {campaignName} offer of {discountPercent}% off is reserved. We&apos;ll WhatsApp
+            Your {campaignName} offer is reserved. We&apos;ll WhatsApp
             you within a day to find the right batch for you.
           </p>
           <a
             href={siteConfig.contact.whatsapp}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-2 inline-flex min-h-12 items-center gap-2 rounded-full border border-[var(--line)] px-5 text-sm font-medium transition-colors hover:border-[var(--accent)]"
+            className="mt-2 inline-flex min-h-12 items-center gap-2 rounded-brand border border-white/25 px-5 text-sm font-medium transition-colors hover:border-brand-gold"
           >
             <WhatsAppIcon className="h-5 w-5" />
             Can&apos;t wait? Message us now
@@ -170,14 +169,14 @@ export function OfferForm({
 
           <div className="grid gap-3 sm:grid-cols-2">
             <label className="flex flex-col gap-1.5">
-              <span className="text-[0.8125rem] font-medium opacity-90">
-                Your name <span className="text-[var(--accent)]">*</span>
+              <span className="text-[0.8125rem] font-medium text-brand-cream/85">
+                Your name <span className="text-brand-gold">*</span>
               </span>
               <input name="fullName" autoComplete="name" required className={field} />
             </label>
             <label className="flex flex-col gap-1.5">
-              <span className="text-[0.8125rem] font-medium opacity-90">
-                WhatsApp number <span className="text-[var(--accent)]">*</span>
+              <span className="text-[0.8125rem] font-medium text-brand-cream/85">
+                WhatsApp number <span className="text-brand-gold">*</span>
               </span>
               <input
                 name="phone"
@@ -190,11 +189,11 @@ export function OfferForm({
               />
             </label>
             <label className="flex flex-col gap-1.5">
-              <span className="text-[0.8125rem] font-medium opacity-90">Email</span>
+              <span className="text-[0.8125rem] font-medium text-brand-cream/85">Email</span>
               <input name="email" type="email" inputMode="email" autoComplete="email" className={field} />
             </label>
             <label className="flex flex-col gap-1.5">
-              <span className="text-[0.8125rem] font-medium opacity-90">City or country</span>
+              <span className="text-[0.8125rem] font-medium text-brand-cream/85">City or country</span>
               <input name="country" autoComplete="country-name" placeholder="e.g. Gurgaon, Dubai" className={field} />
             </label>
           </div>
@@ -218,7 +217,7 @@ export function OfferForm({
           </div>
 
           <label className="flex flex-col gap-1.5">
-            <span className="text-[0.8125rem] font-medium opacity-90">Anything Shilpa should know?</span>
+            <span className="text-[0.8125rem] font-medium text-brand-cream/85">Anything Shilpa should know?</span>
             <textarea
               name="message"
               rows={2}
@@ -228,7 +227,7 @@ export function OfferForm({
           </label>
 
           {error ? (
-            <p role="alert" className="text-sm font-medium text-[var(--accent)]">
+            <p role="alert" className="text-sm font-medium text-brand-gold">
               {error}
             </p>
           ) : null}
@@ -236,7 +235,7 @@ export function OfferForm({
           <button
             type="submit"
             disabled={status === "sending"}
-            className="group relative mt-1 inline-flex min-h-14 items-center justify-center gap-2 overflow-hidden rounded-full bg-[var(--accent)] px-6 text-base font-semibold text-[var(--on-accent)] shadow-[0_12px_30px_-12px_var(--accent)] transition-transform active:scale-[0.98] disabled:opacity-70"
+            className="group relative mt-1 inline-flex min-h-14 items-center justify-center gap-2 overflow-hidden rounded-brand bg-brand-gold px-6 text-small font-medium uppercase tracking-[0.05em] text-brand-ink transition-colors duration-300 hover:bg-brand-cream active:scale-[0.99] disabled:opacity-70"
           >
             {/* A slow sheen across the button */}
             <span
@@ -246,9 +245,9 @@ export function OfferForm({
             {status === "sending" ? (
               <Loader2 className="h-5 w-5 animate-spin" aria-hidden />
             ) : null}
-            {status === "sending" ? "Reserving…" : `Claim my ${discountPercent}% off`}
+            {status === "sending" ? "Reserving…" : "Claim my offer"}
           </button>
-          <p className="text-center text-[0.75rem] opacity-60">
+          <p className="text-center text-[0.75rem] text-brand-cream/60">
             No payment now. We&apos;ll message you on WhatsApp to pick your batch.
           </p>
         </motion.form>

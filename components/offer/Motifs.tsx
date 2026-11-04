@@ -69,15 +69,15 @@ function StringLights({ colors }: { colors: string[] }) {
   );
 }
 
-/** A 24-spoke wheel, turning slowly, in navy. */
+/** A 24-spoke wheel, turning slowly, drawn in the current text colour. */
 function Chakra({ className }: { className?: string }) {
   const spokes = Array.from({ length: 24 }, (_, i) => i * 15);
   return (
     <svg viewBox="-50 -50 100 100" className={cn("animate-[spin_60s_linear_infinite]", className)} aria-hidden>
-      <circle r="46" fill="none" stroke="#1F3A93" strokeWidth="3" />
-      <circle r="6" fill="#1F3A93" />
+      <circle r="46" fill="none" stroke="currentColor" strokeWidth="3" />
+      <circle r="6" fill="currentColor" />
       {spokes.map((a) => (
-        <line key={a} x1="0" y1="0" x2="0" y2="-44" stroke="#1F3A93" strokeWidth="1.4" transform={`rotate(${a})`} />
+        <line key={a} x1="0" y1="0" x2="0" y2="-44" stroke="currentColor" strokeWidth="1.4" transform={`rotate(${a})`} />
       ))}
     </svg>
   );
@@ -119,12 +119,11 @@ function Splashes({ colors }: { colors: string[] }) {
 
 /** Decoration layered behind the hero copy, specific to each festival. */
 export function HeroMotif({ campaign }: { campaign: Campaign }) {
-  const t = campaign.theme;
   switch (campaign.effect) {
     case "diyas":
       return (
         <>
-          <Rangoli color={t.accent2} className="absolute -right-24 -top-24 h-[22rem] w-[22rem] opacity-[0.14] sm:h-[34rem] sm:w-[34rem]" />
+          <Rangoli color="#C9A961" className="absolute -right-24 -top-24 h-[22rem] w-[22rem] opacity-[0.14] sm:h-[34rem] sm:w-[34rem]" />
           <div className="absolute inset-x-0 bottom-0 flex justify-center gap-4 opacity-90 sm:gap-10">
             {[0, 0.4, 0.15, 0.6, 0.3].map((d, i) => (
               <Diya key={i} delay={d} className={cn("h-12 w-16 sm:h-16 sm:w-20", i % 2 && "hidden sm:block")} />
@@ -143,7 +142,7 @@ export function HeroMotif({ campaign }: { campaign: Campaign }) {
       return (
         <span
           aria-hidden
-          className="pointer-events-none absolute -right-6 bottom-0 select-none text-[9rem] font-black leading-none tracking-tighter text-transparent opacity-30 [-webkit-text-stroke:1.5px_var(--accent)] sm:text-[16rem]"
+          className="pointer-events-none absolute -right-6 bottom-0 select-none text-[9rem] font-black leading-none tracking-tighter text-transparent opacity-30 [-webkit-text-stroke:1.5px_#C9A961] sm:text-[16rem]"
         >
           2027
         </span>
@@ -151,13 +150,13 @@ export function HeroMotif({ campaign }: { campaign: Campaign }) {
     case "tricolour":
       return (
         <>
-          <Chakra className="absolute -right-16 top-6 h-64 w-64 opacity-[0.12] sm:h-[26rem] sm:w-[26rem]" />
+          <Chakra className="absolute -right-16 top-6 h-64 w-64 text-brand-cream opacity-[0.1] sm:h-[26rem] sm:w-[26rem]" />
           <div className="absolute inset-x-0 bottom-0 opacity-90">
             <TricolourWave />
           </div>
         </>
       );
     case "gulal":
-      return <Splashes colors={t.particles} />;
+      return <Splashes colors={campaign.particles} />;
   }
 }
