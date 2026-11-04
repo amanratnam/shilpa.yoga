@@ -90,6 +90,8 @@ const PRICED_PATHS = [
   "/contact",
   "/admin/pricing",
   "/admin/subscriptions",
+  // Festival offers quote discounted live prices.
+  "/offer/[slug]",
 ];
 
 /**
@@ -119,5 +121,9 @@ export async function publishPricingConfig(
   if (error) throw new Error(error.message);
 
   updateTag(PRICING_TAG);
-  for (const path of PRICED_PATHS) revalidatePath(path);
+  for (const path of PRICED_PATHS) {
+    // Dynamic segments need the "page" type to clear every generated slug.
+    if (path.includes("[")) revalidatePath(path, "page");
+    else revalidatePath(path);
+  }
 }
