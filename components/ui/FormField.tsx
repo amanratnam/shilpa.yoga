@@ -6,12 +6,12 @@ const fieldBase =
   "w-full rounded-brand border bg-brand-white text-brand-ink placeholder:text-brand-stone transition-colors";
 
 /**
- * Public forms use the roomy default. `compact` exists for dense admin grids
- * (the pricing configurator), where a column of full-size fields would not fit
- * and does not need to.
+ * Public forms use the roomy default. `compact` is for the admin panel's
+ * denser forms. It stays at 16px text on phones — anything smaller makes iOS
+ * Safari zoom the page on focus — and tightens from `sm` up.
  */
 const fieldSize = (compact?: boolean) =>
-  compact ? "px-3 py-2 text-small" : "px-4 py-3 text-body";
+  compact ? "px-3 py-2.5 text-base sm:py-2 sm:text-small" : "px-4 py-3 text-body";
 
 const fieldState = (invalid?: boolean) =>
   invalid

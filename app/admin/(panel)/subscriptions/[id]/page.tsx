@@ -16,7 +16,6 @@ import { formatDate } from "@/lib/admin/format";
 import { formatINR } from "@/lib/pricing/config";
 import { getPricingConfig } from "@/lib/pricing/store";
 import { receiptNumber } from "@/lib/admin/receipt";
-import { AdminHeader } from "@/components/admin/AdminHeader";
 import { SubscriptionFormModal } from "@/components/admin/SubscriptionFormModal";
 import { PaymentStatus, SubscriptionStateBadge } from "@/components/admin/badges";
 import { META_LABEL } from "@/components/admin/tokens";
@@ -37,7 +36,7 @@ export default async function SubscriptionDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const session = await verifySession();
+  await verifySession();
   const { id } = await params;
   const sub = await getSubscription(id);
   if (!sub) notFound();
@@ -52,9 +51,8 @@ export default async function SubscriptionDetailPage({
 
   return (
     <>
-      <AdminHeader username={session.username} active="subscriptions" expiresAt={session.exp} />
 
-      <div className="container-content flex-1 py-12">
+      <div>
         <Link
           href="/admin/subscriptions"
           className="inline-flex items-center gap-2 text-small font-medium text-brand-stone underline-offset-4 transition-colors hover:text-brand-green hover:underline"

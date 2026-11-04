@@ -6,7 +6,8 @@ import { saveSubscriptionAction, type ActionState } from "@/app/admin/actions";
 import { FormField, Input, Select, Textarea } from "@/components/ui/FormField";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/admin/Modal";
-import { FormError, SubmitButton, Toggle } from "@/components/admin/FormBits";
+import { FormActions, FormError, Toggle } from "@/components/admin/FormBits";
+import { cn } from "@/lib/utils";
 
 type Option = { value: string; label: string };
 type PackageOption = { id: string; label: string; mode: string };
@@ -69,7 +70,7 @@ export function SubscriptionFormModal({
           {triggerLabel ?? "Edit"}
         </Button>
       ) : (
-        <Button size="sm" onClick={() => setOpen(true)} className="shrink-0" disabled={noClients}>
+        <Button size="sm" onClick={() => setOpen(true)} className="min-h-10 shrink-0" disabled={noClients}>
           <Plus className="h-4 w-4" strokeWidth={2.5} aria-hidden />
           {triggerLabel ?? "Add a subscription"}
         </Button>
@@ -78,10 +79,10 @@ export function SubscriptionFormModal({
       {open ? (
         <Modal
           title={editing ? "Edit subscription" : "Add a subscription"}
-          description="Packages and prices come from the pricing configurator."
+          description="Packages and prices come from Pricing."
           onClose={() => setOpen(false)}
         >
-          <form action={formAction} className="mt-8 grid gap-5 sm:grid-cols-2">
+          <form action={formAction} className="grid grid-cols-2 gap-x-3 gap-y-4">
             {editing ? <input type="hidden" name="id" value={defaults!.id} /> : null}
             {editing ? (
               <input type="hidden" name="existingPackage" value={defaults!.yogaPackage} />
@@ -96,12 +97,12 @@ export function SubscriptionFormModal({
                 htmlFor="clientId"
                 required
                 error={errors.clientId}
-                hint="Only clients already in the repository can be selected."
-                className="sm:col-span-2"
+                className="col-span-2"
               >
                 <Select
                   id="clientId"
                   name="clientId"
+                  compact
                   defaultValue={defaults?.clientId ?? ""}
                   invalid={Boolean(errors.clientId)}
                 >
@@ -117,33 +118,52 @@ export function SubscriptionFormModal({
               </FormField>
             )}
 
-            <FormField label="Yoga mode" htmlFor="yogaMode" required error={errors.yogaMode}>
-              <Select
-                id="yogaMode"
-                name="yogaMode"
-                value={mode}
-                onChange={(e) => setMode(e.target.value)}
-                invalid={Boolean(errors.yogaMode)}
-              >
+            {/* Two modes only, so a segmented switch beats a dropdown. */}
+            <fieldset className="col-span-2 sm:col-span-1">
+              <legend className="mb-2 text-small font-medium text-brand-ink">
+                Mode<span className="text-brand-gold"> *</span>
+              </legend>
+              <div className="grid grid-cols-2 gap-1 rounded-brand border border-brand-ink/15 bg-brand-cream/50 p-1">
                 {modes.map((m) => (
-                  <option key={m.value} value={m.value}>
-                    {m.label}
-                  </option>
+                  <label
+                    key={m.value}
+                    className={cn(
+                      "flex min-h-9 cursor-pointer items-center justify-center rounded-[3px] px-2 text-small font-medium transition-colors",
+                      mode === m.value
+                        ? "bg-brand-white text-brand-green shadow-sm"
+                        : "text-brand-stone hover:text-brand-ink",
+                    )}
+                  >
+                    <input
+                      type="radio"
+                      name="yogaMode"
+                      value={m.value}
+                      checked={mode === m.value}
+                      onChange={() => setMode(m.value)}
+                      className="sr-only"
+                    />
+                    {m.label.replace(/\s*\(.*\)/, "")}
+                  </label>
                 ))}
-              </Select>
-            </FormField>
+              </div>
+              {errors.yogaMode ? (
+                <p className="mt-1.5 text-small font-medium text-brand-ink">{errors.yogaMode}</p>
+              ) : null}
+            </fieldset>
 
             <FormField
-              label="Yoga package"
+              label="Package"
               htmlFor="yogaPackage"
               required
               error={errors.yogaPackage}
+              className="col-span-2 sm:col-span-1"
             >
               {/* Remount on mode change so the default selection resets. */}
               <Select
                 key={mode}
                 id="yogaPackage"
                 name="yogaPackage"
+                compact
                 defaultValue={mode === defaults?.yogaMode ? defaults.yogaPackage : ""}
                 invalid={Boolean(errors.yogaPackage)}
               >
@@ -152,36 +172,29 @@ export function SubscriptionFormModal({
                 </option>
                 {visiblePackages.map((p) => (
                   <option key={p.id} value={p.id}>
-                    {p.label}
+                    {/* The mode is already chosen above, so drop its prefix. */}
+                    {p.label.replace(/^[^·]*·\s*/, "")}
                   </option>
                 ))}
               </Select>
             </FormField>
 
-            <FormField
-              label="Subscription start"
-              htmlFor="startDate"
-              required
-              error={errors.startDate}
-            >
+            <FormField label="Starts" htmlFor="startDate" required error={errors.startDate}>
               <Input
                 id="startDate"
                 name="startDate"
+                compact
                 type="date"
                 defaultValue={defaults?.startDate}
                 invalid={Boolean(errors.startDate)}
               />
             </FormField>
 
-            <FormField
-              label="Subscription end"
-              htmlFor="endDate"
-              required
-              error={errors.endDate}
-            >
+            <FormField label="Ends" htmlFor="endDate" required error={errors.endDate}>
               <Input
                 id="endDate"
                 name="endDate"
+                compact
                 type="date"
                 defaultValue={defaults?.endDate}
                 invalid={Boolean(errors.endDate)}
@@ -193,11 +206,11 @@ export function SubscriptionFormModal({
               htmlFor="paymentMethod"
               required
               error={errors.paymentMethod}
-              className="sm:col-span-2"
             >
               <Select
                 id="paymentMethod"
                 name="paymentMethod"
+                compact
                 defaultValue={defaults?.paymentMethod ?? ""}
                 invalid={Boolean(errors.paymentMethod)}
               >
@@ -212,31 +225,36 @@ export function SubscriptionFormModal({
               </Select>
             </FormField>
 
+            <Toggle
+              name="paymentDone"
+              label="Paid"
+              defaultChecked={defaults?.paymentDone}
+              className="self-end"
+            />
+
             <FormField
               label="Notes"
               htmlFor="subscriptionNotes"
-              hint="Anything specific to this package."
               error={errors.notes}
-              className="sm:col-span-2"
+              className="col-span-2"
             >
               <Textarea
                 id="subscriptionNotes"
                 name="notes"
-                className="min-h-24"
+                compact
+                rows={2}
+                className="min-h-16"
+                placeholder="Anything specific to this package"
                 defaultValue={defaults?.notes}
               />
             </FormField>
 
-            <Toggle name="paymentDone" label="Payment done" defaultChecked={defaults?.paymentDone} />
-
             <FormError message={state.error} />
 
-            <div className="mt-2 flex justify-end gap-3 sm:col-span-2">
-              <Button type="button" size="sm" variant="quiet" onClick={() => setOpen(false)}>
-                Cancel
-              </Button>
-              <SubmitButton label={editing ? "Save changes" : "Save subscription"} />
-            </div>
+            <FormActions
+              onCancel={() => setOpen(false)}
+              submitLabel={editing ? "Save changes" : "Save subscription"}
+            />
           </form>
         </Modal>
       ) : null}

@@ -1,152 +1,104 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, CalendarRange, IndianRupee, Users } from "lucide-react";
-import { verifySession } from "@/lib/admin/auth";
-import { listClients } from "@/lib/admin/clients";
-import { listSubscriptions } from "@/lib/admin/subscriptions";
-import { getPricingConfig } from "@/lib/pricing/store";
-import { CLIENT_STATUSES, clientStatusLabels } from "@/lib/admin/enums";
-import { AdminHeader } from "@/components/admin/AdminHeader";
-import { DataProblem } from "@/components/admin/DataProblem";
-import { META_LABEL } from "@/components/admin/tokens";
-import { cn } from "@/lib/utils";
+import { ArrowLeft, ArrowRight, LockKeyhole } from "lucide-react";
+import { LoginForm } from "@/components/admin/LoginForm";
+import { LoginVisual } from "@/components/admin/login/LoginVisual";
+import { SessionEndedBroadcast } from "@/components/admin/SessionEndedBroadcast";
+import { getSession } from "@/lib/admin/auth";
+import { logoutAction } from "@/app/admin/actions";
+
+export const metadata: Metadata = {
+  title: "Studio admin",
+  robots: { index: false, follow: false },
+};
 
 export const dynamic = "force-dynamic";
 
-function Stat({ label, value }: { label: string; value: number | string }) {
-  return (
-    <div>
-      <div className="text-h3 font-semibold text-brand-ink">{value}</div>
-      <div className={cn("mt-1", META_LABEL)}>
-        {label}
-      </div>
-    </div>
-  );
-}
-
-function SectionCard({
-  href,
-  title,
-  blurb,
-  icon: Icon,
-  stats,
+/** Sign-in for the studio admin, at /admin. The panel itself starts at /admin/dashboard. */
+export default async function AdminLoginPage({
+  searchParams,
 }: {
-  href: string;
-  title: string;
-  blurb: string;
-  icon: typeof Users;
-  stats: { label: string; value: number | string }[];
+  searchParams: Promise<{ next?: string; expired?: string; signedout?: string }>;
 }) {
-  return (
-    <Link
-      href={href}
-      className="group flex flex-col rounded-brand border border-brand-ink/10 bg-brand-white p-6 transition-colors duration-300 ease-brand hover:border-brand-green/30"
-    >
-      <div className="flex items-start justify-between gap-4">
-        <Icon className="h-5 w-5 text-brand-green" strokeWidth={1.5} aria-hidden />
-        <ArrowRight
-          className="h-5 w-5 text-brand-stone transition-transform duration-300 ease-brand group-hover:translate-x-1 group-hover:text-brand-green"
-          strokeWidth={2}
-          aria-hidden
-        />
-      </div>
-      <h2 className="mt-4 text-h4 text-brand-ink">{title}</h2>
-      <p className="mt-1.5 text-small text-brand-stone">{blurb}</p>
-      <div className="mt-6 flex flex-wrap gap-8">
-        {stats.map((s) => (
-          <Stat key={s.label} label={s.label} value={s.value} />
-        ))}
-      </div>
-    </Link>
-  );
-}
-
-export default async function AdminHomePage() {
-  const session = await verifySession();
-
-  // Caught here rather than thrown, so the page can explain what to fix.
-  // Next.js hides Server Component error messages in production.
-  let clients, subscriptions, pricing;
-  try {
-    [clients, subscriptions, pricing] = await Promise.all([
-      listClients(),
-      listSubscriptions(),
-      getPricingConfig(),
-    ]);
-  } catch (error) {
-    return (
-      <>
-        <AdminHeader username={session.username} active="home" expiresAt={session.exp} />
-        <div className="container-content flex-1 py-12">
-          <h1 className="text-h2 text-brand-ink">Overview</h1>
-          <DataProblem error={error} />
-        </div>
-      </>
-    );
-  }
-
-  const byStatus = Object.fromEntries(
-    CLIENT_STATUSES.map((s) => [s, clients.filter((c) => c.status === s).length]),
-  );
+  const { next, expired, signedout } = await searchParams;
+  // Reachable even when signed in, so there is always a way back to a login
+  // form (and a way to switch user) rather than being bounced to the panel.
+  const session = await getSession();
 
   return (
-    <>
-      <AdminHeader username={session.username} active="home" expiresAt={session.exp} />
+    <div className="grid min-h-dvh flex-1 bg-brand-cream lg:grid-cols-[1.2fr_1fr]">
+      <LoginVisual />
 
-      <div className="container-content flex-1 py-12">
-        <h1 className="text-h2 text-brand-ink">Overview</h1>
-        <p className="mt-2 text-body text-brand-stone">
-          Welcome back, {session.username}.
-        </p>
+      <main className="flex flex-col px-5 pb-8 pt-7 sm:px-10 lg:justify-center lg:px-16 lg:py-12">
+        {/* Tells any other admin tabs the session is over. */}
+        {session ? null : <SessionEndedBroadcast />}
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-2">
-          <SectionCard
-            href="/admin/clients"
-            title="Clients"
-            blurb="The people you teach, and your newsletter list."
-            icon={Users}
-            stats={[
-              { label: "Total", value: clients.length },
-              ...CLIENT_STATUSES.map((s) => ({
-                label: clientStatusLabels[s],
-                value: byStatus[s] ?? 0,
-              })),
-            ]}
-          />
+        <div className="mx-auto w-full max-w-sm">
+          <h1 className="text-[1.75rem] font-semibold leading-tight tracking-tight text-brand-ink sm:text-h2">
+            Welcome back
+          </h1>
+          <p className="mt-2 text-small text-brand-stone sm:text-body">
+            Sign in to run Shilpa Yoga Space: clients, subscriptions, receipts
+            and pricing, in one calm place.
+          </p>
 
-          <SectionCard
-            href="/admin/subscriptions"
-            title="Subscriptions"
-            blurb="Every package sold, with receipts you can download."
-            icon={CalendarRange}
-            stats={[
-              { label: "Total", value: subscriptions.length },
-              {
-                label: "Current",
-                value: subscriptions.filter((s) => s.state === "current").length,
-              },
-              {
-                label: "Unpaid",
-                value: subscriptions.filter((s) => !s.paymentDone).length,
-              },
-            ]}
-          />
+          {expired ? (
+            <div role="status" className="mt-6 rounded-brand border border-brand-gold/60 bg-brand-gold/10 p-4">
+              <p className="text-small text-brand-ink">
+                Your session ended after an hour. Sign in again to continue.
+              </p>
+            </div>
+          ) : null}
 
-          <SectionCard
-            href="/admin/pricing"
-            title="Pricing"
-            blurb="Every price the site quotes, published from one place."
-            icon={IndianRupee}
-            stats={[
-              {
-                label: "Monthly tiers",
-                value:
-                  pricing.modes.online.monthly.length + pricing.modes.personal.monthly.length,
-              },
-              { label: "Prepay discount", value: `${pricing.discount.percent}%` },
-            ]}
-          />
+          {signedout && !session ? (
+            <div role="status" className="mt-6 rounded-brand border border-brand-ink/15 bg-brand-white p-4">
+              <p className="text-small text-brand-ink">You&apos;ve been signed out in another tab.</p>
+            </div>
+          ) : null}
+
+          {session ? (
+            <div className="mt-6 rounded-brand border border-brand-green/25 bg-brand-green/5 p-4">
+              <p className="text-small text-brand-ink">
+                You&apos;re already signed in as{" "}
+                <span className="font-medium">{session.username}</span>.
+              </p>
+              <div className="mt-3 flex flex-wrap items-center gap-4">
+                <Link
+                  href="/admin/dashboard"
+                  className="inline-flex min-h-10 items-center gap-1.5 rounded-brand bg-brand-green px-4 text-small font-medium text-brand-cream transition-colors hover:bg-brand-ink"
+                >
+                  Go to dashboard
+                  <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden />
+                </Link>
+                <form action={logoutAction}>
+                  <button
+                    type="submit"
+                    className="text-small font-medium text-brand-stone underline underline-offset-4 hover:text-brand-ink"
+                  >
+                    Sign out
+                  </button>
+                </form>
+              </div>
+            </div>
+          ) : null}
+
+          <LoginForm next={next} />
+
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-brand-ink/10 pt-5 text-[0.75rem] text-brand-stone">
+            <span className="inline-flex items-center gap-1.5">
+              <LockKeyhole className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
+              Private area · sessions last an hour
+            </span>
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1 underline-offset-4 hover:text-brand-ink hover:underline"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
+              shilpa.yoga
+            </Link>
+          </div>
         </div>
-      </div>
-    </>
+      </main>
+    </div>
   );
 }

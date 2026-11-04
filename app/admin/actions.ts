@@ -92,14 +92,16 @@ export async function loginAction(
     maxAge: SESSION_MAX_AGE,
   });
 
-  // Only allow same-site relative paths back into the admin panel.
-  const destination = next.startsWith("/admin") ? next : "/admin";
+  // Only allow same-site relative paths back into the admin panel — and never
+  // the sign-in page itself, which would look like the login did nothing.
+  const destination =
+    next.startsWith("/admin/") && !next.startsWith("/admin/login") ? next : "/admin/dashboard";
   redirect(destination);
 }
 
 export async function logoutAction() {
   (await cookies()).delete(SESSION_COOKIE);
-  redirect("/admin/login");
+  redirect("/admin");
 }
 
 // ---------------------------------------------------------------------------

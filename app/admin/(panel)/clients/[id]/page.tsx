@@ -20,7 +20,6 @@ import {
 import { formatDate, formatDateRange } from "@/lib/admin/format";
 import { getPricingConfig } from "@/lib/pricing/store";
 import { formatINR } from "@/lib/pricing/config";
-import { AdminHeader } from "@/components/admin/AdminHeader";
 import { ClientFormModal } from "@/components/admin/ClientFormModal";
 import { SubscriptionFormModal } from "@/components/admin/SubscriptionFormModal";
 import {
@@ -46,7 +45,7 @@ export default async function ClientDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const session = await verifySession();
+  await verifySession();
   const { id } = await params;
   const client = await getClient(id);
 
@@ -64,9 +63,8 @@ export default async function ClientDetailPage({
 
   return (
     <>
-      <AdminHeader username={session.username} active="clients" expiresAt={session.exp} />
 
-      <div className="container-content flex-1 py-12">
+      <div>
         <Link
           href="/admin/clients"
           className="inline-flex items-center gap-2 text-small font-medium text-brand-stone underline-offset-4 transition-colors hover:text-brand-green hover:underline"
