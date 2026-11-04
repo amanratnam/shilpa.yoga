@@ -15,7 +15,7 @@ export const verifySession = cache(async (): Promise<SessionPayload> => {
   const session = await decodeSession(cookie);
 
   if (!session) {
-    redirect("/admin/login");
+    redirect("/admin");
   }
 
   return session;

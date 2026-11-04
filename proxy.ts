@@ -9,15 +9,16 @@ import { SESSION_COOKIE, decodeSession } from "@/lib/admin/session";
  */
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const isLoginRoute = pathname === "/admin/login";
+  // /admin is the sign-in page; /admin/login is kept as a redirect to it.
+  const isLoginRoute = pathname === "/admin" || pathname === "/admin/login";
   const session = await decodeSession(request.cookies.get(SESSION_COOKIE)?.value);
 
-  // Note: signed-in visitors are deliberately NOT bounced off /admin/login.
+  // Note: signed-in visitors are deliberately NOT bounced off the sign-in page.
   // Doing so made the login page unreachable and left no way to switch user.
   if (!session && !isLoginRoute) {
-    const url = new URL("/admin/login", request.url);
+    const url = new URL("/admin", request.url);
     // Remember where they were headed, so login can send them back.
-    if (pathname !== "/admin") url.searchParams.set("next", pathname);
+    url.searchParams.set("next", pathname);
     return NextResponse.redirect(url);
   }
 

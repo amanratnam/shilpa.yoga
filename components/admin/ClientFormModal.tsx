@@ -6,7 +6,7 @@ import { saveClientAction, type ActionState } from "@/app/admin/actions";
 import { FormField, Input, Select, Textarea } from "@/components/ui/FormField";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/admin/Modal";
-import { FormError, SubmitButton } from "@/components/admin/FormBits";
+import { FormActions, FormError } from "@/components/admin/FormBits";
 
 type Option = { value: string; label: string };
 
@@ -28,11 +28,14 @@ export function ClientFormModal({
   statuses,
   referralSources,
   defaults,
+  triggerLabel,
 }: {
   genders: Option[];
   statuses: Option[];
   referralSources: Option[];
   defaults?: ClientDefaults;
+  /** Shorter button text, e.g. on the dashboard's quick actions. */
+  triggerLabel?: string;
 }) {
   const [open, setOpen] = useState(false);
   const [state, formAction] = useActionState<ActionState, FormData>(saveClientAction, {});
@@ -47,36 +50,38 @@ export function ClientFormModal({
           Edit client
         </Button>
       ) : (
-        <Button size="sm" onClick={() => setOpen(true)} className="shrink-0">
+        <Button size="sm" onClick={() => setOpen(true)} className="min-h-10 shrink-0">
           <Plus className="h-4 w-4" strokeWidth={2.5} aria-hidden />
-          Add a new client
+          {triggerLabel ?? "Add a new client"}
         </Button>
       )}
 
       {open ? (
         <Modal
           title={editing ? "Edit client" : "Add a new client"}
-          description={
-            editing
-              ? "Update this client's details."
-              : "Their details for the client repository and newsletter list."
-          }
+          description={editing ? "Update this client's details." : "For the client list and newsletter."}
           onClose={() => setOpen(false)}
         >
-          <form action={formAction} className="mt-8 grid gap-5 sm:grid-cols-2">
+          <form
+            action={formAction}
+            className="grid grid-cols-2 gap-x-3 gap-y-4 sm:grid-cols-4"
+          >
             {editing ? <input type="hidden" name="id" value={defaults!.id} /> : null}
 
+            {/* Phones: two columns, short fields paired. From sm: four. */}
             <FormField
               label="Full name"
               htmlFor="fullName"
               required
               error={errors.fullName}
-              className="sm:col-span-2"
+              className="col-span-2 sm:col-span-3"
             >
               <Input
                 id="fullName"
                 name="fullName"
+                compact
                 autoComplete="off"
+                autoCapitalize="words"
                 defaultValue={defaults?.fullName}
                 invalid={Boolean(errors.fullName)}
               />
@@ -86,7 +91,9 @@ export function ClientFormModal({
               <Input
                 id="age"
                 name="age"
+                compact
                 type="number"
+                inputMode="numeric"
                 min={1}
                 max={120}
                 defaultValue={defaults?.age}
@@ -98,6 +105,7 @@ export function ClientFormModal({
               <Select
                 id="gender"
                 name="gender"
+                compact
                 defaultValue={defaults?.gender ?? ""}
                 invalid={Boolean(errors.gender)}
               >
@@ -115,44 +123,47 @@ export function ClientFormModal({
             <FormField
               label="Email"
               htmlFor="email"
-              hint="Optional, but needed for newsletters."
               error={errors.email}
+              className="col-span-2"
             >
               <Input
                 id="email"
                 name="email"
+                compact
                 type="email"
+                inputMode="email"
                 autoComplete="off"
+                placeholder="For newsletters"
                 defaultValue={defaults?.email}
                 invalid={Boolean(errors.email)}
               />
             </FormField>
 
-            <FormField
-              label="Phone"
-              htmlFor="phone"
-              hint="Optional. Printed on receipts."
-              error={errors.phone}
-            >
+            <FormField label="Phone" htmlFor="phone" error={errors.phone}>
               <Input
                 id="phone"
                 name="phone"
+                compact
                 type="tel"
+                inputMode="tel"
                 autoComplete="off"
+                placeholder="On receipts"
                 defaultValue={defaults?.phone}
                 invalid={Boolean(errors.phone)}
               />
             </FormField>
 
             <FormField
-              label="Client status"
+              label="Status"
               htmlFor="status"
               required
               error={errors.status}
+              className="sm:col-span-2"
             >
               <Select
                 id="status"
                 name="status"
+                compact
                 defaultValue={defaults?.status ?? ""}
                 invalid={Boolean(errors.status)}
               >
@@ -168,15 +179,16 @@ export function ClientFormModal({
             </FormField>
 
             <FormField
-              label="How did they find us?"
+              label="Found us via"
               htmlFor="referralSource"
               required
               error={errors.referralSource}
-              className="sm:col-span-2"
+              className="col-span-2"
             >
               <Select
                 id="referralSource"
                 name="referralSource"
+                compact
                 defaultValue={defaults?.referralSource ?? ""}
                 invalid={Boolean(errors.referralSource)}
               >
@@ -194,26 +206,26 @@ export function ClientFormModal({
             <FormField
               label="Notes"
               htmlFor="notes"
-              hint="Injuries, goals, scheduling preferences."
               error={errors.notes}
-              className="sm:col-span-2"
+              className="col-span-full"
             >
               <Textarea
                 id="notes"
                 name="notes"
-                className="min-h-24"
+                compact
+                rows={3}
+                className="min-h-20"
+                placeholder="Injuries, goals, scheduling preferences"
                 defaultValue={defaults?.notes}
               />
             </FormField>
 
             <FormError message={state.error} />
 
-            <div className="mt-2 flex justify-end gap-3 sm:col-span-2">
-              <Button type="button" size="sm" variant="quiet" onClick={() => setOpen(false)}>
-                Cancel
-              </Button>
-              <SubmitButton label={editing ? "Save changes" : "Save client"} />
-            </div>
+            <FormActions
+              onCancel={() => setOpen(false)}
+              submitLabel={editing ? "Save changes" : "Save client"}
+            />
           </form>
         </Modal>
       ) : null}

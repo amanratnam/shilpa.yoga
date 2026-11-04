@@ -22,7 +22,7 @@ const WARN_BEFORE_MS = 5 * 60 * 1000;
 
 function goToLogin(reason: "expired" | "signed-out") {
   // A full navigation, so no stale server-rendered data is left on screen.
-  window.location.href = `/admin/login?${reason === "expired" ? "expired=1" : "signedout=1"}`;
+  window.location.href = `/admin?${reason === "expired" ? "expired=1" : "signedout=1"}`;
 }
 
 /**

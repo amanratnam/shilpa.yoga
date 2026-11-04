@@ -2,17 +2,22 @@
 
 import { LogOut } from "lucide-react";
 import { useFormStatus } from "react-dom";
+import { cn } from "@/lib/utils";
 
-function Inner() {
+function Inner({ compact }: { compact?: boolean }) {
   const { pending } = useFormStatus();
   return (
     <button
       type="submit"
       disabled={pending}
-      className="inline-flex items-center gap-2 rounded-brand border border-brand-ink/15 bg-brand-white px-3.5 py-2 text-small font-medium text-brand-ink transition-colors duration-300 ease-brand hover:border-brand-ink/30 hover:bg-brand-cream disabled:opacity-50"
+      aria-label={compact ? "Sign out" : undefined}
+      className={cn(
+        "inline-flex min-h-10 items-center gap-2 rounded-brand border border-brand-ink/15 bg-brand-white text-small font-medium text-brand-ink transition-colors duration-300 ease-brand hover:border-brand-ink/30 hover:bg-brand-cream disabled:opacity-50",
+        compact ? "min-w-10 justify-center px-2.5" : "px-3.5 py-2",
+      )}
     >
       <LogOut className="h-4 w-4" strokeWidth={2} aria-hidden />
-      {pending ? "Signing out…" : "Sign out"}
+      {compact ? null : pending ? "Signing out…" : "Sign out"}
     </button>
   );
 }
@@ -23,10 +28,17 @@ function Inner() {
  * authenticated and showed "already signed in". The login page announces it
  * instead, once the session is definitively gone.
  */
-export function SignOutButton({ action }: { action: () => Promise<void> }) {
+export function SignOutButton({
+  action,
+  compact,
+}: {
+  action: () => Promise<void>;
+  /** Icon only, for the phone top bar. */
+  compact?: boolean;
+}) {
   return (
     <form action={action}>
-      <Inner />
+      <Inner compact={compact} />
     </form>
   );
 }

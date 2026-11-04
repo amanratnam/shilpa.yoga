@@ -97,8 +97,9 @@ function SingleOption({
   const amountId = `${mode}-${slot}-amount`;
   const usdId = `${mode}-${slot}-usd`;
   return (
-    <div className="grid gap-3 sm:grid-cols-[1fr_8rem_8rem]">
-      <div>
+    // Phones: the label takes a row, the two prices share the next.
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-[1fr_8rem_8rem]">
+      <div className="col-span-2 sm:col-span-1">
         <FieldLabel htmlFor={nameId}>Label shown on the site</FieldLabel>
         <Input
           id={nameId}
@@ -165,11 +166,11 @@ function ModePanel({
 
   return (
     <section className="rounded-brand border border-brand-ink/10 bg-brand-white">
-      <header className="border-b border-brand-ink/10 bg-brand-cream/60 px-6 py-3">
+      <header className="border-b border-brand-ink/10 bg-brand-cream/60 px-4 py-3 sm:px-6">
         <h2 className="text-small font-medium text-brand-ink">{modeConfigLabels[mode]}</h2>
       </header>
 
-      <div className="flex flex-col gap-6 p-6">
+      <div className="flex flex-col gap-6 p-4 sm:p-6">
         <SingleOption
           mode={mode}
           slot="trial"
@@ -230,20 +231,21 @@ function ModePanel({
             </Button>
           </div>
 
-          <div className="overflow-hidden rounded-brand border border-brand-ink/10">
-            <table className="w-full border-collapse text-left">
+          {/* Scrolls sideways on narrow phones rather than widening the page. */}
+          <div className="relative overflow-x-auto rounded-brand border border-brand-ink/10">
+            <table className="w-full min-w-[26rem] border-collapse text-left">
               <thead>
                 <tr className="border-b border-brand-ink/10 bg-brand-cream/40">
-                  <th scope="col" className={cn("px-4 py-2", META_LABEL)}>
+                  <th scope="col" className={cn("px-3 py-2 sm:px-4", META_LABEL)}>
                     Sessions / month
                   </th>
-                  <th scope="col" className={cn("px-4 py-2", META_LABEL)}>
+                  <th scope="col" className={cn("px-3 py-2 sm:px-4", META_LABEL)}>
                     ₹ per month
                   </th>
-                  <th scope="col" className={cn("px-4 py-2", META_LABEL)}>
+                  <th scope="col" className={cn("px-3 py-2 sm:px-4", META_LABEL)}>
                     $ per month
                   </th>
-                  <th scope="col" className={cn("px-4 py-2", META_LABEL)}>
+                  <th scope="col" className={cn("px-3 py-2 sm:px-4", META_LABEL)}>
                     After {discountPercent}% prepay
                   </th>
                   <th scope="col" className="px-4 py-2">
@@ -256,7 +258,7 @@ function ModePanel({
                   // Index as key: rows are positional here, and a session count
                   // is editable, so it cannot serve as a stable identity.
                   <tr key={i} className="border-b border-brand-ink/10 last:border-b-0">
-                    <td className="px-4 py-2.5">
+                    <td className="px-3 py-2.5 sm:px-4">
                       <Input
                         compact
                         type="number"
@@ -268,7 +270,7 @@ function ModePanel({
                         onChange={(e) => setTier(i, { sessions: Number(e.target.value) })}
                       />
                     </td>
-                    <td className="px-4 py-2.5">
+                    <td className="px-3 py-2.5 sm:px-4">
                       <Input
                         compact
                         type="number"
@@ -280,7 +282,7 @@ function ModePanel({
                         onChange={(e) => setTier(i, { amount: Number(e.target.value) })}
                       />
                     </td>
-                    <td className="px-4 py-2.5">
+                    <td className="px-3 py-2.5 sm:px-4">
                       <UsdInput
                         id={`${mode}-monthly-${i}-usd`}
                         value={tier.amountUsd}
@@ -339,16 +341,16 @@ export function PricingConfigurator({
   const issues = Object.values(state.fieldErrors ?? {});
 
   return (
-    <form action={formAction} className="mt-8 flex flex-col gap-6">
+    <form action={formAction} className="mt-6 flex flex-col gap-4 sm:gap-6">
       {/* The whole configuration travels as one JSON field — see the action. */}
       <input type="hidden" name="config" value={JSON.stringify(config)} />
 
-      <section className="rounded-brand border border-brand-ink/10 bg-brand-white p-6">
+      <section className="rounded-brand border border-brand-ink/10 bg-brand-white p-4 sm:p-6">
         <h2 className="text-small font-medium text-brand-ink">Multi-month prepayment</h2>
         <p className="mt-0.5 text-small text-brand-stone">
           Shown as a footnote under the monthly plans on both classes pages.
         </p>
-        <div className="mt-4 grid gap-3 sm:grid-cols-[10rem_10rem_12rem]">
+        <div className="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-[10rem_10rem_12rem]">
           <div>
             <FieldLabel htmlFor="discount-months">Months upfront</FieldLabel>
             <Input
@@ -405,7 +407,7 @@ export function PricingConfigurator({
         </div>
       </section>
 
-      <div className="grid gap-6 xl:grid-cols-2">
+      <div className="grid gap-4 sm:gap-6 xl:grid-cols-2 [&>*]:min-w-0">
         {PRICING_MODES.map((mode) => (
           <ModePanel
             key={mode}
@@ -432,7 +434,8 @@ export function PricingConfigurator({
       ) : null}
 
       {/* ---- Publish bar ---- */}
-      <div className="sticky bottom-0 flex flex-wrap items-center justify-between gap-4 rounded-brand border border-brand-ink/10 bg-brand-cream/95 px-5 py-3 backdrop-blur">
+      {/* Sits above the phone tab bar, and at the very bottom from lg up. */}
+      <div className="sticky bottom-[calc(4.25rem+env(safe-area-inset-bottom))] z-20 flex flex-wrap items-center justify-between gap-3 rounded-brand border border-brand-ink/10 bg-brand-cream/95 px-4 py-3 backdrop-blur sm:px-5 lg:bottom-0">
         <p className="text-small text-brand-stone">
           {dirty ? (
             <span className="font-medium text-brand-ink">Unpublished changes.</span>

@@ -40,7 +40,7 @@ export default function AdminError({
         ) : null}
         <div className="mt-8 flex justify-center gap-3">
           <Button onClick={reset}>Try again</Button>
-          <Button href="/admin/login" variant="secondary">
+          <Button href="/admin" variant="secondary">
             Back to sign in
           </Button>
         </div>

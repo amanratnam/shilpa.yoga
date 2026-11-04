@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/Button";
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" className="w-full" disabled={pending}>
+    <Button type="submit" className="mt-1 w-full" disabled={pending}>
       {pending ? "Signing in…" : "Sign in"}
     </Button>
   );
@@ -20,7 +20,7 @@ export function LoginForm({ next }: { next?: string }) {
   const [state, formAction] = useActionState<ActionState, FormData>(loginAction, {});
 
   return (
-    <form action={formAction} className="mt-8 flex flex-col gap-5">
+    <form action={formAction} className="mt-7 flex flex-col gap-4">
       <input type="hidden" name="next" value={next ?? ""} />
 
       <FormField label="Username" htmlFor="username" required>
@@ -28,6 +28,8 @@ export function LoginForm({ next }: { next?: string }) {
           id="username"
           name="username"
           autoComplete="username"
+          autoCapitalize="none"
+          compact
           required
           invalid={Boolean(state.error)}
         />
@@ -39,6 +41,7 @@ export function LoginForm({ next }: { next?: string }) {
           name="password"
           type="password"
           autoComplete="current-password"
+          compact
           required
           invalid={Boolean(state.error)}
         />
