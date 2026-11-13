@@ -35,12 +35,33 @@ export async function generateMetadata({
   const c = getCampaign((await params).slug);
   if (!c) return {};
   const festival = c.festival.charAt(0).toUpperCase() + c.festival.slice(1);
-  const title = `${festival} offer: free extra online yoga classes`;
+  const pageTitle = `${festival} offer: free extra online yoga classes`;
+  // The share card: a campaign's own title and artwork when it has them.
+  const shareTitle = c.share?.title ?? pageTitle;
+  const shareImage = c.share?.image ?? {
+    src: images.ogDefault.src,
+    width: images.ogDefault.width,
+    height: images.ogDefault.height,
+    alt: images.ogDefault.alt,
+  };
   return {
-    title,
+    title: c.share ? { absolute: c.share.title } : pageTitle,
     description: c.metaDescription,
     alternates: { canonical: `/offer/${c.slug}` },
-    openGraph: { title, description: c.metaDescription, images: [images.ogDefault.src] },
+    openGraph: {
+      type: "website",
+      url: `/offer/${c.slug}`,
+      siteName: "Shilpa Yoga Space",
+      title: shareTitle,
+      description: c.metaDescription,
+      images: [{ url: shareImage.src, width: shareImage.width, height: shareImage.height, alt: shareImage.alt, type: "image/jpeg" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: shareTitle,
+      description: c.metaDescription,
+      images: [shareImage.src],
+    },
   };
 }
 
