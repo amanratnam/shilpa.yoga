@@ -14,10 +14,10 @@ import { cn } from "@/lib/utils";
  */
 const NAV = [
   { href: "/admin/dashboard", label: "Dashboard", Icon: LayoutDashboard },
-  { href: "/admin/leads", label: "Leads", Icon: Inbox },
   { href: "/admin/clients", label: "Clients", Icon: Users },
   { href: "/admin/subscriptions", label: "Subscriptions", Icon: CalendarRange },
   { href: "/admin/pricing", label: "Pricing", Icon: IndianRupee },
+  { href: "/admin/leads", label: "Leads", Icon: Inbox },
 ];
 
 /**

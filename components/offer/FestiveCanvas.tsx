@@ -82,16 +82,23 @@ export function FestiveCanvas({
             r: rnd(40, 130), life: 0, max: rnd(260, 520), color: pick(colors), spin: 0,
             angle: 0, kind: 1,
           };
-        case "diyas":
-        default:
-          // kind 0: ember spark; kind 1: slow floating lantern glow
-          const lantern = Math.random() < 0.12;
-          return {
-            x: rnd(0, w), y: seed ? rnd(0, h) : h + 10, vx: rnd(-0.15, 0.15),
-            vy: lantern ? rnd(-0.35, -0.18) : rnd(-0.9, -0.3), r: lantern ? rnd(5, 10) : rnd(0.8, 2.2),
-            life: 0, max: lantern ? rnd(900, 1500) : rnd(240, 520), color: pick(colors), spin: rnd(0.02, 0.06),
-            angle: rnd(0, 6.28), kind: lantern ? 1 : 0,
-          };
+        case "festive":
+        default: {
+          // kind 1: a soft bokeh light drifting up; kind 0: a star glint
+          // that twinkles in place and fades.
+          const bokeh = Math.random() < 0.28;
+          return bokeh
+            ? {
+                x: rnd(0, w), y: seed ? rnd(0, h) : h + 30, vx: rnd(-0.12, 0.12), vy: rnd(-0.3, -0.1),
+                r: rnd(8, 22), life: seed ? rnd(0, 900) : 0, max: rnd(1300, 2100), color: pick(colors),
+                spin: rnd(0.004, 0.012), angle: rnd(0, 6.28), kind: 1,
+              }
+            : {
+                x: rnd(0, w), y: rnd(0, h), vx: rnd(-0.05, 0.05), vy: rnd(-0.08, 0.02),
+                r: rnd(1.6, 3.6), life: seed ? rnd(0, 200) : 0, max: rnd(200, 420), color: pick(colors),
+                spin: rnd(0.003, 0.01), angle: rnd(0, 6.28), kind: 0,
+              };
+        }
       }
     };
 
@@ -102,7 +109,7 @@ export function FestiveCanvas({
         case "tricolour": return Math.round(90 * d);
         case "gulal": return Math.round(14 * d) + 4;
         case "fireworks": return 0;
-        default: return Math.round(110 * d);
+        default: return Math.round(95 * d);
       }
     };
     if (effect !== "fireworks") for (let i = 0; i < target(); i++) ps.push(spawn(true));
@@ -211,23 +218,36 @@ export function FestiveCanvas({
           ctx.fill();
           alive = p.life < p.max;
         } else {
-          // diyas: embers flicker upward, lanterns glow and drift
-          p.x += p.vx + Math.sin(p.angle) * (p.kind ? 0.2 : 0.4); p.y += p.vy;
+          // festive: bokeh lights drift up; star glints twinkle and fade
+          p.x += p.vx + Math.sin(p.angle) * (p.kind ? 0.15 : 0.05); p.y += p.vy;
           const t = p.life / p.max;
-          const fade = Math.min(1, t * 6) * (1 - t);
+          const fade = Math.sin(Math.PI * Math.min(1, t));
           if (p.kind === 1) {
-            const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 3);
+            const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
             g.addColorStop(0, p.color);
+            g.addColorStop(0.55, p.color);
             g.addColorStop(1, "rgba(0,0,0,0)");
-            ctx.globalAlpha = fade * 0.55;
+            ctx.globalAlpha = fade * 0.16;
             ctx.fillStyle = g;
-            ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2); ctx.fill();
-          } else {
-            ctx.globalAlpha = fade * (0.55 + Math.sin(p.angle * 3) * 0.35);
-            ctx.fillStyle = p.color;
             ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+            alive = p.life < p.max && p.y > -40;
+          } else {
+            const tw = 0.55 + Math.sin(p.life * 0.09 + p.angle * 10) * 0.45;
+            const a = fade * tw;
+            const len = p.r * (2.4 + tw * 1.6);
+            ctx.globalAlpha = a * 0.9;
+            ctx.fillStyle = p.color;
+            // A four-point star: two thin crossed diamonds and a bright core.
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y - len); ctx.lineTo(p.x + p.r * 0.35, p.y);
+            ctx.lineTo(p.x, p.y + len); ctx.lineTo(p.x - p.r * 0.35, p.y); ctx.closePath();
+            ctx.moveTo(p.x - len, p.y); ctx.lineTo(p.x, p.y + p.r * 0.35);
+            ctx.lineTo(p.x + len, p.y); ctx.lineTo(p.x, p.y - p.r * 0.35); ctx.closePath();
+            ctx.fill();
+            ctx.globalAlpha = a;
+            ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 0.45, 0, Math.PI * 2); ctx.fill();
+            alive = p.life < p.max;
           }
-          alive = p.life < p.max && p.y > -20;
         }
 
         if (!alive) ps.splice(i, 1);

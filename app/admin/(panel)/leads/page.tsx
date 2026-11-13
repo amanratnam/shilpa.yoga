@@ -4,7 +4,8 @@ import { campaigns } from "@/content/campaigns";
 import { listCampaignLeads } from "@/lib/leads/store";
 import { LEAD_COLUMNS, campaignLabel, filterLeads, leadRows } from "@/lib/leads/table";
 import { DataProblem } from "@/components/admin/DataProblem";
-import { EmptyState, FilterChips, PageHeader } from "@/components/admin/PageParts";
+import { EmptyState, PageHeader } from "@/components/admin/PageParts";
+import { LeadsFilters } from "@/components/admin/LeadsFilters";
 import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -67,40 +68,27 @@ export default async function LeadsPage({
         }
       />
 
-      <div className="mt-6 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-        <FilterChips
-          label="Filter leads by campaign"
-          items={[
-            { label: "All", count: all.length, href: `/admin/leads${hrefWith({ campaign: "" })}`, active: !campaign },
+      <div className="mt-6">
+        <LeadsFilters
+          campaign={campaign}
+          q={q}
+          options={[
+            { value: "", label: "All campaigns", count: all.length },
             ...slugs.map((s) => ({
+              value: s,
               label: campaignLabel(s),
               count: all.filter((l) => l.campaign === s).length,
-              href: `/admin/leads${hrefWith({ campaign: s })}`,
-              active: campaign === s,
             })),
           ]}
         />
-        {/* A plain GET form: works without JavaScript and keeps the campaign. */}
-        <form action="/admin/leads" className="relative w-full lg:w-72">
-          {campaign ? <input type="hidden" name="campaign" value={campaign} /> : null}
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-brand-stone" aria-hidden />
-          <input
-            type="search"
-            name="q"
-            defaultValue={q}
-            placeholder="Search name, phone, email"
-            aria-label="Search leads"
-            className="h-10 w-full rounded-brand border border-brand-ink/15 bg-brand-white pl-9 pr-3 text-base text-brand-ink placeholder:text-brand-stone/70 focus:border-brand-green focus:outline-none sm:text-small"
-          />
-        </form>
       </div>
 
       {all.length === 0 ? (
         <div className="mt-6">
           <EmptyState icon={<Inbox className="h-8 w-8 text-brand-stone/50" strokeWidth={1.5} aria-hidden />} title="No leads yet">
             Share an offer page, for example{" "}
-            <a href="/offer/diwali-yoga" target="_blank" className="font-medium text-brand-green underline underline-offset-4">
-              /offer/diwali-yoga
+            <a href="/offer/festive-yoga" target="_blank" className="font-medium text-brand-green underline underline-offset-4">
+              /offer/festive-yoga
             </a>
             , and every enquiry will land here.
           </EmptyState>

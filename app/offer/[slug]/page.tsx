@@ -34,7 +34,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const c = getCampaign((await params).slug);
   if (!c) return {};
-  const title = `${c.festival} offer: free extra online yoga classes`;
+  const festival = c.festival.charAt(0).toUpperCase() + c.festival.slice(1);
+  const title = `${festival} offer: free extra online yoga classes`;
   return {
     title,
     description: c.metaDescription,
@@ -119,8 +120,8 @@ export default async function OfferPage({ params }: { params: Promise<{ slug: st
         <div
           className={cn(
             "container-content grid gap-10 pb-20 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-14 lg:pb-24",
-            // The Christmas lights hang below the header; give them room.
-            c.effect === "snow" ? "pt-36 md:pt-40" : "pt-24 md:pt-32",
+            // String lights hang below the header on these pages; give them room.
+            c.effect === "snow" || c.effect === "festive" ? "pt-36 md:pt-40" : "pt-24 md:pt-32",
           )}
         >
           <div>

@@ -1,50 +1,18 @@
 import type { Campaign } from "@/content/campaigns";
 import { cn } from "@/lib/utils";
 
-/** A clay diya with a flickering flame. */
-function Diya({ className, delay = 0 }: { className?: string; delay?: number }) {
+/** An eight-point festive star, outlined in gold, turning very slowly. */
+function Starburst({ className }: { className?: string }) {
+  const points = Array.from({ length: 16 }, (_, i) => {
+    const r = i % 2 === 0 ? 92 : 38;
+    const a = (i / 16) * Math.PI * 2 - Math.PI / 2;
+    return `${(Math.cos(a) * r).toFixed(1)},${(Math.sin(a) * r).toFixed(1)}`;
+  }).join(" ");
   return (
-    <svg viewBox="0 0 80 64" className={className} aria-hidden>
-      <defs>
-        <radialGradient id="diya-glow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#FFD27A" stopOpacity="0.85" />
-          <stop offset="100%" stopColor="#FFD27A" stopOpacity="0" />
-        </radialGradient>
-        <linearGradient id="diya-clay" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="#E0763A" />
-          <stop offset="100%" stopColor="#8A3313" />
-        </linearGradient>
-      </defs>
-      <circle cx="40" cy="20" r="20" fill="url(#diya-glow)" className="origin-[40px_26px] animate-[flicker_1.6s_ease-in-out_infinite]" style={{ animationDelay: `${delay}s` }} />
-      <path
-        d="M40 4 C46 14 46 22 40 28 C34 22 34 14 40 4 Z"
-        fill="#FFC24A"
-        className="origin-[40px_28px] animate-[flicker_1.2s_ease-in-out_infinite]"
-        style={{ animationDelay: `${delay}s` }}
-      />
-      <path d="M40 12 C43 18 43 22 40 26 C37 22 37 18 40 12 Z" fill="#FFF3C4" />
-      <path d="M8 34 Q40 30 72 34 Q66 58 40 58 Q14 58 8 34 Z" fill="url(#diya-clay)" />
-      <path d="M8 34 Q40 40 72 34" fill="none" stroke="#FFB45E" strokeWidth="2" opacity="0.7" />
-      <circle cx="26" cy="46" r="2" fill="#FFD27A" opacity="0.8" />
-      <circle cx="40" cy="49" r="2" fill="#FFD27A" opacity="0.8" />
-      <circle cx="54" cy="46" r="2" fill="#FFD27A" opacity="0.8" />
-    </svg>
-  );
-}
-
-/** A rangoli-like mandala, turning very slowly. */
-function Rangoli({ className, color }: { className?: string; color: string }) {
-  const petals = Array.from({ length: 16 }, (_, i) => i * 22.5);
-  return (
-    <svg viewBox="-100 -100 200 200" className={cn("animate-[spin_90s_linear_infinite]", className)} aria-hidden>
-      {petals.map((a) => (
-        <g key={a} transform={`rotate(${a})`}>
-          <path d="M0 -30 C10 -50 10 -70 0 -92 C-10 -70 -10 -50 0 -30 Z" fill="none" stroke={color} strokeWidth="1.2" />
-          <circle cy="-60" r="3" fill={color} />
-        </g>
-      ))}
-      <circle r="26" fill="none" stroke={color} strokeWidth="1.2" />
-      <circle r="12" fill="none" stroke={color} strokeWidth="1.2" strokeDasharray="3 4" />
+    <svg viewBox="-100 -100 200 200" className={cn("animate-[spin_120s_linear_infinite]", className)} aria-hidden>
+      <polygon points={points} fill="none" stroke="#C9A961" strokeWidth="1.2" strokeLinejoin="round" />
+      <circle r="22" fill="none" stroke="#C9A961" strokeWidth="1" strokeDasharray="2 5" />
+      <circle r="58" fill="none" stroke="#C9A961" strokeWidth="0.6" opacity="0.6" />
     </svg>
   );
 }
@@ -120,14 +88,13 @@ function Splashes({ colors }: { colors: string[] }) {
 /** Decoration layered behind the hero copy, specific to each festival. */
 export function HeroMotif({ campaign }: { campaign: Campaign }) {
   switch (campaign.effect) {
-    case "diyas":
+    case "festive":
       return (
         <>
-          <Rangoli color="#C9A961" className="absolute -right-24 -top-24 h-[22rem] w-[22rem] opacity-[0.14] sm:h-[34rem] sm:w-[34rem]" />
-          <div className="absolute inset-x-0 bottom-0 flex justify-center gap-4 opacity-90 sm:gap-10">
-            {[0, 0.4, 0.15, 0.6, 0.3].map((d, i) => (
-              <Diya key={i} delay={d} className={cn("h-12 w-16 sm:h-16 sm:w-20", i % 2 && "hidden sm:block")} />
-            ))}
+          <Starburst className="absolute -right-20 top-24 h-[18rem] w-[18rem] opacity-[0.16] sm:-right-16 sm:h-[30rem] sm:w-[30rem]" />
+          {/* Hung just below the header, so the bulbs never sit on the logo. */}
+          <div className="absolute inset-x-0 top-[4.25rem] sm:top-20">
+            <StringLights colors={["#C9A961", "#F7F4ED", "#E9D29A", "#FFE6A8"]} />
           </div>
         </>
       );
