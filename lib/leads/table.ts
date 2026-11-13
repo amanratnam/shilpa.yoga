@@ -1,4 +1,4 @@
-import { campaigns } from "@/content/campaigns";
+import { RETIRED_CAMPAIGNS, campaigns } from "@/content/campaigns";
 import { EXPERIENCE_LEVELS, PREFERRED_TIMES, labelOf } from "@/lib/leads/schema";
 import type { CampaignLead } from "@/lib/leads/store";
 
@@ -18,7 +18,7 @@ export const LEAD_COLUMNS = [
 ] as const;
 
 export function campaignLabel(slug: string): string {
-  return campaigns.find((c) => c.slug === slug)?.name ?? slug;
+  return campaigns.find((c) => c.slug === slug)?.name ?? RETIRED_CAMPAIGNS[slug] ?? slug;
 }
 
 export function receivedIST(iso: string): string {

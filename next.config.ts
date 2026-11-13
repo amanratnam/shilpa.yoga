@@ -4,6 +4,13 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
+  async redirects() {
+    return [
+      // The Diwali offer became the season-long festive offer. Keep shared
+      // links (and any ?utm_* tags on them) working.
+      { source: "/offer/diwali-yoga", destination: "/offer/festive-yoga", permanent: true },
+    ];
+  },
   images: {
     remotePatterns: [
       {

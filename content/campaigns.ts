@@ -10,7 +10,7 @@
  * Copy convention for the site: no em dashes.
  */
 
-export type CampaignEffect = "diyas" | "snow" | "fireworks" | "tricolour" | "gulal";
+export type CampaignEffect = "festive" | "snow" | "fireworks" | "tricolour" | "gulal";
 
 /**
  * The festive offer, identical for every campaign: monthly online group
@@ -46,19 +46,21 @@ export type Campaign = {
 
 export const campaigns: Campaign[] = [
   {
-    slug: "diwali-yoga",
-    name: "Diwali 2026",
-    festival: "Diwali",
-    greeting: "Shubh Deepavali",
-    headline: "Light up your practice this Diwali",
-    highlight: "Light up",
+    // Replaced the Diwali page on 13 Nov 2026; /offer/diwali-yoga redirects
+    // here (next.config.ts) and older Diwali leads keep their own label.
+    slug: "festive-yoga",
+    name: "Festive Season 2026",
+    festival: "festive",
+    greeting: "Season's greetings",
+    headline: "Make this festive season your strongest yet",
+    highlight: "strongest yet",
     intro:
-      "Live, small-group online yoga with Shilpa, with bonus classes for the festive season. Balance the sweets, the late nights and the busy days with a practice that leaves you steady and glowing.",
-    endsOn: "2026-11-30",
-    effect: "diyas",
-    particles: ["#FFD27A", "#F4A63A", "#FF7A3D", "#FFE9B8"],
+      "From the lights of Diwali to the cheer of Christmas, the season is full of feasts, late nights and busy days. Stay steady through all of it with live, small-group online yoga with Shilpa, plus free extra classes.",
+    endsOn: "2026-12-26",
+    effect: "festive",
+    particles: ["#C9A961", "#E9D29A", "#FFE6A8", "#F7F4ED"],
     metaDescription:
-      "Diwali offer: free extra classes on live small-group online yoga with Shilpa.",
+      "Festive season offer: free extra classes on live small-group online yoga with Shilpa, until 26 December.",
   },
   {
     slug: "christmas-yoga",
@@ -121,6 +123,14 @@ export const campaigns: Campaign[] = [
       "Holi offer: free extra classes on live small-group online yoga with Shilpa.",
   },
 ];
+
+/**
+ * Campaigns that have been retired or renamed, so leads already stored under
+ * their slug still read sensibly in the admin.
+ */
+export const RETIRED_CAMPAIGNS: Record<string, string> = {
+  "diwali-yoga": "Diwali 2026",
+};
 
 export function getCampaign(slug: string): Campaign | undefined {
   return campaigns.find((c) => c.slug === slug);

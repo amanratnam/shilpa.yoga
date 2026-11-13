@@ -99,12 +99,6 @@ const config: Config = {
           "88%": { opacity: "var(--dust-opacity, 0.5)" },
           "100%": { transform: "translateY(-45vh)", opacity: "0" },
         },
-        // Offer pages: a diya flame and its glow
-        flicker: {
-          "0%, 100%": { transform: "scale(1) rotate(-1deg)", opacity: "1" },
-          "30%": { transform: "scale(1.06, 0.94) rotate(2deg)", opacity: "0.9" },
-          "60%": { transform: "scale(0.96, 1.05) rotate(-2deg)", opacity: "1" },
-        },
         // Offer pages: fairy-light bulbs
         twinkle: {
           "0%, 100%": { opacity: "1" },
