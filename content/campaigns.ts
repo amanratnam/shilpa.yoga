@@ -42,6 +42,15 @@ export type Campaign = {
   particles: string[];
   /** Social preview text. */
   metaDescription: string;
+  /**
+   * What a shared link shows (WhatsApp, Instagram DMs, iMessage …). Without
+   * it, the page falls back to its own title and the site's default image.
+   */
+  share?: {
+    title: string;
+    /** Served from /public; keep under ~300 KB so WhatsApp shows it. */
+    image: { src: string; width: number; height: number; alt: string };
+  };
 };
 
 export const campaigns: Campaign[] = [
@@ -61,6 +70,15 @@ export const campaigns: Campaign[] = [
     particles: ["#C9A961", "#E9D29A", "#FFE6A8", "#F7F4ED"],
     metaDescription:
       "Festive season offer: free extra classes on live small-group online yoga with Shilpa, until 26 December.",
+    share: {
+      title: "Festive Offer (by Shilpa Yoga Space) - Free Online Yoga Classes",
+      image: {
+        src: "/images/og/festive-yoga.jpg",
+        width: 1200,
+        height: 676,
+        alt: "Shilpa Yoga Space festive season offer: get free online classes on top of your package",
+      },
+    },
   },
   {
     slug: "christmas-yoga",
